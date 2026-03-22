@@ -1,0 +1,30 @@
+format: jb-book
+root: notebooks/00_서문
+
+chapters:
+  - file: notebooks/01_시험성적_분석
+  - file: notebooks/02_대통령_지지율_변화_분석
+  - file: notebooks/03_KBO_정규시즌_팀성적_분석
+  - file: notebooks/04_PPP_그래프_분석
+  - file: notebooks/05_세계은행_데이터_추출
+  - file: notebooks/06_주가_예측_시스템_구축
+  - file: notebooks/07_댓글_통계_분석
+  - file: notebooks/08_서울_아파트_매물_변화_분석
+  - file: notebooks/09_설문조사_분석
+  - file: notebooks/10_탐색적_요인분석
+  - file: notebooks/11_보스턴_주택_가격_분석
+  - file: notebooks/12_종부세와_월세의_관계
+  - file: notebooks/13_대형마트_쇠락_원인_실증분석
+  - file: notebooks/14_신생아_특례대출과_출산율
+  - file: notebooks/15_Ridge_및_Lasso_회귀
+  - file: notebooks/16_로지스틱_회귀
+  - file: notebooks/17_의사결정_트리_모형
+  - file: notebooks/18_트리_기반_모형
+  - file: notebooks/19_딥러닝_공부하기  
+  - file: notebooks/20_패널_데이터_분석  
+  - file: notebooks/21_골밀도_검사_결과_해석
+  - file: notebooks/22_운동학_Kinematics
+  - file: notebooks/23_축구_경기_데이터_분석
+  - file: notebooks/24_폭격_파괴력_분석
+  - file: notebooks/25_세계_화장품_교역_트렌드
+  - file: notebooks/26_Texas_Special_Education

@@ -1,0 +1,1702 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>14장 신생아 특례대출과 출산율 &#8212; 데이터 분석 이제 AI에게 맡겨라</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/14_신생아_특례대출과_출산율';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="15장 Ridge 및 Lasso 회귀" href="15_Ridge_%EB%B0%8F_Lasso_%ED%9A%8C%EA%B7%80.html" />
+    <link rel="prev" title="13장 대형마트 쇠락 원인 실증분석" href="13_%EB%8C%80%ED%98%95%EB%A7%88%ED%8A%B8_%EC%87%A0%EB%9D%BD_%EC%9B%90%EC%9D%B8_%EC%8B%A4%EC%A6%9D%EB%B6%84%EC%84%9D.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00_%EC%84%9C%EB%AC%B8.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="00_%EC%84%9C%EB%AC%B8.html">
+                    서문
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_%EC%8B%9C%ED%97%98%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>1장 시험성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_%EB%8C%80%ED%86%B5%EB%A0%B9_%EC%A7%80%EC%A7%80%EC%9C%A8_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>2장 대통령 지지율 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_KBO_%EC%A0%95%EA%B7%9C%EC%8B%9C%EC%A6%8C_%ED%8C%80%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>3장 KBO 정규시즌 팀성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_PPP_%EA%B7%B8%EB%9E%98%ED%94%84_%EB%B6%84%EC%84%9D.html"><strong>4장 PPP 그래프 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_%EC%84%B8%EA%B3%84%EC%9D%80%ED%96%89_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EC%B6%94%EC%B6%9C.html"><strong>5장 세계은행 데이터 추출</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_%EC%A3%BC%EA%B0%80_%EC%98%88%EC%B8%A1_%EC%8B%9C%EC%8A%A4%ED%85%9C_%EA%B5%AC%EC%B6%95.html"><strong>6장 주가 예측 시스템 구축</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_%EB%8C%93%EA%B8%80_%ED%86%B5%EA%B3%84_%EB%B6%84%EC%84%9D.html"><strong>7장 댓글 통계 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_%EC%84%9C%EC%9A%B8_%EC%95%84%ED%8C%8C%ED%8A%B8_%EB%A7%A4%EB%AC%BC_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>8장 서울 아파트 매물 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_%EC%84%A4%EB%AC%B8%EC%A1%B0%EC%82%AC_%EB%B6%84%EC%84%9D.html"><strong>9장 설문조사 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_%ED%83%90%EC%83%89%EC%A0%81_%EC%9A%94%EC%9D%B8%EB%B6%84%EC%84%9D.html"><strong>10장 탐색적 요인분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_%EB%B3%B4%EC%8A%A4%ED%84%B4_%EC%A3%BC%ED%83%9D_%EA%B0%80%EA%B2%A9_%EB%B6%84%EC%84%9D.html"><strong>11장 보스턴 주택 가격 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_%EC%A2%85%EB%B6%80%EC%84%B8%EC%99%80_%EC%9B%94%EC%84%B8%EC%9D%98_%EA%B4%80%EA%B3%84.html"><strong>12장 종부세와 월세의 관계</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_%EB%8C%80%ED%98%95%EB%A7%88%ED%8A%B8_%EC%87%A0%EB%9D%BD_%EC%9B%90%EC%9D%B8_%EC%8B%A4%EC%A6%9D%EB%B6%84%EC%84%9D.html"><strong>13장 대형마트 쇠락 원인 실증분석</strong></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>14장 신생아 특례대출과 출산율</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_Ridge_%EB%B0%8F_Lasso_%ED%9A%8C%EA%B7%80.html"><strong>15장 Ridge 및 Lasso 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1_%ED%9A%8C%EA%B7%80.html"><strong>16장 로지스틱 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95_%ED%8A%B8%EB%A6%AC_%EB%AA%A8%ED%98%95.html"><strong>17장 의사결정 트리 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_%ED%8A%B8%EB%A6%AC_%EA%B8%B0%EB%B0%98_%EB%AA%A8%ED%98%95.html"><strong>18장 트리 기반 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="19_%EB%94%A5%EB%9F%AC%EB%8B%9D_%EA%B3%B5%EB%B6%80%ED%95%98%EA%B8%B0.html"><strong>19장 딥러닝 공부하기</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_%ED%8C%A8%EB%84%90_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>20장 패널 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="21_%EA%B3%A8%EB%B0%80%EB%8F%84_%EA%B2%80%EC%82%AC_%EA%B2%B0%EA%B3%BC_%ED%95%B4%EC%84%9D.html"><strong>21장 골밀도 검사 결과 해석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_%EC%9A%B4%EB%8F%99%ED%95%99_Kinematics.html"><strong>22장 운동학 (Kinematics)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_%EC%B6%95%EA%B5%AC_%EA%B2%BD%EA%B8%B0_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>23장 축구 경기 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_%ED%8F%AD%EA%B2%A9_%ED%8C%8C%EA%B4%B4%EB%A0%A5_%EB%B6%84%EC%84%9D.html"><strong>24장 폭격 파괴력 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_%EC%84%B8%EA%B3%84_%ED%99%94%EC%9E%A5%ED%92%88_%EA%B5%90%EC%97%AD_%ED%8A%B8%EB%A0%8C%EB%93%9C.html"><strong>25장 세계 화장품 교역 트렌드</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_Texas_Special_Education.html"><strong>26장 텍사스주 특수교육 현황</strong></a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4/issues/new?title=Issue%20on%20page%20%2Fnotebooks/14_신생아_특례대출과_출산율.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/14_신생아_특례대출과_출산율.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>14장 신생아 특례대출과 출산율</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span style="color: blue;"><strong>1. 소득 상위 계층에서만 출산율 상승?</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#claude"><strong>Claude 평가</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chatgpt"><strong>ChatGPT 평가</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1. 그래프가 보여주는 핵심 구조</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2. “도입 전후 변화” 관점에서 보면</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">(1) 상위 소득 30% (8-10분위)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">(2) 하위 소득 30% (1-3분위)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">3. 왜 이런 결과가 나오는가 (정책 구조와 일치)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">4. 다만 주의할 점 (인과 해석)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">이것만으로는</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">최종 판단</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11"><span style="color: blue;"><strong>2. 인과적 관계</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12"><strong>ChatGPT 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">0. 먼저: 지금 그림이 왜 ‘증거’가 아닌가</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#did">1. 소득분위 × 연도 DID(이중차분) — “전후 변화의 차이”를 계층별로</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">1.1 기본 DID의 뼈대</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">1.2 “소득분위 × 연도”를 DID로 한다는 건 무슨 뜻?</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">1.3 왜 그냥 2023→2025 비교하면 안 되고 DID가 필요한가?</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#did-parallel-trends">1.4 DID가 성립하려면 필요한 가정: 평행추세(parallel trends)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">1.5 실무 설계 포인트(중요)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vs">2. 정책 수혜 가능 집단 vs 비수혜 집단 비교 — “실제 처치 정의”를 더 정확히</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#eligibility">2.1 왜 ‘수혜 가능성(eligibility)’ 기반 비교가 중요한가?</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rdd-did-rdd">2.2 가장 깔끔한 설계: 소득 컷오프를 이용한 RDD/DiD-RDD</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#propensity-exposure">2.3 데이터가 제한될 때의 ‘2차선’ 접근: 예측된 수혜확률(Propensity / Exposure)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">2.4 “수혜 가능 vs 비수혜” 비교에서 흔한 함정</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">3. 혼인율, 연령구조, 경기효과 통제 — “상위에서만 오르는 다른 이유”를 제거</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">3.1 혼인율(또는 혼인상태) 통제</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">3.2 연령구조(특히 20-39 여성 분포) 통제</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">3.3 경기효과 통제: “연도 고정효과만으로 부족한 부분”</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">3.4 통제의 목적은 “설명”이 아니라 “식별”</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">4. 이 3개를 합친 ‘권장’ 분석 흐름(실무형)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id25"><span style="color: blue;"><strong>3. 분석에 사용한 데이터</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id26"><strong>ChatGPT 평가</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">1. 이 자료가 강력한 이유 (통계적으로 매우 좋은 점)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#db">(1) 출산 측정의 정확도 (➊ 진료내역 DB)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">(2) 소득 정보의 신뢰성 (➌ 국세청 연계)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">(3) 개인 단위 패널 구조 가능 (➋ 건강보험 가입자격 DB)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">(4) 가구/세대 구조 파악 가능 (➍ 주민등록 DB)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">(5) 표본 규모 (전체의 15%)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">2. 그런데 왜 이것만으로 “정책 효과 신뢰”가 되지 않는가</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#identification">핵심 문제는 <strong>식별(identification)</strong> 이다.</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#selection-bias">(1) 정책 노출의 내생성 (selection bias)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#confounding-shocks">(2) 동시 변화(confounding shocks)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">(3) 출산은 구조적으로 ‘지연 변수’</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">(4) 대규모 표본의 착시</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">3. 이 데이터가 DID 분석에 주는 “진짜 의미”</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id36">4. 그래서 “객관성과 신뢰성” 평가는 이렇게 해야 정확</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id37">한 줄 정리</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id38"><span style="color: blue;"><strong>4. 데이터 구조에 맞는 분석 설계</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id39"><strong>ChatGPT 설계</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id40">1. 데이터 구성과 관측 단위</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id41">1.1 관측 단위</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id42">1.2 결과변수(출산 측정)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id43">1.3 소득 변수(처리집단 정의에 핵심)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id44">1.4 혼인-세대 구조</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id45">1.5 기타 통제변수 후보(가능하면)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#treatment-2">2. 처치(treatment) 정의: 실제 노출을 2단으로 잡기</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a-eligibility">2.1 레벨 A: 정적 eligibility(정책 도입 기준)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#b-eligibility-2024-12">2.2 레벨 B: 소득요건 완화 eligibility(2024.12월 변경 활용)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id46">3. 기본 분석 1: 개인 고정효과 이벤트 스터디 DID(정책 도입 효과)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lpm-linear-probability-model">3.1 개인-월 선형확률모형(LPM: Linear Probability Model)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id47">3.2 이벤트 스터디(평행추세 점검 + 시차 반영)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id48">3.3 표준오차</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id49">4. 핵심 분석 2: 2024.12월 소득요건 완화에 대한 DID(가장 강한 식별)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id50">4.1 DID 모형</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id51">4.2 설계의 장점</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id52">4.3 이벤트 스터디 확장</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#triple-diff">5. 확장 설계: triple-diff(삼중차분)로 교란 더 줄이기</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id53">6. 혼인율-연령구조-경기효과 통제: 이 데이터에서 어떻게 구현할지</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id54">6.1 혼인-동거 통제</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id55">6.2 연령구조 통제</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id56">6.3 경기효과 통제</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id57">7. 출산의 시차를 반영한 두 가지 구현 옵션</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a">7.1 옵션 A: 출산 시점 기준(가장 단순)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#b">7.2 옵션 B: 임신 시작(수태) 근사로 정렬(더 정교)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id58">8. 표본 설계(권장)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#placebo">9. 위약(placebo)과 강건성 체크(이걸 해야 신뢰를 주장할 수 있음)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id59">9.1 가짜 정책 시점 위약</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id60">9.2 비교집단 바꾸기</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id61">9.3 사전 계수(평행추세) 확인</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id62">10. 최종 산출물(보고서-논문에 들어갈 결과 세트)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id63">11. 설계 확정에 필요한 추가 정보(체크리스트)</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><strong>14장 신생아 특례대출과 출산율</strong><a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2><span style="color: blue;"><strong>1. 소득 상위 계층에서만 출산율 상승?</strong></span><a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p><span style="color: blue;">신생아 특례대출은 2024년 도입된 주거·저출산 지원 제도다. 저소득층뿐 아니라 중산층·상위 소득층까지도 대상으로 하고 있다. 도입 초에는 부부합산 연소득 요건이 ‘1억3000만원 이하’였으나, 2024년 12월부터 ‘2억원 이하’로 완화됐다.</span></p>
+<p><span style="color: blue;">보고서는 정책 효과를 소득 계층별로 확인하기 위해, 특례대출 도입 전후 소득 계층별 출산율 변화를 분석했다. 그 결과 소득 상위 계층에서만 출산율이 크게 상승했다고 밝혔다. “소득 상위 30% 집단의 합계출산율은 2023년 0.84명에서 2025년 0.95명으로 상승했지만, 소득 하위 30%에서는 출산율 반등이 관측되지 않았다”는 것이다.</span></p>
+<p><img alt="Birth_Rate" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/14-1.png" /></p>
+<p>출처: <a class="reference external" href="https://biz.chosun.com/policy/policy_sub/2026/01/27/JY3E5VU3W5ER7PI6Y4ECASRJLM/?outputType=amp">조선비즈, 2026-01-27, 기사</a> 중에서</p>
+</section>
+<section id="claude">
+<h2><strong>Claude 평가</strong><a class="headerlink" href="#claude" title="Link to this heading">#</a></h2>
+<p>차트를 확인해 보겠습니다.</p>
+<p><strong>2023년 패널</strong>: 곡선이 전체적으로 평탄하며, 소득 분위 전반에 걸쳐 약 0.7-0.8 수준에 머물러 있습니다. 상위 분위(8-10분위)에서도 뚜렷한 상승이 보이지 않습니다.</p>
+<p><strong>2024년 패널</strong>: 곡선의 오른쪽 끝(고소득 분위)에서 약간의 상승 곡선이 나타나기 시작합니다. 반면 왼쪽(저소득 분위)은 큰 변화가 없습니다.</p>
+<p><strong>2025년 패널</strong>: 가장 눈에 띄는 변화가 나타납니다. 고소득 분위(8-10분위)에서 곡선이 뚜렷하게 상승하여 대략 0.9-1.0 부근까지 올라가는 J자형 패턴이 관찰됩니다. 저소득 분위(1-3분위) 쪽은 여전히 0.7-0.8 수준에 머물러 있어 반등이 보이지 않습니다.</p>
+<p><strong>보고서 주장과의 대조 결과:</strong></p>
+<ul class="simple">
+<li><p>“소득 상위 30%의 합계출산율이 2023년 0.84에서 2025년 0.95로 상승” → 차트에서 상위 분위의 상승 추세가 시각적으로 확인됩니다. 정확한 수치까지 판독하기는 어렵지만, 상승 폭과 방향은 부합합니다.</p></li>
+<li><p>“소득 하위 30%에서는 출산율 반등이 관측되지 않았다” → 차트의 왼쪽(저소득 분위)에서 2023~2025년 사이 의미 있는 변화가 보이지 않으므로, 이 주장도 차트와 일치합니다.</p></li>
+</ul>
+<p>종합하면, 보고서의 핵심 주장은 이 차트의 시각적 패턴과 <strong>대체로 부합</strong>합니다. 특히 2024~2025년에 걸쳐 고소득층에서만 출산율이 반등하는 비대칭적 효과가 뚜렷하게 나타나고 있습니다.</p>
+</section>
+<section id="chatgpt">
+<h2><strong>ChatGPT 평가</strong><a class="headerlink" href="#chatgpt" title="Link to this heading">#</a></h2>
+<p>결론부터 말하면, 기사의 <strong>보고서 요약은 그림의 패턴과 대체로 부합</strong>한다. 다만 “크게 상승”이라는 표현은 약간 과장에 가깝고, 정확히는 <strong>상위 소득층에서만 ‘상대적으로 뚜렷한 반등’이 나타난 구조</strong>에 가깝다.</p>
+<hr class="docutils" />
+<section id="id3">
+<h3>1. 그래프가 보여주는 핵심 구조<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>그림은</p>
+<ul class="simple">
+<li><p>가로축: 소득 10분위 (좌=저소득, 우=고소득)</p></li>
+<li><p>세로축: 합계출산율(TFR)</p></li>
+<li><p>연도별 패널(2006-2025)</p></li>
+</ul>
+<p>형태를 보면 거의 모든 연도에서 공통적으로:</p>
+<blockquote>
+<div><p><strong>U자형 또는 완만한 J자형 구조</strong>
+중간소득층이 가장 낮고, 상위 분위에서 출산율이 다시 올라감</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="id4">
+<h3>2. “도입 전후 변화” 관점에서 보면<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>정책 도입 시점은 2024년. 따라서 비교 구간은 사실상
+<strong>2023 → 2024 → 2025</strong> 흐름이다.</p>
+<section id="id5">
+<h4>(1) 상위 소득 30% (8-10분위)<a class="headerlink" href="#id5" title="Link to this heading">#</a></h4>
+<p>2023 이후 패널을 보면:</p>
+<ul class="simple">
+<li><p>8-10분위 선이 <strong>바닥을 찍은 뒤 위로 기울기 전환</strong></p></li>
+<li><p>특히 9-10분위에서 상승폭이 가장 큼</p></li>
+<li><p>2021-2023 하락 추세가 꺾이고 <strong>명확한 반등 국면</strong></p></li>
+</ul>
+<p>👉 보고서의</p>
+<blockquote>
+<div><p>“상위 30% 집단에서 출산율 상승”
+이라는 진술은 <strong>그래프 패턴과 일치</strong></p>
+</div></blockquote>
+<p>수치 예시(0.84 → 0.95)는 정밀 판독은 어렵지만,
+<strong>‘상위 분위에서만 눈에 띄는 상승’이라는 방향성은 맞다.</strong></p>
+</section>
+<hr class="docutils" />
+<section id="id6">
+<h4>(2) 하위 소득 30% (1-3분위)<a class="headerlink" href="#id6" title="Link to this heading">#</a></h4>
+<p>같은 기간을 보면:</p>
+<ul class="simple">
+<li><p>1-3분위는 <strong>전반적으로 정체 또는 추가 하락 후 소폭 회복</strong></p></li>
+<li><p>하지만 상위 분위처럼 추세 전환이 뚜렷하지 않음</p></li>
+<li><p>선의 기울기가 완만하거나 거의 평평</p></li>
+</ul>
+<p>즉,</p>
+<blockquote>
+<div><p>“하위 30%에서는 출산율 반등이 관측되지 않았다”</p>
+</div></blockquote>
+<p>이 표현도 <strong>그래프의 인상과 부합</strong>한다.
+있다 하더라도 <strong>미약하고 구조적 전환으로 보기 어려운 수준</strong>이다.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id7">
+<h3>3. 왜 이런 결과가 나오는가 (정책 구조와 일치)<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>네가 앞에 설명한 제도 특징과 그래프가 <strong>논리적으로도 맞물린다</strong>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>요소</p></th>
+<th class="head"><p>효과가 큰 계층</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>대출 기반 정책</p></td>
+<td><p>이미 주택 구입 가능성이 있는 계층</p></td>
+</tr>
+<tr class="row-odd"><td><p>소득 요건 2억 이하 완화</p></td>
+<td><p>중상위·상위 소득층 포함</p></td>
+</tr>
+<tr class="row-even"><td><p>저금리 대출</p></td>
+<td><p>신용·상환능력 있는 가구에 유리</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>즉 이 정책은
+<strong>“현금 이전 정책”이 아니라 “신용 기반 주거금융 정책”</strong> 이라서
+출산 제약이 <strong>소득 부족이 아니라 주거 안정성</strong>에 있는 계층,
+즉 <strong>중상위-상위 소득층에 더 직접적으로 작용</strong>했을 가능성이 크다.</p>
+<p>그래프 결과는 이 메커니즘과 정합적이다.</p>
+</section>
+<hr class="docutils" />
+<section id="id8">
+<h3>4. 다만 주의할 점 (인과 해석)<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>보고서 서술이 사실일 수는 있지만, 아래는 별도 문제다:</p>
+<section id="id9">
+<h4>이것만으로는<a class="headerlink" href="#id9" title="Link to this heading">#</a></h4>
+<p><strong>“신생아 특례대출 때문에 상위층 출산이 늘었다”</strong> 는
+인과 결론은 성립하지 않는다.</p>
+<p>필요한 분석:</p>
+<ul class="simple">
+<li><p>소득분위 × 연도 DID(이중차분)</p></li>
+<li><p>정책 수혜 가능 집단 vs 비수혜 집단 비교</p></li>
+<li><p>혼인율, 연령구조, 경기효과 통제</p></li>
+</ul>
+<p>현재 그림은 <strong>패턴 증거(descriptive evidence)</strong> 수준이다.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id10">
+<h3>최종 판단<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>네 문장은 <strong>그래프와 방향성은 일치</strong>한다.</p>
+<p>정확한 평가는 이렇게 정리하는 게 가장 타당하다:</p>
+<blockquote>
+<div><p>정책 도입 이후 출산율 반등은 주로 소득 상위 분위에서 나타났으며, 하위 분위에서는 뚜렷한 회복이 보이지 않는다 — 는 진술은 그림이 보여주는 연도별 분위 구조와 정합적이다. 다만 이는 상관 패턴이며 정책의 인과 효과를 단정하기에는 추가 식별 전략이 필요하다.</p>
+</div></blockquote>
+<p>즉,
+<strong>사실 묘사로는 대체로 맞음
+정책 효과 단정으로는 아직 부족함</strong></p>
+</section>
+</section>
+<section id="id11">
+<h2><span style="color: blue;"><strong>2. 인과적 관계</strong></span><a class="headerlink" href="#id11" title="Link to this heading">#</a></h2>
+<p><span style="color: blue;"><strong>위 ChatGPT 답변에서 인과 추론을 위해서는 다음과 같은 분석이 필요하다고 했는데 자세히 설명해줘.</strong></span></p>
+<ul class="simple">
+<li><p><span style="color: blue;">소득분위 × 연도 DID(이중차분)</span></p></li>
+<li><p><span style="color: blue;">정책 수혜 가능 집단 vs 비수혜 집단 비교</span></p></li>
+<li><p><span style="color: blue;">혼인율, 연령구조, 경기효과 통제</span></p></li>
+</ul>
+</section>
+<section id="id12">
+<h2><strong>ChatGPT 설명</strong><a class="headerlink" href="#id12" title="Link to this heading">#</a></h2>
+<p>아래는 “신생아 특례대출이 출산율을 올렸는가”를 <strong>인과적으로</strong> 보려면 왜/어떻게 해야 하는지, 네가 적은 3개 항목을 각각 아주 자세히 풀어쓴 설명이다. (용어는 실무/논문에서 쓰는 방식대로 갈게.)</p>
+<hr class="docutils" />
+<section id="id13">
+<h3>0. 먼저: 지금 그림이 왜 ‘증거’가 아닌가<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p>연도별로 “상위 분위에서 출산율이 올라갔다”는 건 <strong>패턴(상관)</strong> 이다. 하지만 2024-2025에 신생아 특례대출과 동시에 일어난 다른 변화(금리, 경기, 혼인/이혼, 주택가격, 다른 정책 등)가 상위 분위에 더 강하게 작용했을 수도 있다. 그러면 출산율 상승을 대출정책에 귀속시키면 오판이다.</p>
+<p>그래서 필요한 게 “정책이 없었으면(<strong>반사실, counterfactual</strong>) 어떻게 됐을까”를 만드는 구조이고, <strong>DID(Difference-in-Differences)</strong> 는 그걸 만드는 가장 표준적인 방법 중 하나다.</p>
+</section>
+<hr class="docutils" />
+<section id="did">
+<h3>1. 소득분위 × 연도 DID(이중차분) — “전후 변화의 차이”를 계층별로<a class="headerlink" href="#did" title="Link to this heading">#</a></h3>
+<section id="id14">
+<h4>1.1 기본 DID의 뼈대<a class="headerlink" href="#id14" title="Link to this heading">#</a></h4>
+<p>가장 단순한 DID는 이렇게 생긴다.</p>
+<ul class="simple">
+<li><p>집단: 처리집단(treated) vs 비교집단(control)</p></li>
+<li><p>시점: 정책 전(pre) vs 정책 후(post)</p></li>
+<li><p>핵심:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+DID = (Y_{T,post}-Y_{T,pre}) - (Y_{C,post}-Y_{C,pre})
+\]</div>
+<p>여기서 <span class="math notranslate nohighlight">\(Y\)</span>는 합계출산율(TFR) 같은 결과변수.</p>
+<p>이게 말하는 건:<br />
+“처리집단이 정책 이후 더 늘었는데, 그건 단순한 시간 추세가 아니라 처리집단에서만 추가로 생긴 변화”라는 해석이다.</p>
+</section>
+<hr class="docutils" />
+<section id="id15">
+<h4>1.2 “소득분위 × 연도”를 DID로 한다는 건 무슨 뜻?<a class="headerlink" href="#id15" title="Link to this heading">#</a></h4>
+<p>소득 10분위를 그대로 쓰면 ‘집단’이 10개다. 즉 “한 집단 vs 한 집단”이 아니라 <strong>다집단 DID(패널/반복횡단면)</strong> 형태가 된다.</p>
+<p>가장 흔한 회귀식은:</p>
+<div class="math notranslate nohighlight">
+\[
+Y_{d,t}=\alpha + \sum_{d\neq d_0}\gamma_d \cdot 1[d] + \sum_{t\neq t_0}\delta_t \cdot 1[t] + \beta \cdot (Post_t \times Treat_d) + \varepsilon_{d,t}
+\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(d\)</span>: 소득분위(1-10)</p></li>
+<li><p><span class="math notranslate nohighlight">\(t\)</span>: 연도(2006-2025)</p></li>
+<li><p><span class="math notranslate nohighlight">\(1[d]\)</span>: 분위 고정효과(분위별로 원래 출산율 수준이 다른 걸 제거)</p></li>
+<li><p><span class="math notranslate nohighlight">\(1[t]\)</span>: 연도 고정효과(모든 분위에 공통인 연도 충격: 경기, 코로나, 금리 등 제거)</p></li>
+<li><p><span class="math notranslate nohighlight">\(Post_t\)</span>: 2024 이후면 1</p></li>
+<li><p><span class="math notranslate nohighlight">\(Treat_d\)</span>: “정책 효과가 나타날 것으로 설정한 분위”에 1 (예: 상위 30%면 8-10 분위)</p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(\beta\)</span>가 바로 DID 추정치다.<br />
+“정책 이후, 처리(상위) 분위가 비교(하위/중위) 대비 출산율이 얼마나 더 변했는지”를 준다.</p>
+</section>
+<hr class="docutils" />
+<section id="id16">
+<h4>1.3 왜 그냥 2023→2025 비교하면 안 되고 DID가 필요한가?<a class="headerlink" href="#id16" title="Link to this heading">#</a></h4>
+<p>2024-2025에 출산율이 상위에서 올랐다고 해도, 같은 기간에:</p>
+<ul class="simple">
+<li><p>상위 분위가 더 많이 결혼했을 수도 있고</p></li>
+<li><p>상위 분위가 더 많이 이사/주택구입 했을 수도 있고</p></li>
+<li><p>상위 분위의 30대 비중이 우연히 늘었을 수도 있고</p></li>
+<li><p>고소득 일자리/임금 증가가 상위에 집중됐을 수도 있다</p></li>
+</ul>
+<p>DID는 최소한 “연도 공통 충격”과 “분위 고정 차이”를 제거하고, 남는 추가 변화가 있는지를 보는 장치다.</p>
+</section>
+<hr class="docutils" />
+<section id="did-parallel-trends">
+<h4>1.4 DID가 성립하려면 필요한 가정: 평행추세(parallel trends)<a class="headerlink" href="#did-parallel-trends" title="Link to this heading">#</a></h4>
+<p>핵심 가정: 정책이 없었더라도, 처리집단과 비교집단의 결과는 <strong>정책 전에는 비슷한 추세로 움직였을 것</strong>.</p>
+<p>이걸 확인하는 대표적 방법이 <strong>이벤트 스터디(event study)</strong> 다.</p>
+<div class="math notranslate nohighlight">
+\[
+Y_{d,t}=\alpha + \gamma_d + \delta_t + \sum_{k\neq -1}\beta_k \cdot (1[t - t_0 = k]\times Treat_d)+\varepsilon_{d,t}
+\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(t_0\)</span>: 정책 시작 연도(2024)</p></li>
+<li><p><span class="math notranslate nohighlight">\(k\)</span>: 정책 시작 대비 상대연도(-3,-2,-1,0,1,2…)</p></li>
+</ul>
+<p>여기서 중요한 건 <strong>정책 전 구간(<span class="math notranslate nohighlight">\(k&lt;0\)</span>)의 <span class="math notranslate nohighlight">\(\beta_k\)</span>들이 0에 가깝냐</strong>다.<br />
+정책 전부터 이미 상위 분위가 상승추세였다면, 정책 이후 상승을 정책 효과로 볼 수 없다.</p>
+</section>
+<hr class="docutils" />
+<section id="id17">
+<h4>1.5 실무 설계 포인트(중요)<a class="headerlink" href="#id17" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Post를 2024=1로 둘지</strong>, 2024는 시행 초기/월별로 달라서 2025부터 post로 둘지(“실제 노출” 기준) 고민</p></li>
+<li><p>출산율은 <strong>시차</strong>가 있다(임신-출산). 2024 정책이면 출산은 2025에 더 반영될 수도 있다</p></li>
+<li><p>단위가 개인이면: 출산 여부(0/1), 출생아수(카운트), 첫째 출산 hazard 등 다양한 모델이 가능</p></li>
+<li><p>단위가 분위×연도 집계면: 표본이 작아져서(10×20=200) 표준오차/추정 안정성이 떨어질 수 있음</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="vs">
+<h3>2. 정책 수혜 가능 집단 vs 비수혜 집단 비교 — “실제 처치 정의”를 더 정확히<a class="headerlink" href="#vs" title="Link to this heading">#</a></h3>
+<p>여기서 핵심은: “소득 상위 30%”는 <strong>정책 수혜 가능성</strong>과 1:1로 매칭되지 않는다.</p>
+<p>신생아 특례대출은 단순히 소득만이 아니라 (일반적으로) 대출·주택·신용·가구 조건 같은 자격이 붙는다. 그러면 “정책에 노출된 사람”을 더 정확히 정의해야 한다.</p>
+<hr class="docutils" />
+<section id="eligibility">
+<h4>2.1 왜 ‘수혜 가능성(eligibility)’ 기반 비교가 중요한가?<a class="headerlink" href="#eligibility" title="Link to this heading">#</a></h4>
+<p>정책 효과를 보려면 처리집단은 “정책을 실제로 이용했거나 최소한 이용할 수 있었던 집단”이어야 한다.</p>
+<p>예를 들어:</p>
+<ul class="simple">
+<li><p>상위 소득이지만 이미 집을 충분히 갖고 있어 대출 수요가 없으면 효과가 작을 수 있음</p></li>
+<li><p>중위 소득이라도 무주택·신혼·자녀계획이 뚜렷하면 수요가 클 수 있음</p></li>
+<li><p>신용/부채 제약으로 저소득층은 “제도는 있어도 이용이 어렵다”가 될 수 있음</p></li>
+</ul>
+<p>그래서 <strong>(i) 자격요건을 충족하는 집단(eligible)</strong> vs <strong>(ii) 애초에 자격 밖인 집단(ineligible)</strong> 으로 비교하는 게 식별력이 훨씬 좋다.</p>
+</section>
+<hr class="docutils" />
+<section id="rdd-did-rdd">
+<h4>2.2 가장 깔끔한 설계: 소득 컷오프를 이용한 RDD/DiD-RDD<a class="headerlink" href="#rdd-did-rdd" title="Link to this heading">#</a></h4>
+<p>네가 말한 “연소득 1.3억→2억으로 완화(2024년 12월)”는 특히 좋은 신호다. 이런 컷오프는 아래 설계를 가능하게 한다.</p>
+<ul class="simple">
+<li><p>1.3억 근처 사람들(예: 1.2-1.4억)을 보면, 정책 전후 자격 여부가 급격히 갈림</p></li>
+<li><p>2억 근처도 마찬가지</p></li>
+</ul>
+<p>가능한 접근:</p>
+<ul class="simple">
+<li><p><strong>RDD(회귀불연속)</strong>: 컷오프 바로 위/아래 비교</p></li>
+<li><p><strong>DiD-RDD</strong>: 컷오프 근처를 정책 전후로 비교(시간 충격 제거)</p></li>
+</ul>
+<p>이게 되면 “상위 30%” 같은 거친 분류보다 훨씬 인과적으로 강하다.</p>
+</section>
+<hr class="docutils" />
+<section id="propensity-exposure">
+<h4>2.3 데이터가 제한될 때의 ‘2차선’ 접근: 예측된 수혜확률(Propensity / Exposure)<a class="headerlink" href="#propensity-exposure" title="Link to this heading">#</a></h4>
+<p>자격요건이 복잡하고 개별 조건을 다 못 구하면, 정책 도입 전 특성으로 “수혜 가능성”을 추정해서 노출을 연속변수로 쓰는 방법도 있다.</p>
+<ul class="simple">
+<li><p>예: 무주택/전세거주/주택가격 높은 지역/소득/부채 등으로</p></li>
+<li><p>“정책 노출지수”를 만들고</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+Y_{i,t} = \alpha + \gamma_i + \delta_t + \beta(Post_t \times Exposure_i) + \varepsilon_{i,t}
+\]</div>
+<p>여기서 <span class="math notranslate nohighlight">\(\beta\)</span>는 “노출이 1 단위 더 큰 사람일수록 정책 이후 출산이 더 증가했는가”를 본다.</p>
+</section>
+<hr class="docutils" />
+<section id="id18">
+<h4>2.4 “수혜 가능 vs 비수혜” 비교에서 흔한 함정<a class="headerlink" href="#id18" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>내생적 선택(selection)</strong>: 실제 대출 이용자는 애초에 출산 의지가 강한 사람일 수 있다<br />
+→ 그래서 “실제 이용자”와 “비이용자” 비교는 위험<br />
+→ 대신 “자격(eligibility)” 또는 “노출(exposure)”을 도구처럼 쓰는 게 낫다</p></li>
+<li><p><strong>정책 동시다발</strong>: 같은 시기 다른 출산/주거 정책도 바뀌면 혼입<br />
+→ 비교집단이 그런 정책에 동일하게 노출되는지 점검 필요</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id19">
+<h3>3. 혼인율, 연령구조, 경기효과 통제 — “상위에서만 오르는 다른 이유”를 제거<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<p>DID에 이미 연도 고정효과가 들어가면 “모든 집단에 공통인 경기 충격”은 많이 제거된다. 그런데 문제는:</p>
+<ul class="simple">
+<li><p>충격이 <strong>소득분위별로 다르게</strong> 작동할 수 있고</p></li>
+<li><p>인구구성 변화(연령, 혼인)가 분위별로 다르게 움직일 수 있다</p></li>
+</ul>
+<p>이걸 통제하지 않으면 <span class="math notranslate nohighlight">\(\beta\)</span>에 섞여 들어간다(omitted variable bias).</p>
+<hr class="docutils" />
+<section id="id20">
+<h4>3.1 혼인율(또는 혼인상태) 통제<a class="headerlink" href="#id20" title="Link to this heading">#</a></h4>
+<p>출산은 혼인과 강하게 연결돼 있다(특히 첫째). 상위 분위에서 2024-2025에 혼인이 늘었다면, 출산 증가가 정책 때문이 아니라 혼인 변화 때문일 수 있다.</p>
+<p>가능한 변수:</p>
+<ul class="simple">
+<li><p>분위×연도 혼인율</p></li>
+<li><p>혼인상태별(미혼/기혼) 출산률</p></li>
+<li><p>초혼률, 평균 초혼 연령</p></li>
+<li><p>결혼-출산 시차 고려(혼인 후 1-2년)</p></li>
+</ul>
+<p>회귀에 넣는 방식(집계형 예시):</p>
+<div class="math notranslate nohighlight">
+\[
+Y_{d,t}=\alpha+\gamma_d+\delta_t+\beta(Post_t\times Treat_d) + \theta \cdot MarriageRate_{d,t} + \varepsilon_{d,t}
+\]</div>
+<p>주의: 혼인율이 정책의 결과일 수도 있다(정책이 결혼을 늘려 출산을 늘렸다면). 그 경우 혼인율을 통제하면 “총효과”가 아니라 “직접효과”만 남기게 된다.<br />
+그래서 실무에서는:</p>
+<ul class="simple">
+<li><p>(a) 혼인 통제 없이 총효과 추정</p></li>
+<li><p>(b) 혼인 통제 포함해 메커니즘 분해<br />
+두 개를 같이 보여주는 경우가 많다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id21">
+<h4>3.2 연령구조(특히 20-39 여성 분포) 통제<a class="headerlink" href="#id21" title="Link to this heading">#</a></h4>
+<p>출산율은 단순히 ‘행동’만이 아니라 ‘구성(composition)’에도 좌우된다.</p>
+<p>예: 상위 분위에서 30-34세 비중이 커지면, 동일한 출산행동이어도 TFR이 올라갈 수 있다. 또는 반대로 20대가 줄면 내려간다.</p>
+<p>가능한 통제:</p>
+<ul class="simple">
+<li><p>가임여성(15-49) 중 25-29, 30-34, 35-39 비중</p></li>
+<li><p>평균 출산연령</p></li>
+<li><p>연령표준화(standardization): 연령 구조를 고정해 “행동만” 비교</p></li>
+</ul>
+<p>가장 강한 접근은 <strong>연령특정출산율(ASFR)</strong> 로 쪼개서 분석하는 것:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Y_{a,d,t}\)</span>: 연령대 <span class="math notranslate nohighlight">\(a\)</span>의 출산율</p></li>
+<li><p>그러면 연령구조 문제가 상당히 줄어든다(연령대별로 직접 비교하니까)</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+Y_{a,d,t} = \alpha + \gamma_{a,d} + \delta_t + \beta(Post_t \times Treat_d) + \varepsilon_{a,d,t}
+\]</div>
+<p>(여기서 <span class="math notranslate nohighlight">\(\gamma_{a,d}\)</span>는 연령×분위 고정효과)</p>
+</section>
+<hr class="docutils" />
+<section id="id22">
+<h4>3.3 경기효과 통제: “연도 고정효과만으로 부족한 부분”<a class="headerlink" href="#id22" title="Link to this heading">#</a></h4>
+<p>연도 고정효과는 전국 공통의 경기 충격을 제거한다. 하지만 상위/하위는 경기 변동에 대한 민감도가 다르다.</p>
+<p>예: 상위 분위는 자산가격(주식/부동산)에, 하위 분위는 실업/임금에 더 민감할 수 있다.</p>
+<p>그래서 분위×연도 수준에서 아래를 넣기도 한다.</p>
+<ul class="simple">
+<li><p>분위별 실업률/고용률</p></li>
+<li><p>분위별 실질소득 증가율(임금)</p></li>
+<li><p>자산가격 지표(주택가격, 금리)와 분위 상호작용</p></li>
+<li><p>지역 고정효과까지 붙이면 더 강해짐(지역×연도 충격)</p></li>
+</ul>
+<p>예:</p>
+<div class="math notranslate nohighlight">
+\[
+Y_{d,t}=\alpha+\gamma_d+\delta_t+\beta(Post_t\times Treat_d)+\phi X_{d,t}+ \varepsilon_{d,t}
+\]</div>
+<p>또는</p>
+<div class="math notranslate nohighlight">
+\[
+Y_{r,d,t}=\alpha+\gamma_{r,d}+\delta_t+\beta(Post_t\times Treat_d)+\phi X_{r,t}+ \varepsilon_{r,d,t}
+\]</div>
+<p>(지역 <span class="math notranslate nohighlight">\(r\)</span>까지 들어가면 식별이 좋아짐)</p>
+</section>
+<hr class="docutils" />
+<section id="id23">
+<h4>3.4 통제의 목적은 “설명”이 아니라 “식별”<a class="headerlink" href="#id23" title="Link to this heading">#</a></h4>
+<p>통제를 넣는 이유는 “모형을 그럴듯하게”가 아니라,<br />
+처리효과 <span class="math notranslate nohighlight">\(\beta\)</span>가 다른 요인(혼인/연령/경기)의 변화에 의해 가짜로 커지거나 작아지는 걸 막기 위해서다.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id24">
+<h3>4. 이 3개를 합친 ‘권장’ 분석 흐름(실무형)<a class="headerlink" href="#id24" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>기초 그림/요약 통계</strong>: 분위별 TFR 추세</p></li>
+<li><p><strong>이벤트 스터디</strong>로 평행추세 점검(정책 전 계수 0?)</p></li>
+<li><p><strong>기본 DID</strong>: Post×Treat (Treat는 상위 30% 등)</p></li>
+<li><p><strong>대체 정의</strong>: Treat를 “자격(eligible)”로 재정의(가능하면 컷오프 활용)</p></li>
+<li><p><strong>통제 추가</strong>: 혼인/연령/경기 변수 추가하여 <span class="math notranslate nohighlight">\(\beta\)</span> 안정성 확인</p></li>
+<li><p><strong>민감도/위약(placebo)</strong>: 가짜 정책연도(예: 2022)로도 효과가 나오나? 나오면 위험 신호</p></li>
+<li><p><strong>이질성(heterogeneity)</strong>: 첫째/둘째, 연령대(30-34), 지역(집값 높은 지역) 등</p></li>
+</ol>
+<hr class="docutils" />
+<p>원하면, 네가 확보 가능한 데이터 형태(개인 micro인지, 분위×연도 집계인지, 지역까지 있는지)에 맞춰서</p>
+<ul class="simple">
+<li><p>정확한 회귀식(고정효과 구조)</p></li>
+<li><p>표준오차(클러스터링을 어디에 해야 하는지)</p></li>
+<li><p>이벤트 스터디 플롯을 어떻게 그릴지<br />
+까지 구체적으로 설계안을 바로 써줄게.</p></li>
+</ul>
+</section>
+</section>
+<section id="id25">
+<h2><span style="color: blue;"><strong>3. 분석에 사용한 데이터</strong></span><a class="headerlink" href="#id25" title="Link to this heading">#</a></h2>
+<p><span style="color: blue;">”최근 출산율 반등 흐름의 주요 특징과 원인 분석”은 2006년부터 2025년 6월까지의 국민건강보험공단 행정자료를 활용했다고 한다.(<a class="reference external" href="https://www.betterfuture.go.kr/front/notificationSpace/pressReleaseDetail.do?articleId=552">저출산고령사회위원회 보도자료, 2026-01-28</a>)</span></p>
+<p><span style="color: blue;">※ 국민건강보험공단의 행정자료 하위 구성</span></p>
+<p><span style="color: blue;">➊ 출산 여부를 식별할 수 있는 진료내역 데이터베이스,</span></p>
+<p><span style="color: blue;">➋ 개인의 건강보험 가입자격 정보를 포함한 자격 데이터베이스,</span></p>
+<p><span style="color: blue;">➌ 국세청 과세자료와 연계된 소득 데이터 베이스,</span></p>
+<p><span style="color: blue;">➍ 주민등록상 세대 정보를 포함한 주민등록 데이터베이스</span></p>
+<p><span style="color: blue;"><strong>동 연구는 전체 인구의 15%에 달하는 대규모 표본을 분석했다는 점에서, 객관성과 신뢰성 측면에서 의미가 있다는데?</strong></span></p>
+</section>
+<section id="id26">
+<h2><strong>ChatGPT 평가</strong><a class="headerlink" href="#id26" title="Link to this heading">#</a></h2>
+<p>결론부터 말하면, <strong>이 데이터 구조는 ‘기술통계용’으로는 매우 강하고, ‘인과추정용’으로도 잠재력이 크지만, 자동으로 신뢰성이 보장되는 건 아니다.</strong>
+“표본이 크다 = 정책 효과가 정확하다”는 전혀 다른 문제다.</p>
+<p>아래에서 왜 그런지 <strong>데이터의 장점 → 구조적 한계 → DID 분석에 주는 의미</strong> 순서로 정리한다.</p>
+<hr class="docutils" />
+<section id="id27">
+<h3>1. 이 자료가 강력한 이유 (통계적으로 매우 좋은 점)<a class="headerlink" href="#id27" title="Link to this heading">#</a></h3>
+<p>이건 일반 설문이 아니라 <strong>행정자료 linked dataset</strong>이다. 연구 데이터로서는 상위권 구조다.</p>
+<section id="db">
+<h4>(1) 출산 측정의 정확도 (➊ 진료내역 DB)<a class="headerlink" href="#db" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>병원 진료기록 기반 → 출산 여부 오측정 거의 없음</p></li>
+<li><p>자가보고, 설문 누락 문제 없음</p></li>
+<li><p>출산 시점 정확 → 정책 시점과의 시간 정렬이 가능</p></li>
+</ul>
+<p>👉 결과변수 <span class="math notranslate nohighlight">\(Y\)</span> (출산 여부/출산 수)의 <strong>측정오차가 매우 작음</strong></p>
+</section>
+<hr class="docutils" />
+<section id="id28">
+<h4>(2) 소득 정보의 신뢰성 (➌ 국세청 연계)<a class="headerlink" href="#id28" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>자가소득 응답이 아니라 <strong>과세자료 기반</strong></p></li>
+<li><p>특히 고소득 구간 왜곡 적음</p></li>
+<li><p>소득 분위 구분의 정확도 높음</p></li>
+</ul>
+<p>👉 DID에서 중요한 <strong>처리집단 정의(Treat)</strong> 가 신뢰성 높음</p>
+</section>
+<hr class="docutils" />
+<section id="id29">
+<h4>(3) 개인 단위 패널 구조 가능 (➋ 건강보험 가입자격 DB)<a class="headerlink" href="#id29" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>건강보험 가입자격 정보 = 개인의 고용상태, 직장/지역 가입, 변동 추적 가능</p></li>
+<li><p>개인을 연도별로 추적하는 <strong>패널 구성 가능</strong></p></li>
+</ul>
+<p>👉 개인 고정효과 모형 가능
+→ “원래 출산 성향이 다른 사람들” 문제를 상당 부분 제거 가능</p>
+</section>
+<hr class="docutils" />
+<section id="id30">
+<h4>(4) 가구/세대 구조 파악 가능 (➍ 주민등록 DB)<a class="headerlink" href="#id30" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>부부 식별 가능</p></li>
+<li><p>세대 분리/결합, 출산 순서 분석 가능</p></li>
+<li><p>가구 소득 기준 분석 가능</p></li>
+</ul>
+<p>👉 단순 여성 개인 분석이 아니라 <strong>가구 단위 출산결정 모델링 가능</strong></p>
+</section>
+<hr class="docutils" />
+<section id="id31">
+<h4>(5) 표본 규모 (전체의 15%)<a class="headerlink" href="#id31" title="Link to this heading">#</a></h4>
+<p>이건 그냥 큰 게 아니라:</p>
+<ul class="simple">
+<li><p>표본 수백만 단위 가능</p></li>
+<li><p>표준오차 작아짐</p></li>
+<li><p>분위 × 연도 × 연령대 같은 세분 분석 가능</p></li>
+<li><p>이벤트 스터디 계수도 안정적으로 추정 가능</p></li>
+</ul>
+<p>즉, <strong>통계적 정밀도(precision)</strong> 는 매우 좋다.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id32">
+<h3>2. 그런데 왜 이것만으로 “정책 효과 신뢰”가 되지 않는가<a class="headerlink" href="#id32" title="Link to this heading">#</a></h3>
+<p>여기서 많은 사람들이 착각하는 지점.</p>
+<blockquote>
+<div><p>큰 행정자료는 “측정오차”는 줄여주지만
+“인과 편의(bias)”는 자동으로 제거하지 않는다</p>
+</div></blockquote>
+<section id="identification">
+<h4>핵심 문제는 <strong>식별(identification)</strong> 이다.<a class="headerlink" href="#identification" title="Link to this heading">#</a></h4>
+<p>행정자료가 아무리 좋아도 아래가 해결되지 않으면 정책 효과는 왜곡될 수 있다.</p>
+</section>
+<hr class="docutils" />
+<section id="selection-bias">
+<h4>(1) 정책 노출의 내생성 (selection bias)<a class="headerlink" href="#selection-bias" title="Link to this heading">#</a></h4>
+<p>신생아 특례대출은 <strong>대출을 이용할 수 있는 가구</strong>에게 의미가 있다.</p>
+<p>그런데:</p>
+<ul class="simple">
+<li><p>대출 신청하는 가구 = 애초에 출산 계획 있는 가구일 가능성 높음</p></li>
+<li><p>주택 구매 준비된 가구 = 소득 안정적, 혼인 안정적</p></li>
+</ul>
+<p>이 경우</p>
+<div class="math notranslate nohighlight">
+\[
+\text{대출 이용} \rightarrow \text{출산 증가}
+\]</div>
+<p>가 아니라</p>
+<div class="math notranslate nohighlight">
+\[
+\text{출산 계획 있음} \rightarrow \text{대출 이용}
+\]</div>
+<p>일 수 있다.</p>
+<p>데이터가 아무리 커도 이 문제는 남는다.</p>
+</section>
+<hr class="docutils" />
+<section id="confounding-shocks">
+<h4>(2) 동시 변화(confounding shocks)<a class="headerlink" href="#confounding-shocks" title="Link to this heading">#</a></h4>
+<p>2024-2025에 동시에:</p>
+<ul class="simple">
+<li><p>금리 변화</p></li>
+<li><p>주택시장 변화</p></li>
+<li><p>혼인율 반등</p></li>
+<li><p>코로나 후행효과</p></li>
+</ul>
+<p>이런 것들이 상위 소득층에 더 강하게 작용했을 수 있다.
+행정자료라도 이걸 통제 안 하면 정책 효과로 오인된다.</p>
+</section>
+<hr class="docutils" />
+<section id="id33">
+<h4>(3) 출산은 구조적으로 ‘지연 변수’<a class="headerlink" href="#id33" title="Link to this heading">#</a></h4>
+<p>임신 → 출산까지 9-10개월.
+정책 시행 시점과 출산 발생 시점이 어긋난다.
+이 시차 구조를 고려 안 하면 효과 시점이 왜곡된다.</p>
+</section>
+<hr class="docutils" />
+<section id="id34">
+<h4>(4) 대규모 표본의 착시<a class="headerlink" href="#id34" title="Link to this heading">#</a></h4>
+<p>표본이 크면:</p>
+<ul class="simple">
+<li><p>작은 효과도 유의하게 나옴</p></li>
+<li><p>그러나 <strong>유의성(significance) ≠ 인과성(causality)</strong></p></li>
+</ul>
+<p>오히려 큰 표본은 <strong>아주 작은 편의(bias)도 통계적으로 강하게 나타나게 만든다.</strong></p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id35">
+<h3>3. 이 데이터가 DID 분석에 주는 “진짜 의미”<a class="headerlink" href="#id35" title="Link to this heading">#</a></h3>
+<p>이 데이터는 <strong>좋은 연구를 할 수 있는 조건</strong>은 갖췄다.
+하지만 그건 “방법을 제대로 썼을 때” 이야기다.</p>
+<p>이 자료로 가능해지는 고급 설계:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>가능 분석</p></th>
+<th class="head"><p>이유</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>개인 고정효과 DID</p></td>
+<td><p>동일 개인의 정책 전후 출산 변화</p></td>
+</tr>
+<tr class="row-odd"><td><p>부부 단위 분석</p></td>
+<td><p>가구 소득 기준 정책 효과 추정 가능</p></td>
+</tr>
+<tr class="row-even"><td><p>연령대별 출산 위험모형(hazard)</p></td>
+<td><p>첫째 출산, 둘째 출산 분리 가능</p></td>
+</tr>
+<tr class="row-odd"><td><p>컷오프 기반 RDD</p></td>
+<td><p>소득요건 완화 시점 활용 가능</p></td>
+</tr>
+<tr class="row-even"><td><p>이벤트 스터디</p></td>
+<td><p>정책 전 추세 점검 가능</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>이게 다 되면 → 신뢰도 높은 인과 추정 가능</p>
+</section>
+<hr class="docutils" />
+<section id="id36">
+<h3>4. 그래서 “객관성과 신뢰성” 평가는 이렇게 해야 정확<a class="headerlink" href="#id36" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>항목</p></th>
+<th class="head"><p>평가</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>출산 측정 정확도</p></td>
+<td><p>매우 높음</p></td>
+</tr>
+<tr class="row-odd"><td><p>소득 측정 정확도</p></td>
+<td><p>매우 높음</p></td>
+</tr>
+<tr class="row-even"><td><p>표본 규모</p></td>
+<td><p>매우 큼</p></td>
+</tr>
+<tr class="row-odd"><td><p>기술통계 신뢰성</p></td>
+<td><p>매우 높음</p></td>
+</tr>
+<tr class="row-even"><td><p>인과추정 신뢰성</p></td>
+<td><p>연구 설계에 따라 다름</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>즉,</p>
+<blockquote>
+<div><p>“데이터는 최고급인데, 분석 설계가 인과적으로 엄격하지 않으면 결과는 여전히 상관관계 수준일 수 있다”</p>
+</div></blockquote>
+<p>가 정확한 평가다.</p>
+</section>
+<hr class="docutils" />
+<section id="id37">
+<h3>한 줄 정리<a class="headerlink" href="#id37" title="Link to this heading">#</a></h3>
+<p>이 자료는
+<strong>‘좋은 총’</strong> 이다.
+하지만 <strong>‘조준(DID, 식별전략)’을 제대로 안 하면 명중(인과결론)은 보장되지 않는다.</strong></p>
+<hr class="docutils" />
+<p>원하면 다음 단계로:</p>
+<ul class="simple">
+<li><p>이 데이터 구조에 딱 맞는 <strong>구체적 회귀식</strong></p></li>
+<li><p>개인패널 vs 집계자료 중 무엇이 최적인지</p></li>
+<li><p>표준오차를 어디에 클러스터링해야 하는지</p></li>
+</ul>
+<p>까지 설계해줄 수 있다.</p>
+</section>
+</section>
+<section id="id38">
+<h2><span style="color: blue;"><strong>4. 데이터 구조에 맞는 분석 설계</strong></span><a class="headerlink" href="#id38" title="Link to this heading">#</a></h2>
+</section>
+<section id="id39">
+<h2><strong>ChatGPT 설계</strong><a class="headerlink" href="#id39" title="Link to this heading">#</a></h2>
+<p>아래는 네가 적어준 국민건강보험공단 행정자료(진료 ➊, 자격 ➋, 소득 ➌, 세대 ➍) 구조에 딱 맞게 인과추정을 설계한 안이다. 핵심은 (i) 정책 노출을 최대한 정확히 정의하고 (ii) 출산의 시차를 반영하며 (iii) 혼인-연령-경기 같은 교란을 흡수하는 고정효과 구조를 쓰는 거다.</p>
+<hr class="docutils" />
+<section id="id40">
+<h3>1. 데이터 구성과 관측 단위<a class="headerlink" href="#id40" title="Link to this heading">#</a></h3>
+<section id="id41">
+<h4>1.1 관측 단위<a class="headerlink" href="#id41" title="Link to this heading">#</a></h4>
+<p>가장 좋은 단위는 개인-월(person-month) 패널이다. 이유는 정책이 2024년 도입이고, 출산은 월 단위 시차(임신-출산)가 크기 때문이야. 연 단위로 가면 효과 타이밍이 뭉개지고, 2025년 6월까지라는 장점도 반감된다.</p>
+<ul class="simple">
+<li><p>표본: 2006.01월 - 2025.06월</p></li>
+<li><p>대상: 가임기 여성(예: 15-49세) 중심, 또는 부부 단위로 확장</p></li>
+<li><p>패널: 개인 <span class="math notranslate nohighlight">\(i\)</span>를 월 <span class="math notranslate nohighlight">\(t\)</span>로 추적</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id42">
+<h4>1.2 결과변수(출산 측정)<a class="headerlink" href="#id42" title="Link to this heading">#</a></h4>
+<p>진료내역 ➊로 출산 이벤트를 잡는다.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Birth_{i,t}\)</span>: 월 <span class="math notranslate nohighlight">\(t\)</span>에 출산(분만) 발생이면 1, 아니면 0</p></li>
+<li><p>파생</p>
+<ul>
+<li><p>첫째 출산만: 이전 출산 이력 없는 상태에서 발생한 출산</p></li>
+<li><p>둘째-셋째 분리: parity별로 별도 분석(정책 반응이 다를 수 있음)</p></li>
+<li><p>출산시점 정확도: 분만일(또는 월) 기준</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id43">
+<h4>1.3 소득 변수(처리집단 정의에 핵심)<a class="headerlink" href="#id43" title="Link to this heading">#</a></h4>
+<p>국세청 연계 소득 ➌를 부부합산 연소득으로 만들 수 있으면 가장 좋다.</p>
+<ul class="simple">
+<li><p>개인 소득 <span class="math notranslate nohighlight">\(Inc_{i,year}\)</span></p></li>
+<li><p>배우자 소득과 합산해 <span class="math notranslate nohighlight">\(HHInc_{h,year}\)</span> (세대 DB ➍ + 자격 DB ➋로 배우자 링크)</p></li>
+<li><p>분위: <span class="math notranslate nohighlight">\(Decile_{h,year}\)</span> 또는 연속소득</p></li>
+<li><p>정책의 소득요건</p>
+<ul>
+<li><p>초기: <span class="math notranslate nohighlight">\(HHInc \le 1.3\text{억}\)</span></p></li>
+<li><p>2024.12월 이후: <span class="math notranslate nohighlight">\(HHInc \le 2\text{억}\)</span>
+이 변화는 식별에 엄청 유리하다.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id44">
+<h4>1.4 혼인-세대 구조<a class="headerlink" href="#id44" title="Link to this heading">#</a></h4>
+<p>주민등록 ➍ + 자격 ➋로 아래를 만든다.</p>
+<ul class="simple">
+<li><p>혼인 상태(가능한 범위에서): 동일 세대 내 배우자 존재, 세대 구성 변화 등으로 근사</p></li>
+<li><p>동거-세대분리: 주거 이벤트로도 사용 가능(정책이 주거금융이라서)</p></li>
+<li><p>출산 전후 세대 이동: 출산과 동시 발생하는 세대변화가 있을 수 있어 타이밍 주의</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id45">
+<h4>1.5 기타 통제변수 후보(가능하면)<a class="headerlink" href="#id45" title="Link to this heading">#</a></h4>
+<p>자격 ➋에서</p>
+<ul class="simple">
+<li><p>고용 형태(직장-지역), 보험료 부과, 자격 변동</p></li>
+<li><p>직장가입자 여부는 경기-안정성의 강한 프록시</p></li>
+</ul>
+<p>지역이 있으면(주소-행정구역)</p>
+<ul class="simple">
+<li><p>지역×월 고정효과로 지역 경기-주택시장 충격 흡수 가능</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="treatment-2">
+<h3>2. 처치(treatment) 정의: 실제 노출을 2단으로 잡기<a class="headerlink" href="#treatment-2" title="Link to this heading">#</a></h3>
+<p>이 정책은 실제 대출 이용 자료가 없으면 실제 이용자를 처치로 두면 selection이 너무 크다. 그래서 보통은 eligibility(수혜 가능성) 기반으로 간다.</p>
+<section id="a-eligibility">
+<h4>2.1 레벨 A: 정적 eligibility(정책 도입 기준)<a class="headerlink" href="#a-eligibility" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Eligible^{A}_{h,t}=1\)</span> if <span class="math notranslate nohighlight">\(HHInc_{h,\mathrm{year}(t)} \le 1.3\text{억}\)</span> (정책 초기 기준)</p></li>
+<li><p>Post: <span class="math notranslate nohighlight">\(Post^{A}_t=1\)</span> if <span class="math notranslate nohighlight">\(t \ge 2024.01월\)</span></p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="b-eligibility-2024-12">
+<h4>2.2 레벨 B: 소득요건 완화 eligibility(2024.12월 변경 활용)<a class="headerlink" href="#b-eligibility-2024-12" title="Link to this heading">#</a></h4>
+<p>이게 진짜 강한 식별 포인트다.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Eligible^{B}_{h,t}=1\)</span> if <span class="math notranslate nohighlight">\(HHInc_{h,\mathrm{year}(t)} \le 2\text{억}\)</span></p></li>
+<li><p>새로 편입된 집단 정의
+$<span class="math notranslate nohighlight">\(
+NewlyEligible_h = 1\big[1.3\text{억} &lt; HHInc_{h,year} \le 2\text{억}\big]
+\)</span>$</p></li>
+<li><p>완화 이후
+$<span class="math notranslate nohighlight">\(
+Post^{B}_t = 1[t \ge 2024.12\text{월}]
+\)</span>$
+이렇게 하면 완화 직후에 정책 노출이 갑자기 생긴 집단이 생겨서, DID-RD 설계가 강해진다.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id46">
+<h3>3. 기본 분석 1: 개인 고정효과 이벤트 스터디 DID(정책 도입 효과)<a class="headerlink" href="#id46" title="Link to this heading">#</a></h3>
+<p>목표: 2024년 정책 도입 이후, eligible 집단에서 출산이 상대적으로 증가했는지.</p>
+<section id="lpm-linear-probability-model">
+<h4>3.1 개인-월 선형확률모형(LPM: Linear Probability Model)<a class="headerlink" href="#lpm-linear-probability-model" title="Link to this heading">#</a></h4>
+<div class="math notranslate nohighlight">
+\[
+Birth_{i,t}=\alpha_i+\delta_t+\beta\,(Post^{A}_t \times Eligible^{A}_{h(i),t}) + \Gamma'X_{i,t} + \varepsilon_{i,t}
+\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha_i\)</span>: 개인 고정효과(시간불변 출산성향 제거)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\delta_t\)</span>: 월 고정효과(전국 공통 충격: 금리, 코로나, 정책다발 등 흡수)</p></li>
+<li><p><span class="math notranslate nohighlight">\(X_{i,t}\)</span>: 시간변동 통제(혼인-세대, 고용자격, 연령대 등)</p></li>
+</ul>
+<p>이 모형의 <span class="math notranslate nohighlight">\(\beta\)</span>는 정책 도입 이후 eligible 집단의 출산 확률이 non-eligible 대비 얼마나 더 증가했는지를 뜻한다.</p>
+</section>
+<hr class="docutils" />
+<section id="id47">
+<h4>3.2 이벤트 스터디(평행추세 점검 + 시차 반영)<a class="headerlink" href="#id47" title="Link to this heading">#</a></h4>
+<p>출산은 시차가 크니 단순 Post 하나로 끝내면 안 되고, 상대시간 계수로 본다.</p>
+<div class="math notranslate nohighlight">
+\[
+Birth_{i,t}=\alpha_i+\delta_t+\sum_{k\neq -1}\beta_k\,(1[\mathrm{event\_time}(t)=k]\times Eligible^{A}_{h(i),t})+\Gamma'X_{i,t}+\varepsilon_{i,t}
+\]</div>
+<ul class="simple">
+<li><p>event_time은 2024.01월을 0으로 둔 상대월(예: -24 - +18)</p></li>
+<li><p>정책 전 구간(<span class="math notranslate nohighlight">\(k&lt;0\)</span>)에서 <span class="math notranslate nohighlight">\(\beta_k\)</span>가 0 근처면 평행추세가 그럴듯</p></li>
+<li><p>정책 후 구간(<span class="math notranslate nohighlight">\(k&gt;0\)</span>)에서 언제부터 효과가 뜨는지 확인 가능</p></li>
+<li><p>현실적으로 출산은 최소 9-12개월 시차가 있으니, <span class="math notranslate nohighlight">\(k=9\)</span> - <span class="math notranslate nohighlight">\(k=18\)</span> 구간에서 반응이 강하게 나오는지 보는 게 핵심</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id48">
+<h4>3.3 표준오차<a class="headerlink" href="#id48" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>최소: 개인 클러스터(패널 상관)</p></li>
+<li><p>가능하면: 세대-가구 클러스터(부부-형제 등 상관)도 고려<br />
+실무에선 보통 개인 클러스터 + (큰 집계 충격이 우려되면) 월 레벨 충격을 월 고정효과로 흡수</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id49">
+<h3>4. 핵심 분석 2: 2024.12월 소득요건 완화에 대한 DID(가장 강한 식별)<a class="headerlink" href="#id49" title="Link to this heading">#</a></h3>
+<p>이건 정책이 진짜로 처치 강도를 바꾼 시점이라서 식별력이 훨씬 좋아진다. 특히 새로 편입된 1.3 - 2.0억 구간이 자연 처치집단이다.</p>
+<section id="id50">
+<h4>4.1 DID 모형<a class="headerlink" href="#id50" title="Link to this heading">#</a></h4>
+<div class="math notranslate nohighlight">
+\[
+Birth_{i,t}=\alpha_i+\delta_t+\beta\,(Post^{B}_t \times NewlyEligible_{h(i)})+\Gamma'X_{i,t}+\varepsilon_{i,t}
+\]</div>
+<ul class="simple">
+<li><p>처치집단: <span class="math notranslate nohighlight">\(NewlyEligible=1\)</span> (1.3억 초과 - 2억 이하)</p></li>
+<li><p>비교집단(권장): 컷오프 근처의 약간 아래 집단</p>
+<ul>
+<li><p>예: <span class="math notranslate nohighlight">\(HHInc \in [1.1\text{억},1.3\text{억}]\)</span> 또는 <span class="math notranslate nohighlight">\([1.0\text{억},1.3\text{억}]\)</span><br />
+이렇게 유사한 소득대로 비교하면 교란이 줄어든다.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id51">
+<h4>4.2 설계의 장점<a class="headerlink" href="#id51" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>상위 30% vs 하위 30% 같은 거친 비교보다 훨씬 설득력 있음</p></li>
+<li><p>정책 충격이 2024.12월에 명확히 걸려서 이벤트 타이밍도 명확</p></li>
+<li><p>출산 시차를 고려하면 2025년 상반기에서 효과가 보일 가능성이 높다(정책-임신-출산 라그)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id52">
+<h4>4.3 이벤트 스터디 확장<a class="headerlink" href="#id52" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>2024.12월 기준 상대월로 <span class="math notranslate nohighlight">\(\beta_k\)</span>를 추정해서, 2025.06월까지의 동학을 본다</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="triple-diff">
+<h3>5. 확장 설계: triple-diff(삼중차분)로 교란 더 줄이기<a class="headerlink" href="#triple-diff" title="Link to this heading">#</a></h3>
+<p>정책이 주거금융 성격이라면, 효과는 무주택-전세-주거불안정 집단에서 더 클 가능성이 크다. 만약 세대-자격 DB로 주거형태를 직접 알기 어렵다면, 근사 변수를 만들 수 있다(예: 세대 이동 잦음, 청년층, 지역, 직장가입 여부 등).</p>
+<p>가능하면 주거 관련 프록시 <span class="math notranslate nohighlight">\(Z_i\)</span>를 두고</p>
+<div class="math notranslate nohighlight">
+\[
+Birth_{i,t}=\alpha_i+\delta_t+\beta\,(Post_t\times Eligible_i) + \theta\,(Post_t\times Eligible_i \times Z_i)+\Gamma'X_{i,t}+\varepsilon_{i,t}
+\]</div>
+<p>여기서 <span class="math notranslate nohighlight">\(\theta\)</span>가 주거제약이 큰 집단에서 정책 효과가 더 큰가를 준다. 이건 인과설명력을 크게 올려준다(메커니즘과 정합성).</p>
+</section>
+<hr class="docutils" />
+<section id="id53">
+<h3>6. 혼인율-연령구조-경기효과 통제: 이 데이터에서 어떻게 구현할지<a class="headerlink" href="#id53" title="Link to this heading">#</a></h3>
+<section id="id54">
+<h4>6.1 혼인-동거 통제<a class="headerlink" href="#id54" title="Link to this heading">#</a></h4>
+<p>가능한 구현 순서(데이터 가능성에 따라)</p>
+<ul class="simple">
+<li><p>(가능하면) 혼인 상태 직접변수: 혼인-이혼 행정기록이 있으면 최고</p></li>
+<li><p>(근사) 동일 세대 내 배우자 존재, 부부 세대 구성 여부</p></li>
+<li><p>(근사) 혼인 전환 이벤트: 어떤 월에 배우자와 같은 세대로 결합되는 시점</p></li>
+</ul>
+<p>통제 방식</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(X_{i,t}\)</span>에 혼인상태-동거상태를 넣는 버전</p></li>
+<li><p>또는 표본을 기혼-동거 집단으로 제한해(조건부 효과) 출산 결정만 보기도 함</p></li>
+</ul>
+<p>주의: 혼인은 정책의 경로일 수 있다. 그래서 보통은 두 세트를 같이 보고서에 넣는다.</p>
+<ul class="simple">
+<li><p>혼인 통제 없이: 총효과</p></li>
+<li><p>혼인 통제 포함: 혼인을 통한 경로를 제거한 직접효과(또는 잔여효과)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id55">
+<h4>6.2 연령구조 통제<a class="headerlink" href="#id55" title="Link to this heading">#</a></h4>
+<p>개인 패널이면 연령구조는 통제하기 쉽다.</p>
+<ul class="simple">
+<li><p>연령(또는 연령대) 더미를 <span class="math notranslate nohighlight">\(X_{i,t}\)</span>에 포함</p></li>
+<li><p>더 강하게: 연령×월 고정효과까지도 가능(표본이 크면 가능)</p></li>
+</ul>
+<p>권장: 연령특정 분석</p>
+<ul class="simple">
+<li><p>25-29, 30-34, 35-39로 쪼개서 별도 이벤트 스터디<br />
+출산 반응은 거의 항상 30대 초반에서 가장 민감하게 나온다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id56">
+<h4>6.3 경기효과 통제<a class="headerlink" href="#id56" title="Link to this heading">#</a></h4>
+<p>월 고정효과 <span class="math notranslate nohighlight">\(\delta_t\)</span>가 전국 공통 경기충격은 거의 흡수한다. 문제는 소득집단별로 충격이 다르게 작동하는 경우다.</p>
+<p>가능한 보강</p>
+<ul class="simple">
+<li><p>직장가입자 여부×월 상호작용(소득-고용안정 충격의 이질성 흡수)</p></li>
+<li><p>지역이 있으면 지역×월 고정효과(주택-경기 지역충격 제거)</p></li>
+<li><p>보험료 변동(소득충격 프록시)을 <span class="math notranslate nohighlight">\(X_{i,t}\)</span>로 포함</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id57">
+<h3>7. 출산의 시차를 반영한 두 가지 구현 옵션<a class="headerlink" href="#id57" title="Link to this heading">#</a></h3>
+<section id="a">
+<h4>7.1 옵션 A: 출산 시점 기준(가장 단순)<a class="headerlink" href="#a" title="Link to this heading">#</a></h4>
+<p>앞에서 제시한 이벤트 스터디로 정책 이후 몇 개월 뒤 출산이 늘었는지를 직접 본다.</p>
+</section>
+<hr class="docutils" />
+<section id="b">
+<h4>7.2 옵션 B: 임신 시작(수태) 근사로 정렬(더 정교)<a class="headerlink" href="#b" title="Link to this heading">#</a></h4>
+<p>출산월에서 9개월을 뺀 임신 시작월을 근사해서 정책 노출을 재정렬한다.</p>
+<ul class="simple">
+<li><p>예: <span class="math notranslate nohighlight">\(ConceptionMonth = BirthMonth - 9\)</span><br />
+이렇게 하면 정책이 임신 결정에 영향을 주는지 더 직접적으로 본다. 데이터가 크면 이 방식이 설득력이 크게 오른다.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id58">
+<h3>8. 표본 설계(권장)<a class="headerlink" href="#id58" title="Link to this heading">#</a></h3>
+<p>정책의 타깃은 신생아-출산 가구이니, 아래를 주 분석으로 권장한다.</p>
+<ul class="simple">
+<li><p>가임여성 20-44세(너무 넓히면 노이즈)</p></li>
+<li><p>과거 출산 이력으로 parity 분리</p>
+<ul>
+<li><p>첫째 출산: 혼인-주거 제약과 강하게 연결</p></li>
+<li><p>둘째 이상: 소득-주거 안정성과 연결</p></li>
+</ul>
+</li>
+<li><p>2022.01월 - 2025.06월을 중심으로 이벤트 스터디(정책 전 2년 + 후 18개월)<br />
+2006년부터 전기간을 쓰는 건 장점도 있지만, 정책 전 추세 검증엔 충분한 길이만 확보하면 된다. 대신 장기 추세는 보조자료로 제시.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="placebo">
+<h3>9. 위약(placebo)과 강건성 체크(이걸 해야 신뢰를 주장할 수 있음)<a class="headerlink" href="#placebo" title="Link to this heading">#</a></h3>
+<section id="id59">
+<h4>9.1 가짜 정책 시점 위약<a class="headerlink" href="#id59" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>정책을 2022.01월에 시작한 것처럼 놓고 같은 DID를 돌려본다. 효과가 나오면 설계가 교란을 잡지 못하는 거다.</p></li>
+</ul>
+</section>
+<section id="id60">
+<h4>9.2 비교집단 바꾸기<a class="headerlink" href="#id60" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>eligible 기준을 약간 바꾸거나(1.2억, 1.4억)</p></li>
+<li><p>컷오프 근처 밴드폭을 바꿔도 결과가 비슷한지 확인</p></li>
+</ul>
+</section>
+<section id="id61">
+<h4>9.3 사전 계수(평행추세) 확인<a class="headerlink" href="#id61" title="Link to this heading">#</a></h4>
+<p>이벤트 스터디에서 정책 전 <span class="math notranslate nohighlight">\(\beta_k\)</span>들이 체계적으로 0이 아니면 해석을 보수적으로 해야 한다.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id62">
+<h3>10. 최종 산출물(보고서-논문에 들어갈 결과 세트)<a class="headerlink" href="#id62" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>도표 1: eligible vs non-eligible의 출산율 추세(월 단위)</p></li>
+<li><p>도표 2: 이벤트 스터디 계수(2024.01월 기준)</p></li>
+<li><p>도표 3: 완화 이벤트 스터디 계수(2024.12월 기준, NewlyEligible 중심)</p></li>
+<li><p>표 1: 기본 DID 추정치(통제 없음-혼인통제-연령통제-경기통제 단계별)</p></li>
+<li><p>표 2: 이질성(연령대, parity, 직장가입 여부, 지역 등)</p></li>
+<li><p>위약 결과 표</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id63">
+<h3>11. 설계 확정에 필요한 추가 정보(체크리스트)<a class="headerlink" href="#id63" title="Link to this heading">#</a></h3>
+<p>질문을 다시 하라는 뜻이 아니라, 네가 지금 가진 자료에서 가능한 범위를 기준으로 설계 레벨을 확정하려는 체크리스트야.</p>
+<ul class="simple">
+<li><p>소득이 연 단위인지 월 단위인지(대부분 연 단위일 가능성이 큼)</p></li>
+<li><p>부부 링크가 가능한지(세대-배우자 식별)</p></li>
+<li><p>지역 코드가 있는지(시군구 수준만 있어도 충분히 강해짐)</p></li>
+<li><p>혼인 이벤트를 직접 관측 가능한지(불가하면 근사로 처리)</p></li>
+<li><p>대출 이용 여부 데이터가 있는지(없어도 eligibility 기반으로 충분히 가능)</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="13_%EB%8C%80%ED%98%95%EB%A7%88%ED%8A%B8_%EC%87%A0%EB%9D%BD_%EC%9B%90%EC%9D%B8_%EC%8B%A4%EC%A6%9D%EB%B6%84%EC%84%9D.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><strong>13장 대형마트 쇠락 원인 실증분석</strong></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="15_Ridge_%EB%B0%8F_Lasso_%ED%9A%8C%EA%B7%80.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><strong>15장 Ridge 및 Lasso 회귀</strong></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span style="color: blue;"><strong>1. 소득 상위 계층에서만 출산율 상승?</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#claude"><strong>Claude 평가</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chatgpt"><strong>ChatGPT 평가</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1. 그래프가 보여주는 핵심 구조</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2. “도입 전후 변화” 관점에서 보면</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">(1) 상위 소득 30% (8-10분위)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">(2) 하위 소득 30% (1-3분위)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">3. 왜 이런 결과가 나오는가 (정책 구조와 일치)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">4. 다만 주의할 점 (인과 해석)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">이것만으로는</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">최종 판단</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11"><span style="color: blue;"><strong>2. 인과적 관계</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12"><strong>ChatGPT 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">0. 먼저: 지금 그림이 왜 ‘증거’가 아닌가</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#did">1. 소득분위 × 연도 DID(이중차분) — “전후 변화의 차이”를 계층별로</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">1.1 기본 DID의 뼈대</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">1.2 “소득분위 × 연도”를 DID로 한다는 건 무슨 뜻?</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">1.3 왜 그냥 2023→2025 비교하면 안 되고 DID가 필요한가?</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#did-parallel-trends">1.4 DID가 성립하려면 필요한 가정: 평행추세(parallel trends)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">1.5 실무 설계 포인트(중요)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vs">2. 정책 수혜 가능 집단 vs 비수혜 집단 비교 — “실제 처치 정의”를 더 정확히</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#eligibility">2.1 왜 ‘수혜 가능성(eligibility)’ 기반 비교가 중요한가?</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rdd-did-rdd">2.2 가장 깔끔한 설계: 소득 컷오프를 이용한 RDD/DiD-RDD</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#propensity-exposure">2.3 데이터가 제한될 때의 ‘2차선’ 접근: 예측된 수혜확률(Propensity / Exposure)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">2.4 “수혜 가능 vs 비수혜” 비교에서 흔한 함정</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">3. 혼인율, 연령구조, 경기효과 통제 — “상위에서만 오르는 다른 이유”를 제거</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">3.1 혼인율(또는 혼인상태) 통제</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">3.2 연령구조(특히 20-39 여성 분포) 통제</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">3.3 경기효과 통제: “연도 고정효과만으로 부족한 부분”</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">3.4 통제의 목적은 “설명”이 아니라 “식별”</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">4. 이 3개를 합친 ‘권장’ 분석 흐름(실무형)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id25"><span style="color: blue;"><strong>3. 분석에 사용한 데이터</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id26"><strong>ChatGPT 평가</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">1. 이 자료가 강력한 이유 (통계적으로 매우 좋은 점)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#db">(1) 출산 측정의 정확도 (➊ 진료내역 DB)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">(2) 소득 정보의 신뢰성 (➌ 국세청 연계)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">(3) 개인 단위 패널 구조 가능 (➋ 건강보험 가입자격 DB)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id30">(4) 가구/세대 구조 파악 가능 (➍ 주민등록 DB)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">(5) 표본 규모 (전체의 15%)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">2. 그런데 왜 이것만으로 “정책 효과 신뢰”가 되지 않는가</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#identification">핵심 문제는 <strong>식별(identification)</strong> 이다.</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#selection-bias">(1) 정책 노출의 내생성 (selection bias)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#confounding-shocks">(2) 동시 변화(confounding shocks)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">(3) 출산은 구조적으로 ‘지연 변수’</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">(4) 대규모 표본의 착시</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">3. 이 데이터가 DID 분석에 주는 “진짜 의미”</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id36">4. 그래서 “객관성과 신뢰성” 평가는 이렇게 해야 정확</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id37">한 줄 정리</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id38"><span style="color: blue;"><strong>4. 데이터 구조에 맞는 분석 설계</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id39"><strong>ChatGPT 설계</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id40">1. 데이터 구성과 관측 단위</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id41">1.1 관측 단위</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id42">1.2 결과변수(출산 측정)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id43">1.3 소득 변수(처리집단 정의에 핵심)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id44">1.4 혼인-세대 구조</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id45">1.5 기타 통제변수 후보(가능하면)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#treatment-2">2. 처치(treatment) 정의: 실제 노출을 2단으로 잡기</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a-eligibility">2.1 레벨 A: 정적 eligibility(정책 도입 기준)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#b-eligibility-2024-12">2.2 레벨 B: 소득요건 완화 eligibility(2024.12월 변경 활용)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id46">3. 기본 분석 1: 개인 고정효과 이벤트 스터디 DID(정책 도입 효과)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lpm-linear-probability-model">3.1 개인-월 선형확률모형(LPM: Linear Probability Model)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id47">3.2 이벤트 스터디(평행추세 점검 + 시차 반영)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id48">3.3 표준오차</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id49">4. 핵심 분석 2: 2024.12월 소득요건 완화에 대한 DID(가장 강한 식별)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id50">4.1 DID 모형</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id51">4.2 설계의 장점</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id52">4.3 이벤트 스터디 확장</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#triple-diff">5. 확장 설계: triple-diff(삼중차분)로 교란 더 줄이기</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id53">6. 혼인율-연령구조-경기효과 통제: 이 데이터에서 어떻게 구현할지</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id54">6.1 혼인-동거 통제</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id55">6.2 연령구조 통제</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id56">6.3 경기효과 통제</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id57">7. 출산의 시차를 반영한 두 가지 구현 옵션</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a">7.1 옵션 A: 출산 시점 기준(가장 단순)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#b">7.2 옵션 B: 임신 시작(수태) 근사로 정렬(더 정교)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id58">8. 표본 설계(권장)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#placebo">9. 위약(placebo)과 강건성 체크(이걸 해야 신뢰를 주장할 수 있음)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id59">9.1 가짜 정책 시점 위약</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id60">9.2 비교집단 바꾸기</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id61">9.3 사전 계수(평행추세) 확인</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id62">10. 최종 산출물(보고서-논문에 들어갈 결과 세트)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id63">11. 설계 확정에 필요한 추가 정보(체크리스트)</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By 김원경 최필선
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

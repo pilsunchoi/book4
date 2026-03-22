@@ -1,0 +1,1034 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>24장 폭격 파괴력 분석 &#8212; 데이터 분석 이제 AI에게 맡겨라</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/24_폭격_파괴력_분석';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="25장 세계 화장품 교역 트렌드" href="25_%EC%84%B8%EA%B3%84_%ED%99%94%EC%9E%A5%ED%92%88_%EA%B5%90%EC%97%AD_%ED%8A%B8%EB%A0%8C%EB%93%9C.html" />
+    <link rel="prev" title="23장 축구 경기 데이터 분석" href="23_%EC%B6%95%EA%B5%AC_%EA%B2%BD%EA%B8%B0_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00_%EC%84%9C%EB%AC%B8.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="00_%EC%84%9C%EB%AC%B8.html">
+                    서문
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_%EC%8B%9C%ED%97%98%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>1장 시험성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_%EB%8C%80%ED%86%B5%EB%A0%B9_%EC%A7%80%EC%A7%80%EC%9C%A8_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>2장 대통령 지지율 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_KBO_%EC%A0%95%EA%B7%9C%EC%8B%9C%EC%A6%8C_%ED%8C%80%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>3장 KBO 정규시즌 팀성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_PPP_%EA%B7%B8%EB%9E%98%ED%94%84_%EB%B6%84%EC%84%9D.html"><strong>4장 PPP 그래프 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_%EC%84%B8%EA%B3%84%EC%9D%80%ED%96%89_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EC%B6%94%EC%B6%9C.html"><strong>5장 세계은행 데이터 추출</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_%EC%A3%BC%EA%B0%80_%EC%98%88%EC%B8%A1_%EC%8B%9C%EC%8A%A4%ED%85%9C_%EA%B5%AC%EC%B6%95.html"><strong>6장 주가 예측 시스템 구축</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_%EB%8C%93%EA%B8%80_%ED%86%B5%EA%B3%84_%EB%B6%84%EC%84%9D.html"><strong>7장 댓글 통계 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_%EC%84%9C%EC%9A%B8_%EC%95%84%ED%8C%8C%ED%8A%B8_%EB%A7%A4%EB%AC%BC_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>8장 서울 아파트 매물 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_%EC%84%A4%EB%AC%B8%EC%A1%B0%EC%82%AC_%EB%B6%84%EC%84%9D.html"><strong>9장 설문조사 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_%ED%83%90%EC%83%89%EC%A0%81_%EC%9A%94%EC%9D%B8%EB%B6%84%EC%84%9D.html"><strong>10장 탐색적 요인분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_%EB%B3%B4%EC%8A%A4%ED%84%B4_%EC%A3%BC%ED%83%9D_%EA%B0%80%EA%B2%A9_%EB%B6%84%EC%84%9D.html"><strong>11장 보스턴 주택 가격 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_%EC%A2%85%EB%B6%80%EC%84%B8%EC%99%80_%EC%9B%94%EC%84%B8%EC%9D%98_%EA%B4%80%EA%B3%84.html"><strong>12장 종부세와 월세의 관계</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_%EB%8C%80%ED%98%95%EB%A7%88%ED%8A%B8_%EC%87%A0%EB%9D%BD_%EC%9B%90%EC%9D%B8_%EC%8B%A4%EC%A6%9D%EB%B6%84%EC%84%9D.html"><strong>13장 대형마트 쇠락 원인 실증분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_%EC%8B%A0%EC%83%9D%EC%95%84_%ED%8A%B9%EB%A1%80%EB%8C%80%EC%B6%9C%EA%B3%BC_%EC%B6%9C%EC%82%B0%EC%9C%A8.html"><strong>14장 신생아 특례대출과 출산율</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_Ridge_%EB%B0%8F_Lasso_%ED%9A%8C%EA%B7%80.html"><strong>15장 Ridge 및 Lasso 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1_%ED%9A%8C%EA%B7%80.html"><strong>16장 로지스틱 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95_%ED%8A%B8%EB%A6%AC_%EB%AA%A8%ED%98%95.html"><strong>17장 의사결정 트리 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_%ED%8A%B8%EB%A6%AC_%EA%B8%B0%EB%B0%98_%EB%AA%A8%ED%98%95.html"><strong>18장 트리 기반 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="19_%EB%94%A5%EB%9F%AC%EB%8B%9D_%EA%B3%B5%EB%B6%80%ED%95%98%EA%B8%B0.html"><strong>19장 딥러닝 공부하기</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_%ED%8C%A8%EB%84%90_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>20장 패널 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="21_%EA%B3%A8%EB%B0%80%EB%8F%84_%EA%B2%80%EC%82%AC_%EA%B2%B0%EA%B3%BC_%ED%95%B4%EC%84%9D.html"><strong>21장 골밀도 검사 결과 해석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_%EC%9A%B4%EB%8F%99%ED%95%99_Kinematics.html"><strong>22장 운동학 (Kinematics)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_%EC%B6%95%EA%B5%AC_%EA%B2%BD%EA%B8%B0_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>23장 축구 경기 데이터 분석</strong></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>24장 폭격 파괴력 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_%EC%84%B8%EA%B3%84_%ED%99%94%EC%9E%A5%ED%92%88_%EA%B5%90%EC%97%AD_%ED%8A%B8%EB%A0%8C%EB%93%9C.html"><strong>25장 세계 화장품 교역 트렌드</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_Texas_Special_Education.html"><strong>26장 텍사스주 특수교육 현황</strong></a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4/issues/new?title=Issue%20on%20page%20%2Fnotebooks/24_폭격_파괴력_분석.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/24_폭격_파괴력_분석.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>24장 폭격 파괴력 분석</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span style="color: blue;"><strong>1. 이란 지도부 관저 파괴 전후 사진</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chatgpt"><strong>ChatGPT 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1. 구조물 파괴 양상 비교</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">(1) 건물 붕괴 형태</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2. 폭발 중심 및 에너지 전달 특성</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">(1) 파괴 중심점</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#vs">(2) 수직 붕괴 vs 측면 충격</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">3. 열 효과 및 2차 피해</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">4. 공간적 파괴 범위 추정</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">5. 파괴력 수준 평가</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">6. 군사적 관점에서의 특징 (일반적 분석)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">7. 한계점</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12"><span style="color: blue;"><strong>2. 충격파 전파 패턴 추정 모델</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id13"><strong>ChatGPT 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hopkinsoncranz">1) 1차 근사: 자유공간 구면 전파 + Hopkinson–Cranz 스케일링</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reflected-overpressure">2) 반사/정면압 보정: 목표물 면에서의 reflected overpressure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">3) 도시에서의 2차 모델: 원형을 ‘왜곡’시키는 전파 커널</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#los">3.1 차폐-가시선(LOS) 기반 모델</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">3.2 도로/골목 채널링 보정</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">4) 피해 관측치로 파라미터 역추정</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">5) 이 모델로 뭘 얻나: “충격파 전파 패턴 지도”</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18"><span style="color: blue;"><strong>3. 피해확률 히트맵</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id19"><strong>ChatGPT 분석</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id20"><strong>참고: 파이썬 코드</strong></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><strong>24장 폭격 파괴력 분석</strong><a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2><span style="color: blue;"><strong>1. 이란 지도부 관저 파괴 전후 사진</strong></span><a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p><img alt="Bomb" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/24-1.png" /></p>
+<p>출처: <a class="reference external" href="https://www.abc.net.au/news/2026-03-01/abc-verify-satellite-over-ayatollah-compound/106402030">https://www.abc.net.au/news/2026-03-01/abc-verify-satellite-over-ayatollah-compound/106402030</a></p>
+</section>
+<section id="chatgpt">
+<h2><strong>ChatGPT 설명</strong><a class="headerlink" href="#chatgpt" title="Link to this heading">#</a></h2>
+<p>위 이미지는 동일 지역의 폭격 전(좌)과 폭격 후(우)를 위성 사진으로 비교한 것으로 보인다. 이를 기반으로 <strong>구조적 파괴 정도, 열·충격 효과, 공간적 영향 범위</strong>를 중심으로 분석한다.</p>
+<hr class="docutils" />
+<section id="id3">
+<h3>1. 구조물 파괴 양상 비교<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<section id="id4">
+<h4>(1) 건물 붕괴 형태<a class="headerlink" href="#id4" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>좌측(폭격 전):</p>
+<ul>
+<li><p>대형 직사각형 구조물과 인접한 소형 건물들이 명확한 지붕 형상을 유지.</p></li>
+<li><p>그림자와 건물 윤곽이 뚜렷하며, 지붕 손상 흔적 없음.</p></li>
+</ul>
+</li>
+<li><p>우측(폭격 후):</p>
+<ul>
+<li><p>중심부 대형 건물이 거의 완전 붕괴.</p></li>
+<li><p>지붕 구조가 사라지고 내부 구조가 노출된 형태.</p></li>
+<li><p>잔해가 주변으로 광범위하게 확산.</p></li>
+<li><p>부분 붕괴가 아니라 <strong>전면적 구조 실패(total structural failure)</strong> 수준.</p></li>
+</ul>
+</li>
+</ul>
+<p>→ 이는 단순 화재가 아닌 <strong>고폭성 충격에 의한 구조적 붕괴</strong>로 해석된다.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id5">
+<h3>2. 폭발 중심 및 에너지 전달 특성<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<section id="id6">
+<h4>(1) 파괴 중심점<a class="headerlink" href="#id6" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>우측 이미지에서 가장 심각한 손상은 중앙 복합 구조물.</p></li>
+<li><p>주변 건물은 상대적으로 덜 손상 → <strong>폭발 중심이 내부 혹은 건물 바로 인접 지점</strong>일 가능성.</p></li>
+</ul>
+</section>
+<section id="vs">
+<h4>(2) 수직 붕괴 vs 측면 충격<a class="headerlink" href="#vs" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>건물이 옆으로 날아간 형태라기보다</p>
+<ul>
+<li><p>위에서 아래로 무너진 패턴.</p></li>
+</ul>
+</li>
+<li><p>이는 공중 투하형 정밀 타격 혹은 상부 관통 후 내부 폭발 가능성을 시사.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id7">
+<h3>3. 열 효과 및 2차 피해<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>검은 연기 흔적이 상부로 길게 형성.</p></li>
+<li><p>이는 단순 구조 붕괴가 아니라 <strong>고온 연소 및 2차 화재 동반</strong> 가능성 높음.</p></li>
+<li><p>잔해 색상 차이로 보아 내부 자재가 연소되었을 가능성 있음.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id8">
+<h3>4. 공간적 파괴 범위 추정<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>정량적 거리 측정은 불가능하지만 시각적 비율로 보면:</p>
+<ul class="simple">
+<li><p>심각한 붕괴 반경: 약 해당 건물 부지 전체 + 인접 건물 일부</p></li>
+<li><p>중등도 손상 반경: 약 1~2개 건물 거리</p></li>
+<li><p>경미한 손상 반경: 추가적으로 주변 블록 일부</p></li>
+</ul>
+<p>이는 <strong>고폭 탄두의 국지적 정밀 타격(localized high-yield precision strike)</strong> 특징과 유사한 양상이다.</p>
+</section>
+<hr class="docutils" />
+<section id="id9">
+<h3>5. 파괴력 수준 평가<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>파괴력을 구조적 관점에서 분류하면:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>평가 항목</p></th>
+<th class="head"><p>수준</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>구조 붕괴 정도</p></td>
+<td><p>매우 높음 (전면 붕괴)</p></td>
+</tr>
+<tr class="row-odd"><td><p>열 손상</p></td>
+<td><p>높음</p></td>
+</tr>
+<tr class="row-even"><td><p>주변 파급 범위</p></td>
+<td><p>제한적이나 확실한 2차 손상 존재</p></td>
+</tr>
+<tr class="row-odd"><td><p>정밀도</p></td>
+<td><p>중심 타겟에 집중된 형태</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>즉, <strong>광역 파괴형이 아니라 특정 구조물에 집중된 고에너지 타격</strong>으로 보인다.</p>
+</section>
+<hr class="docutils" />
+<section id="id10">
+<h3>6. 군사적 관점에서의 특징 (일반적 분석)<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>이러한 패턴은 일반적으로:</p>
+<ul class="simple">
+<li><p>대형 폭발물의 직접 타격</p></li>
+<li><p>관통 후 내부 폭발</p></li>
+<li><p>탄두가 목표 내부에서 폭발하여 내부 압력 상승 → 구조 붕괴</p></li>
+</ul>
+<p>와 유사한 결과를 보인다.</p>
+</section>
+<hr class="docutils" />
+<section id="id11">
+<h3>7. 한계점<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>위성 해상도 제한</p></li>
+<li><p>촬영 각도와 시간 차이</p></li>
+<li><p>구조물 내부 상태 미확인</p></li>
+<li><p>사용된 무기 유형 특정 불가</p></li>
+</ul>
+<p>따라서 이는 <strong>외형적 피해 분석에 한정된 평가</strong>이다.</p>
+<hr class="docutils" />
+<p>필요하다면 다음도 분석 가능하다:</p>
+<ul class="simple">
+<li><p>충격파 전파 패턴 추정 모델</p></li>
+<li><p>구조공학적 붕괴 메커니즘 분석</p></li>
+<li><p>폭발 에너지 수준의 대략적 역추정(공학적 접근)</p></li>
+<li><p>전후 픽셀 기반 손상 면적 정량화 방법 설명</p></li>
+</ul>
+<p>어느 방향으로 더 깊게 분석할지 지정해줘.</p>
+</section>
+</section>
+<section id="id12">
+<h2><span style="color: blue;"><strong>2. 충격파 전파 패턴 추정 모델</strong></span><a class="headerlink" href="#id12" title="Link to this heading">#</a></h2>
+</section>
+<section id="id13">
+<h2><strong>ChatGPT 설명</strong><a class="headerlink" href="#id13" title="Link to this heading">#</a></h2>
+<p>충격파 전파 패턴을 “추정”하려면 보통 두 층으로 나눠서 모델링한다. 1) 자유공간에서의 폭풍파(blast wave) 스케일링으로 1차 근사 2) 도시/구조물 때문에 생기는 비등방성(방향성), 반사, 차폐를 보정하는 2차 모델. 위성 전후 사진처럼 “피해 흔적”만 있을 때는 1)로 대략적인 등과압선(isobar) 형태를 만들고, 2)로 왜곡시키는 방식이 가장 실용적이다.</p>
+<p>아래는 바로 쓸 수 있는 “추정 모델” 틀이다.</p>
+<hr class="docutils" />
+<section id="hopkinsoncranz">
+<h3>1) 1차 근사: 자유공간 구면 전파 + Hopkinson–Cranz 스케일링<a class="headerlink" href="#hopkinsoncranz" title="Link to this heading">#</a></h3>
+<p>폭발을 TNT 등가 질량 <span class="math notranslate nohighlight">\(W\)</span> (kg TNT)로 치환하고, 폭심으로부터 거리 <span class="math notranslate nohighlight">\(R\)</span> (m)에서의 스케일 거리를</p>
+<div class="math notranslate nohighlight">
+\[
+Z = \frac{R}{W^{1/3}}
+\]</div>
+<p>로 둔다. 그러면 피크 과압(incident peak overpressure) <span class="math notranslate nohighlight">\(\Delta P_i\)</span>는</p>
+<div class="math notranslate nohighlight">
+\[
+\Delta P_i(R) = f(Z)
+\]</div>
+<p>형태(경험식/테이블 기반)로 표현된다. 실제로는 Kingery–Bulmash 같은 경험식이 <span class="math notranslate nohighlight">\(f(Z)\)</span>를 제공한다. 여기서 핵심은 “같은 <span class="math notranslate nohighlight">\(Z\)</span>면 비슷한 충격파 강도”라는 점이다.</p>
+<p>피크 과압 말고, 구조물 피해와 더 직결되는 지표로 양의 위상 임펄스(positive phase impulse) <span class="math notranslate nohighlight">\(I_+\)</span>도 함께 쓴다.</p>
+<div class="math notranslate nohighlight">
+\[
+I_+(R) = g(Z)
+\]</div>
+<p>즉, 1차 모델의 출력은 거리 <span class="math notranslate nohighlight">\(R\)</span>마다 <span class="math notranslate nohighlight">\((\Delta P_i(R), I_+(R))\)</span> 두 장의 방사형 프로파일이다.</p>
+<p>이 단계에서의 등과압선은 완전한 원(구면의 단면)이다. 피해 패턴이 원형에 가깝다면 이 근사만으로도 꽤 설명된다.</p>
+</section>
+<hr class="docutils" />
+<section id="reflected-overpressure">
+<h3>2) 반사/정면압 보정: 목표물 면에서의 reflected overpressure<a class="headerlink" href="#reflected-overpressure" title="Link to this heading">#</a></h3>
+<p>건물 벽처럼 파가 정면으로 때릴 때는 반사 때문에 실제 작용 압력이 커진다. 반사압을 <span class="math notranslate nohighlight">\(\Delta P_r\)</span>라 두면, 단순화해서</p>
+<div class="math notranslate nohighlight">
+\[
+\Delta P_r = \Delta P_i \cdot \Phi(\Delta P_i, P_0, \gamma)
+\]</div>
+<p>처럼 쓴다. 여기서 <span class="math notranslate nohighlight">\(P_0\)</span>는 대기압, <span class="math notranslate nohighlight">\(\gamma\)</span>는 비열비(공기). <span class="math notranslate nohighlight">\(\Phi\)</span>는 반사계수인데, 정밀식은 유체역학 기반이지만 실무 추정에서는 “반사압이 incident보다 크다”는 방향성만 잡아도 된다.</p>
+<p>피해가 “폭심에 가까운 벽면 파괴/창 파손” 중심이면 <span class="math notranslate nohighlight">\(\Delta P_r\)</span>를 쓰는 쪽이 잘 맞는다.</p>
+</section>
+<hr class="docutils" />
+<section id="id14">
+<h3>3) 도시에서의 2차 모델: 원형을 ‘왜곡’시키는 전파 커널<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p>현실은 건물들이 충격파를</p>
+<ul class="simple">
+<li><p>차폐(shielding)</p></li>
+<li><p>채널링(골목을 따라 흐르는 효과)</p></li>
+<li><p>반사/다중반사</p></li>
+<li><p>회절(diffraction)</p></li>
+</ul>
+<p>로 바꾼다. 이를 간단히 “공간 가중치 필드” <span class="math notranslate nohighlight">\(A(x)\)</span>로 모델링한다. 위치 <span class="math notranslate nohighlight">\(x\)</span>에서의 유효 과압을</p>
+<div class="math notranslate nohighlight">
+\[
+\Delta P_{\text{eff}}(x) = \Delta P_i(R(x)) \cdot A(x)
+\]</div>
+<p>로 둔다. 여기서 <span class="math notranslate nohighlight">\(R(x)\)</span>는 폭심에서 <span class="math notranslate nohighlight">\(x\)</span>까지의 거리. <span class="math notranslate nohighlight">\(A(x)\)</span>가 1이면 자유공간과 동일, 0.5면 절반으로 약화, 1.5면 반사/집중으로 강화 같은 의미다.</p>
+<p>문제는 <span class="math notranslate nohighlight">\(A(x)\)</span>를 어떻게 만들까인데, 위성사진 기반이면 다음이 현실적이다.</p>
+<section id="los">
+<h4>3.1 차폐-가시선(LOS) 기반 모델<a class="headerlink" href="#los" title="Link to this heading">#</a></h4>
+<p>폭심에서 위치 <span class="math notranslate nohighlight">\(x\)</span>까지 직선(가시선)이 건물 덩어리를 통과하면 감쇠를 준다.</p>
+<div class="math notranslate nohighlight">
+\[
+A(x) = \exp(-k \cdot L_{\text{occ}}(x))
+\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(L_{\text{occ}}(x)\)</span>: 폭심–<span class="math notranslate nohighlight">\(x\)</span> 선분이 “불투명 장애물(건물)”을 통과한 총 길이</p></li>
+<li><p><span class="math notranslate nohighlight">\(k\)</span>: 감쇠 강도 파라미터</p></li>
+</ul>
+<p>이러면 큰 건물이 방패처럼 서 있는 방향에서 피해가 급격히 줄어드는 패턴이 나온다.</p>
+</section>
+<section id="id15">
+<h4>3.2 도로/골목 채널링 보정<a class="headerlink" href="#id15" title="Link to this heading">#</a></h4>
+<p>충격파가 열린 통로(도로)를 따라 더 멀리 가는 효과를 “경로 비용”으로 모델링한다. 폭심에서 <span class="math notranslate nohighlight">\(x\)</span>까지의 유효거리 <span class="math notranslate nohighlight">\(R_{\text{eff}}(x)\)</span>를 최단경로로 정의:</p>
+<div class="math notranslate nohighlight">
+\[
+R_{\text{eff}}(x) = \min_{\pi: 0 \to x} \int_{\pi} c(s) ds
+\]</div>
+<ul class="simple">
+<li><p>열린 공간(도로, 공터)은 비용 <span class="math notranslate nohighlight">\(c(s)\)</span>를 작게</p></li>
+<li><p>건물 내부/두꺼운 장애물은 비용을 크게</p></li>
+</ul>
+<p>그 다음</p>
+<div class="math notranslate nohighlight">
+\[
+\Delta P_{\text{eff}}(x) = f\left(\frac{R_{\text{eff}}(x)}{W^{1/3}}\right)
+\]</div>
+<p>로 계산하면, 등과압선이 도로를 따라 길쭉하게 늘어나는 형태가 자연스럽게 나온다.</p>
+<p>이건 “Eikonal/fast marching” 류로 구현하는 전형적인 방식이다(정확한 CFD는 아니지만 패턴은 그럴듯하게 잘 나온다).</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id16">
+<h3>4) 피해 관측치로 파라미터 역추정<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<p>사진에서 얻는 건 보통 “연속 압력”이 아니라 “피해 등급”이다. 예를 들어 위치 <span class="math notranslate nohighlight">\(x\)</span>마다 피해 등급 <span class="math notranslate nohighlight">\(D(x)\)</span>를</p>
+<ul class="simple">
+<li><p>0: 무피해</p></li>
+<li><p>1: 경미(유리/지붕 일부)</p></li>
+<li><p>2: 중간(부분 붕괴)</p></li>
+<li><p>3: 심각(전면 붕괴)</p></li>
+</ul>
+<p>처럼 라벨링한다(수작업 or 세그멘테이션). 그리고 등급별 임계 과압 <span class="math notranslate nohighlight">\(\theta_j\)</span>를 두고</p>
+<div class="math notranslate nohighlight">
+\[
+P(D(x) \ge j) = \sigma\left(\alpha(\Delta P_{\text{eff}}(x) - \theta_j)\right)
+\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\sigma(t) = \frac{1}{1+e^{-t}}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\alpha\)</span>: 경계의 날카로움</p></li>
+</ul>
+<p>이렇게 하면 모르는 것들 <span class="math notranslate nohighlight">\(W, k, \theta_j, \alpha\)</span>를 최대우도(MLE)나 베이지안으로 맞출 수 있다.</p>
+<p>실무적으로는 먼저 <span class="math notranslate nohighlight">\(A(x)=1\)</span>로 두고 <span class="math notranslate nohighlight">\(W\)</span>만 대충 맞춘 뒤, <span class="math notranslate nohighlight">\(k\)</span> 같은 도시감쇠 파라미터를 추가해서 “방향성”을 맞추는 순서가 안정적이다.</p>
+</section>
+<hr class="docutils" />
+<section id="id17">
+<h3>5) 이 모델로 뭘 얻나: “충격파 전파 패턴 지도”<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<p>최종 산출물은 보통 2장이다.</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(\Delta P_{\text{eff}}(x)\)</span> 히트맵: 등과압선이 원형에서 왜곡된 형태로 나타남</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(D(x)\ge j)\)</span> 지도: 피해 확률(또는 피해 등급 기대값) 지도</p></li>
+</ol>
+<p>이 둘을 겹치면, 사진에서 보이는 “피해가 특정 방향으로 더 뻗은 이유”를 채널링/차폐로 설명할 수 있다.</p>
+<hr class="docutils" />
+<p>원하면, 지금 너가 준 전후 이미지 기준으로 “피해 마스크를 어떻게 만들고(간단 휴리스틱), 위 모델 파라미터를 어떻게 맞추는지”까지 파이썬으로 바로 이어서 제시할 수 있다. 다만 그건 실제 이미지 픽셀 단위로 처리가 필요해서, 너가 원하는 출력 형태(예: 등과압선 3개만, 혹은 피해확률 히트맵까지)를 한 줄로 정해주면 거기에 맞춰 모델을 구체화할게.</p>
+</section>
+</section>
+<section id="id18">
+<h2><span style="color: blue;"><strong>3. 피해확률 히트맵</strong></span><a class="headerlink" href="#id18" title="Link to this heading">#</a></h2>
+</section>
+<section id="id19">
+<h2><strong>ChatGPT 분석</strong><a class="headerlink" href="#id19" title="Link to this heading">#</a></h2>
+<p>피해확률(여기서는 “심각 피해(severe)” 확률) 히트맵을 만들었다. 전(좌)–후(우) 이미지의 픽셀 차이를 피해 강도 proxy로 두고, 추정 폭심 <span class="math notranslate nohighlight">\((c_x,c_y)\)</span>에서의 거리 <span class="math notranslate nohighlight">\(r\)</span>에 대해 로지스틱 형태로</p>
+<div class="math notranslate nohighlight">
+\[
+p_{\text{severe}}(r)=\frac{1}{1+\exp\left(\frac{r-r_2}{s}\right)}
+\]</div>
+<p>처럼 감소한다고 놓았다. 여기서 <span class="math notranslate nohighlight">\(r_2\)</span>는 앞서 만든 중간 등과압선 반경(누적 75% 반경)이고, <span class="math notranslate nohighlight">\(s\)</span>는 전이 폭(대략 <span class="math notranslate nohighlight">\(0.1r_2\)</span>)이다. 즉 <span class="math notranslate nohighlight">\(r=r_2\)</span>에서 <span class="math notranslate nohighlight">\(p_{\text{severe}}=0.5\)</span>가 되도록 정규화한 “상대적” 피해확률 지도다(절대 kPa 기반 아님).</p>
+<p><strong>오버레이(폭격 후 영상 위)</strong></p>
+<p><img alt="Bomb" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/24-2.png" /></p>
+<p>원하면 같은 방식으로 “경미 이상(any damage)”도 함께 그릴 수 있다(바깥 반경 <span class="math notranslate nohighlight">\(r_3\)</span>에서 0.5가 되게 정의).</p>
+</section>
+<section id="id20">
+<h2><strong>참고: 파이썬 코드</strong><a class="headerlink" href="#id20" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># -------------------------------------------------</span>
+<span class="c1"># 0. 유틸: RGB -&gt; 그레이스케일</span>
+<span class="c1"># -------------------------------------------------</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_gray</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="c1"># ITU-R BT.601 계수(가중합)로 밝기 변환</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mf">0.299</span><span class="o">*</span><span class="n">a</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.587</span><span class="o">*</span><span class="n">a</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.114</span><span class="o">*</span><span class="n">a</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="c1"># -------------------------------------------------</span>
+<span class="c1"># 1. 유틸: 적분영상 기반 박스 블러(평균 필터) - 매우 빠름</span>
+<span class="c1"># -------------------------------------------------</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">box_blur_fast</span><span class="p">(</span><span class="n">img2d</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">9</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    img2d: (H, W) float32</span>
+<span class="sd">    k: 커널 크기(홀수 권장)</span>
+<span class="sd">    반환: (H, W) float32 블러 결과</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">img2d</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="n">pad</span> <span class="o">=</span> <span class="n">k</span> <span class="o">//</span> <span class="mi">2</span>
+
+    <span class="c1"># 경계는 edge 패딩(원 코드와 동일한 효과)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">img2d</span><span class="p">,</span> <span class="p">((</span><span class="n">pad</span><span class="p">,</span> <span class="n">pad</span><span class="p">),</span> <span class="p">(</span><span class="n">pad</span><span class="p">,</span> <span class="n">pad</span><span class="p">)),</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;edge&quot;</span><span class="p">)</span>
+
+    <span class="c1"># 적분영상(Integral Image): 누적합을 이용해 사각형 합을 O(1)로 계산</span>
+    <span class="c1"># 편의를 위해 (H+1, W+1)로 0 패딩된 누적합 형태 사용</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;constant&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># 각 위치에서 kxk 윈도우 합을 한 번에 계산</span>
+    <span class="c1"># 윈도우 좌상단(i, j) ~ 우하단(i+k-1, j+k-1) 합:</span>
+    <span class="c1"># sum = S[i+k, j+k] - S[i, j+k] - S[i+k, j] + S[i, j]</span>
+    <span class="n">H</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">img2d</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">sum_k</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">s</span><span class="p">[</span><span class="n">k</span><span class="p">:</span><span class="n">k</span><span class="o">+</span><span class="n">H</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span><span class="n">k</span><span class="o">+</span><span class="n">W</span><span class="p">]</span>
+        <span class="o">-</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">H</span><span class="p">,</span>   <span class="n">k</span><span class="p">:</span><span class="n">k</span><span class="o">+</span><span class="n">W</span><span class="p">]</span>
+        <span class="o">-</span> <span class="n">s</span><span class="p">[</span><span class="n">k</span><span class="p">:</span><span class="n">k</span><span class="o">+</span><span class="n">H</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">W</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">H</span><span class="p">,</span>   <span class="mi">0</span><span class="p">:</span><span class="n">W</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">sum_k</span> <span class="o">/</span> <span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">k</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="c1"># -------------------------------------------------</span>
+<span class="c1"># 2. 입력 이미지 로드 및 좌/우 분리(폭격 전/후 가정)</span>
+<span class="c1"># -------------------------------------------------</span>
+<span class="n">img_path</span> <span class="o">=</span> <span class="s2">&quot;../images/24-1.png&quot;</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">)</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+<span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span>
+<span class="n">mid</span> <span class="o">=</span> <span class="n">w</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="n">left</span>  <span class="o">=</span> <span class="n">arr</span><span class="p">[:,</span> <span class="p">:</span><span class="n">mid</span><span class="p">,</span> <span class="p">:]</span>   <span class="c1"># 폭격 전</span>
+<span class="n">right</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[:,</span> <span class="n">mid</span><span class="p">:,</span> <span class="p">:]</span>   <span class="c1"># 폭격 후</span>
+
+<span class="c1"># -------------------------------------------------</span>
+<span class="c1"># 3. 전후 차이(피해 proxy) 계산 + 블러로 안정화</span>
+<span class="c1"># -------------------------------------------------</span>
+<span class="n">gL</span> <span class="o">=</span> <span class="n">to_gray</span><span class="p">(</span><span class="n">left</span><span class="p">)</span>
+<span class="n">gR</span> <span class="o">=</span> <span class="n">to_gray</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
+<span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gR</span> <span class="o">-</span> <span class="n">gL</span><span class="p">)</span>
+
+<span class="c1"># 느린 이중 for문 대신, 적분영상 박스블러로 대체</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mi">9</span>
+<span class="n">blur</span> <span class="o">=</span> <span class="n">box_blur_fast</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+
+<span class="c1"># -------------------------------------------------</span>
+<span class="c1"># 4. 변화량 상위 일부를 &quot;강한 피해&quot; 후보로 보고 폭심(가중 중심) 추정</span>
+<span class="c1"># -------------------------------------------------</span>
+<span class="n">thr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">blur</span><span class="p">,</span> <span class="mf">99.2</span><span class="p">)</span>   <span class="c1"># 상위 0.8%</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">blur</span> <span class="o">&gt;=</span> <span class="n">thr</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">blur</span> <span class="o">*</span> <span class="n">mask</span>
+
+<span class="n">ys</span><span class="p">,</span> <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">W</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="c1"># 안전장치: 임계값이 너무 높아 mask가 비는 경우</span>
+<span class="k">if</span> <span class="n">W</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">cy</span><span class="p">,</span> <span class="n">cx</span> <span class="o">=</span> <span class="n">h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">mid</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">cy</span> <span class="o">=</span> <span class="p">(</span><span class="n">ys</span> <span class="o">*</span> <span class="n">weights</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">W</span>
+    <span class="n">cx</span> <span class="o">=</span> <span class="p">(</span><span class="n">xs</span> <span class="o">*</span> <span class="n">weights</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">W</span>
+
+<span class="c1"># -------------------------------------------------</span>
+<span class="c1"># 5. 폭심으로부터 반경 r 계산</span>
+<span class="c1"># -------------------------------------------------</span>
+<span class="n">dy</span> <span class="o">=</span> <span class="n">ys</span> <span class="o">-</span> <span class="n">cy</span>
+<span class="n">dx</span> <span class="o">=</span> <span class="n">xs</span> <span class="o">-</span> <span class="n">cx</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dx</span><span class="o">*</span><span class="n">dx</span> <span class="o">+</span> <span class="n">dy</span><span class="o">*</span><span class="n">dy</span><span class="p">)</span>
+
+<span class="c1"># -------------------------------------------------</span>
+<span class="c1"># 6. 피해 강도 누적 분포로 등과압선 반경 3개(r1,r2,r3) 정의</span>
+<span class="c1"># -------------------------------------------------</span>
+<span class="n">r_flat</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">w_flat</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+<span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">r_flat</span><span class="p">)</span>
+<span class="n">r_sorted</span> <span class="o">=</span> <span class="n">r_flat</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
+<span class="n">w_sorted</span> <span class="o">=</span> <span class="n">w_flat</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
+
+<span class="n">cum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">w_sorted</span><span class="p">)</span>
+<span class="n">total</span> <span class="o">=</span> <span class="n">cum</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">cum</span><span class="o">.</span><span class="n">size</span> <span class="k">else</span> <span class="mf">0.0</span>
+
+<span class="n">levels</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.90</span><span class="p">]</span>
+<span class="n">radii</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">if</span> <span class="n">total</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
+    <span class="c1"># 피해 픽셀이 사실상 없을 때의 안전 처리</span>
+    <span class="n">r1</span> <span class="o">=</span> <span class="n">r2</span> <span class="o">=</span> <span class="n">r3</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">lv</span> <span class="ow">in</span> <span class="n">levels</span><span class="p">:</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">cum</span><span class="p">,</span> <span class="n">lv</span> <span class="o">*</span> <span class="n">total</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">r_sorted</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">radii</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r_sorted</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+    <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="n">r3</span> <span class="o">=</span> <span class="n">radii</span>
+
+<span class="c1"># -------------------------------------------------</span>
+<span class="c1"># 7. 거리 기반 피해 확률(상대적) 모델: 로지스틱</span>
+<span class="c1"># -------------------------------------------------</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">logistic</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+
+<span class="c1"># 전이 폭(대략 반경의 10%)을 둬서 너무 급격한 계단이 되지 않게 함</span>
+<span class="n">s_any</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.10</span> <span class="o">*</span> <span class="n">r3</span><span class="p">)</span>
+<span class="n">s_sev</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.10</span> <span class="o">*</span> <span class="n">r2</span><span class="p">)</span>
+
+<span class="c1"># r=r3에서 p_any≈0.5, r=r2에서 p_sev≈0.5가 되도록 설정</span>
+<span class="n">p_any</span> <span class="o">=</span> <span class="n">logistic</span><span class="p">((</span><span class="n">r3</span> <span class="o">-</span> <span class="n">r</span><span class="p">)</span> <span class="o">/</span> <span class="n">s_any</span><span class="p">)</span>
+<span class="n">p_sev</span> <span class="o">=</span> <span class="n">logistic</span><span class="p">((</span><span class="n">r2</span> <span class="o">-</span> <span class="n">r</span><span class="p">)</span> <span class="o">/</span> <span class="n">s_sev</span><span class="p">)</span>
+
+<span class="n">p_any</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">p_any</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">p_sev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">p_sev</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># -------------------------------------------------</span>
+<span class="c1"># 8. 시각화: 폭격 후 이미지 위에 피해확률(심각) 히트맵 오버레이</span>
+<span class="c1"># -------------------------------------------------</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
+<span class="n">hm</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">p_sev</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.55</span><span class="p">)</span>  <span class="c1"># 컬러맵 기본값 사용</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">([</span><span class="n">cx</span><span class="p">],</span> <span class="p">[</span><span class="n">cy</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Estimated Damage Probability Heatmap (severe)&quot;</span><span class="p">)</span>
+
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">hm</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">fraction</span><span class="o">=</span><span class="mf">0.046</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.04</span><span class="p">)</span>
+<span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;Probability&quot;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f029e77c59e474d3b06db08e8f5967205ee749ca6bad91258d7210065241e593.png" src="../_images/f029e77c59e474d3b06db08e8f5967205ee749ca6bad91258d7210065241e593.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="23_%EC%B6%95%EA%B5%AC_%EA%B2%BD%EA%B8%B0_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><strong>23장 축구 경기 데이터 분석</strong></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="25_%EC%84%B8%EA%B3%84_%ED%99%94%EC%9E%A5%ED%92%88_%EA%B5%90%EC%97%AD_%ED%8A%B8%EB%A0%8C%EB%93%9C.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><strong>25장 세계 화장품 교역 트렌드</strong></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span style="color: blue;"><strong>1. 이란 지도부 관저 파괴 전후 사진</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chatgpt"><strong>ChatGPT 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1. 구조물 파괴 양상 비교</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">(1) 건물 붕괴 형태</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2. 폭발 중심 및 에너지 전달 특성</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">(1) 파괴 중심점</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#vs">(2) 수직 붕괴 vs 측면 충격</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">3. 열 효과 및 2차 피해</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">4. 공간적 파괴 범위 추정</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">5. 파괴력 수준 평가</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">6. 군사적 관점에서의 특징 (일반적 분석)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">7. 한계점</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12"><span style="color: blue;"><strong>2. 충격파 전파 패턴 추정 모델</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id13"><strong>ChatGPT 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hopkinsoncranz">1) 1차 근사: 자유공간 구면 전파 + Hopkinson–Cranz 스케일링</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reflected-overpressure">2) 반사/정면압 보정: 목표물 면에서의 reflected overpressure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">3) 도시에서의 2차 모델: 원형을 ‘왜곡’시키는 전파 커널</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#los">3.1 차폐-가시선(LOS) 기반 모델</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">3.2 도로/골목 채널링 보정</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">4) 피해 관측치로 파라미터 역추정</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">5) 이 모델로 뭘 얻나: “충격파 전파 패턴 지도”</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18"><span style="color: blue;"><strong>3. 피해확률 히트맵</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id19"><strong>ChatGPT 분석</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id20"><strong>참고: 파이썬 코드</strong></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By 김원경 최필선
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

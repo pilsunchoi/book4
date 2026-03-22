@@ -1,0 +1,1352 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>22장 운동학 (Kinematics) &#8212; 데이터 분석 이제 AI에게 맡겨라</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/22_운동학_Kinematics';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="23장 축구 경기 데이터 분석" href="23_%EC%B6%95%EA%B5%AC_%EA%B2%BD%EA%B8%B0_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html" />
+    <link rel="prev" title="21장 골밀도 검사 결과 해석" href="21_%EA%B3%A8%EB%B0%80%EB%8F%84_%EA%B2%80%EC%82%AC_%EA%B2%B0%EA%B3%BC_%ED%95%B4%EC%84%9D.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00_%EC%84%9C%EB%AC%B8.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="00_%EC%84%9C%EB%AC%B8.html">
+                    서문
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_%EC%8B%9C%ED%97%98%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>1장 시험성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_%EB%8C%80%ED%86%B5%EB%A0%B9_%EC%A7%80%EC%A7%80%EC%9C%A8_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>2장 대통령 지지율 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_KBO_%EC%A0%95%EA%B7%9C%EC%8B%9C%EC%A6%8C_%ED%8C%80%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>3장 KBO 정규시즌 팀성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_PPP_%EA%B7%B8%EB%9E%98%ED%94%84_%EB%B6%84%EC%84%9D.html"><strong>4장 PPP 그래프 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_%EC%84%B8%EA%B3%84%EC%9D%80%ED%96%89_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EC%B6%94%EC%B6%9C.html"><strong>5장 세계은행 데이터 추출</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_%EC%A3%BC%EA%B0%80_%EC%98%88%EC%B8%A1_%EC%8B%9C%EC%8A%A4%ED%85%9C_%EA%B5%AC%EC%B6%95.html"><strong>6장 주가 예측 시스템 구축</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_%EB%8C%93%EA%B8%80_%ED%86%B5%EA%B3%84_%EB%B6%84%EC%84%9D.html"><strong>7장 댓글 통계 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_%EC%84%9C%EC%9A%B8_%EC%95%84%ED%8C%8C%ED%8A%B8_%EB%A7%A4%EB%AC%BC_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>8장 서울 아파트 매물 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_%EC%84%A4%EB%AC%B8%EC%A1%B0%EC%82%AC_%EB%B6%84%EC%84%9D.html"><strong>9장 설문조사 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_%ED%83%90%EC%83%89%EC%A0%81_%EC%9A%94%EC%9D%B8%EB%B6%84%EC%84%9D.html"><strong>10장 탐색적 요인분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_%EB%B3%B4%EC%8A%A4%ED%84%B4_%EC%A3%BC%ED%83%9D_%EA%B0%80%EA%B2%A9_%EB%B6%84%EC%84%9D.html"><strong>11장 보스턴 주택 가격 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_%EC%A2%85%EB%B6%80%EC%84%B8%EC%99%80_%EC%9B%94%EC%84%B8%EC%9D%98_%EA%B4%80%EA%B3%84.html"><strong>12장 종부세와 월세의 관계</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_%EB%8C%80%ED%98%95%EB%A7%88%ED%8A%B8_%EC%87%A0%EB%9D%BD_%EC%9B%90%EC%9D%B8_%EC%8B%A4%EC%A6%9D%EB%B6%84%EC%84%9D.html"><strong>13장 대형마트 쇠락 원인 실증분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_%EC%8B%A0%EC%83%9D%EC%95%84_%ED%8A%B9%EB%A1%80%EB%8C%80%EC%B6%9C%EA%B3%BC_%EC%B6%9C%EC%82%B0%EC%9C%A8.html"><strong>14장 신생아 특례대출과 출산율</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_Ridge_%EB%B0%8F_Lasso_%ED%9A%8C%EA%B7%80.html"><strong>15장 Ridge 및 Lasso 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1_%ED%9A%8C%EA%B7%80.html"><strong>16장 로지스틱 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95_%ED%8A%B8%EB%A6%AC_%EB%AA%A8%ED%98%95.html"><strong>17장 의사결정 트리 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_%ED%8A%B8%EB%A6%AC_%EA%B8%B0%EB%B0%98_%EB%AA%A8%ED%98%95.html"><strong>18장 트리 기반 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="19_%EB%94%A5%EB%9F%AC%EB%8B%9D_%EA%B3%B5%EB%B6%80%ED%95%98%EA%B8%B0.html"><strong>19장 딥러닝 공부하기</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_%ED%8C%A8%EB%84%90_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>20장 패널 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="21_%EA%B3%A8%EB%B0%80%EB%8F%84_%EA%B2%80%EC%82%AC_%EA%B2%B0%EA%B3%BC_%ED%95%B4%EC%84%9D.html"><strong>21장 골밀도 검사 결과 해석</strong></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>22장 운동학 (Kinematics)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_%EC%B6%95%EA%B5%AC_%EA%B2%BD%EA%B8%B0_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>23장 축구 경기 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_%ED%8F%AD%EA%B2%A9_%ED%8C%8C%EA%B4%B4%EB%A0%A5_%EB%B6%84%EC%84%9D.html"><strong>24장 폭격 파괴력 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_%EC%84%B8%EA%B3%84_%ED%99%94%EC%9E%A5%ED%92%88_%EA%B5%90%EC%97%AD_%ED%8A%B8%EB%A0%8C%EB%93%9C.html"><strong>25장 세계 화장품 교역 트렌드</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_Texas_Special_Education.html"><strong>26장 텍사스주 특수교육 현황</strong></a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4/issues/new?title=Issue%20on%20page%20%2Fnotebooks/22_운동학_Kinematics.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/22_운동학_Kinematics.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>22장 운동학 (Kinematics)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><span style="color: blue;"><strong>러닝 영상 업로드 &amp; 운동학적 분석</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#claude"><strong>Claude 분석 보고서</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-overview">1. 분석 개요 (Analysis Overview)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">영상 사양</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2. 추출된 핵심 운동학 변수</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#displacement-velocity">변위·속도 변수 (Displacement &amp; Velocity)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#acceleration">가속도 변수 (Acceleration)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#body-morphology">형태 변수 (Body Morphology)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#descriptive-statistics">3. 기초 기술통계량 (Descriptive Statistics)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#global-movement-summary">4. 전체 이동 요약 (Global Movement Summary)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation">5. 결과 해석 (Interpretation)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#horizontal-velocity">5.1 수평 속도 (Horizontal Velocity)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#vertical-velocity">5.2 수직 속도 (Vertical Velocity)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#resultant-speed">5.3 합성 속력 (Resultant Speed)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">5.4 가속도 (Acceleration)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#head-oscillation-gait-cycle">5.5 머리 수직 진동 &amp; 보행 주기 (Head Oscillation &amp; Gait Cycle)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5.6 신체 형태 변수 (Body Morphology)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-recommendations">6. 분석 한계 및 제언 (Limitations &amp; Recommendations)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><strong>참고: 파이썬 코드</strong></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="kinematics">
+<h1><strong>22장 운동학 (Kinematics)</strong><a class="headerlink" href="#kinematics" title="Link to this heading">#</a></h1>
+<section id="id1">
+<h2><span style="color: blue;"><strong>러닝 영상 업로드 &amp; 운동학적 분석</strong></span><a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>Video(”<a class="reference external" href="https://cdn.jsdelivr.net/gh/pilsunchoi/images4&#64;main/22-1.mp4">https://cdn.jsdelivr.net/gh/pilsunchoi/images4&#64;main/22-1.mp4</a>”)</p>
+<p>출처: CMU Motion Capture Database, <a class="reference external" href="https://mocap.cs.cmu.edu/subjects/35/35_17.mpg">35-17.mpg</a></p>
+</section>
+<section id="claude">
+<h2><strong>Claude 분석 보고서</strong><a class="headerlink" href="#claude" title="Link to this heading">#</a></h2>
+<p><strong>Running Gait Kinematic Analysis Report</strong></p>
+<ul class="simple">
+<li><p><strong>영상 파일:</strong> 22-1.mp4</p></li>
+<li><p><strong>분석 방법:</strong> Background Subtraction + Contour Analysis (실루엣 기반 추적)</p></li>
+</ul>
+<hr class="docutils" />
+<section id="analysis-overview">
+<h3>1. 분석 개요 (Analysis Overview)<a class="headerlink" href="#analysis-overview" title="Link to this heading">#</a></h3>
+<p>본 보고서는 실내 실험실 환경에서 촬영된 달리기 동작 영상(22-1.mp4)을 대상으로, 컴퓨터 비전 기반 실루엣 추적을 적용하여 핵심 운동학(kinematics) 변수를 추출하고 기초 기술통계량을 산출한 결과입니다.</p>
+<section id="id2">
+<h4>영상 사양<a class="headerlink" href="#id2" title="Link to this heading">#</a></h4>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>항목</p></th>
+<th class="head"><p>값</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>해상도</p></td>
+<td><p>352 × 240 px</p></td>
+</tr>
+<tr class="row-odd"><td><p>프레임레이트</p></td>
+<td><p>29.97 fps</p></td>
+</tr>
+<tr class="row-even"><td><p>총 프레임 수</p></td>
+<td><p>189</p></td>
+</tr>
+<tr class="row-odd"><td><p>총 영상 길이</p></td>
+<td><p>6.31초</p></td>
+</tr>
+<tr class="row-even"><td><p>인체 탐지 프레임</p></td>
+<td><p>51 / 189 (frame 73 ~ 123)</p></td>
+</tr>
+<tr class="row-odd"><td><p>유효 분석 시간</p></td>
+<td><p>2.436초 ~ 4.104초 (약 1.67초)</p></td>
+</tr>
+<tr class="row-even"><td><p>통계 산출 유효 N</p></td>
+<td><p>49 (1차 미분 결측 제외)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id3">
+<h3>2. 추출된 핵심 운동학 변수<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>다음 10개의 운동학 변수를 프레임 단위(Δt ≈ 0.0334초)로 산출하였습니다.</p>
+</section>
+<section id="displacement-velocity">
+<h3>변위·속도 변수 (Displacement &amp; Velocity)<a class="headerlink" href="#displacement-velocity" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>변수</p></th>
+<th class="head"><p>기호</p></th>
+<th class="head"><p>산출 방법</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>수평 속도</p></td>
+<td><p>Vx</p></td>
+<td><p>무게중심 X좌표의 1차 미분 (Δx / Δt)</p></td>
+</tr>
+<tr class="row-odd"><td><p>수직 속도</p></td>
+<td><p>Vy</p></td>
+<td><p>무게중심 Y좌표의 1차 미분 (Δy / Δt)</p></td>
+</tr>
+<tr class="row-even"><td><p>합성 속력</p></td>
+<td><p>Speed</p></td>
+<td><p>√(Vx² + Vy²)</p></td>
+</tr>
+<tr class="row-odd"><td><p>머리 수직 속도</p></td>
+<td><p>Head Vy</p></td>
+<td><p>머리(최상단점) Y좌표의 1차 미분</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="acceleration">
+<h4>가속도 변수 (Acceleration)<a class="headerlink" href="#acceleration" title="Link to this heading">#</a></h4>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>변수</p></th>
+<th class="head"><p>기호</p></th>
+<th class="head"><p>산출 방법</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>수평 가속도</p></td>
+<td><p>ax</p></td>
+<td><p>Vx의 1차 미분 (ΔVx / Δt)</p></td>
+</tr>
+<tr class="row-odd"><td><p>수직 가속도</p></td>
+<td><p>ay</p></td>
+<td><p>Vy의 1차 미분 (ΔVy / Δt)</p></td>
+</tr>
+<tr class="row-even"><td><p>합성 가속도</p></td>
+<td><p>|a|</p></td>
+<td><p>√(ax² + ay²)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="body-morphology">
+<h4>형태 변수 (Body Morphology)<a class="headerlink" href="#body-morphology" title="Link to this heading">#</a></h4>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>변수</p></th>
+<th class="head"><p>기호</p></th>
+<th class="head"><p>산출 방법</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>신체 높이</p></td>
+<td><p>Body Height</p></td>
+<td><p>실루엣 최상단~최하단 수직 거리 (px)</p></td>
+</tr>
+<tr class="row-odd"><td><p>신체 너비</p></td>
+<td><p>Body Width</p></td>
+<td><p>실루엣 최좌측~최우측 수평 거리 (px)</p></td>
+</tr>
+<tr class="row-even"><td><p>실루엣 면적</p></td>
+<td><p>Area</p></td>
+<td><p>최대 윤곽(contour)의 면적 (px²)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="descriptive-statistics">
+<h3>3. 기초 기술통계량 (Descriptive Statistics)<a class="headerlink" href="#descriptive-statistics" title="Link to this heading">#</a></h3>
+<p>유효 프레임(N = 49)에 대해 산출한 기술통계량입니다.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>변수</p></th>
+<th class="head text-center"><p>N</p></th>
+<th class="head text-center"><p>평균 (Mean)</p></th>
+<th class="head text-center"><p>표준편차 (SD)</p></th>
+<th class="head text-center"><p>최솟값 (Min)</p></th>
+<th class="head text-center"><p>최댓값 (Max)</p></th>
+<th class="head text-center"><p>범위 (Range)</p></th>
+<th class="head text-center"><p>중앙값 (Median)</p></th>
+<th class="head text-center"><p>변동계수 CV(%)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>수평 속도 Vx (px/s)</p></td>
+<td class="text-center"><p>49</p></td>
+<td class="text-center"><p>194.39</p></td>
+<td class="text-center"><p>137.10</p></td>
+<td class="text-center"><p>−76.40</p></td>
+<td class="text-center"><p>451.75</p></td>
+<td class="text-center"><p>528.16</p></td>
+<td class="text-center"><p>226.76</p></td>
+<td class="text-center"><p>70.5</p></td>
+</tr>
+<tr class="row-odd"><td><p>수직 속도 Vy (px/s)</p></td>
+<td class="text-center"><p>49</p></td>
+<td class="text-center"><p>8.40</p></td>
+<td class="text-center"><p>231.11</p></td>
+<td class="text-center"><p>−990.27</p></td>
+<td class="text-center"><p>942.92</p></td>
+<td class="text-center"><p>1,933.20</p></td>
+<td class="text-center"><p>8.12</p></td>
+<td class="text-center"><p>2,751.1</p></td>
+</tr>
+<tr class="row-even"><td><p>합성 속력 (px/s)</p></td>
+<td class="text-center"><p>49</p></td>
+<td class="text-center"><p>284.32</p></td>
+<td class="text-center"><p>168.32</p></td>
+<td class="text-center"><p>68.34</p></td>
+<td class="text-center"><p>990.57</p></td>
+<td class="text-center"><p>922.23</p></td>
+<td class="text-center"><p>281.08</p></td>
+<td class="text-center"><p>59.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>수평 가속도 ax (px/s²)</p></td>
+<td class="text-center"><p>49</p></td>
+<td class="text-center"><p>−91.38</p></td>
+<td class="text-center"><p>2,192.33</p></td>
+<td class="text-center"><p>−7,424.22</p></td>
+<td class="text-center"><p>5,277.40</p></td>
+<td class="text-center"><p>12,701.61</p></td>
+<td class="text-center"><p>−241.82</p></td>
+<td class="text-center"><p>2,399.2</p></td>
+</tr>
+<tr class="row-even"><td><p>수직 가속도 ay (px/s²)</p></td>
+<td class="text-center"><p>49</p></td>
+<td class="text-center"><p>84.00</p></td>
+<td class="text-center"><p>7,632.00</p></td>
+<td class="text-center"><p>−29,837.01</p></td>
+<td class="text-center"><p>22,343.82</p></td>
+<td class="text-center"><p>52,180.83</p></td>
+<td class="text-center"><p>65.57</p></td>
+<td class="text-center"><p>9,085.3</p></td>
+</tr>
+<tr class="row-odd"><td><p>합성 가속도 |a| (px/s²)</p></td>
+<td class="text-center"><p>49</p></td>
+<td class="text-center"><p>4,442.23</p></td>
+<td class="text-center"><p>6,551.72</p></td>
+<td class="text-center"><p>279.28</p></td>
+<td class="text-center"><p>29,965.31</p></td>
+<td class="text-center"><p>29,686.03</p></td>
+<td class="text-center"><p>2,311.39</p></td>
+<td class="text-center"><p>147.5</p></td>
+</tr>
+<tr class="row-even"><td><p>머리 수직속도 (px/s)</p></td>
+<td class="text-center"><p>49</p></td>
+<td class="text-center"><p>−3.06</p></td>
+<td class="text-center"><p>645.99</p></td>
+<td class="text-center"><p>−3,716.28</p></td>
+<td class="text-center"><p>2,337.66</p></td>
+<td class="text-center"><p>6,053.95</p></td>
+<td class="text-center"><p>0.00</p></td>
+<td class="text-center"><p>21,123.3</p></td>
+</tr>
+<tr class="row-odd"><td><p>신체 높이 (px)</p></td>
+<td class="text-center"><p>49</p></td>
+<td class="text-center"><p>161.71</p></td>
+<td class="text-center"><p>55.90</p></td>
+<td class="text-center"><p>47.00</p></td>
+<td class="text-center"><p>212.00</p></td>
+<td class="text-center"><p>165.00</p></td>
+<td class="text-center"><p>189.00</p></td>
+<td class="text-center"><p>34.6</p></td>
+</tr>
+<tr class="row-even"><td><p>신체 너비 (px)</p></td>
+<td class="text-center"><p>49</p></td>
+<td class="text-center"><p>93.76</p></td>
+<td class="text-center"><p>29.35</p></td>
+<td class="text-center"><p>32.00</p></td>
+<td class="text-center"><p>131.00</p></td>
+<td class="text-center"><p>99.00</p></td>
+<td class="text-center"><p>103.00</p></td>
+<td class="text-center"><p>31.3</p></td>
+</tr>
+<tr class="row-odd"><td><p>실루엣 면적 (px²)</p></td>
+<td class="text-center"><p>49</p></td>
+<td class="text-center"><p>7,671.89</p></td>
+<td class="text-center"><p>3,612.20</p></td>
+<td class="text-center"><p>679.00</p></td>
+<td class="text-center"><p>11,969.00</p></td>
+<td class="text-center"><p>11,290.00</p></td>
+<td class="text-center"><p>9,017.50</p></td>
+<td class="text-center"><p>47.1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="global-movement-summary">
+<h3>4. 전체 이동 요약 (Global Movement Summary)<a class="headerlink" href="#global-movement-summary" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>항목</p></th>
+<th class="head"><p>값</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>이동 방향</p></td>
+<td><p>우 → 좌 (화면 기준 좌→우, 수평 변위 +323.5 px)</p></td>
+</tr>
+<tr class="row-odd"><td><p>총 수직 변위</p></td>
+<td><p>+14.5 px (미미)</p></td>
+</tr>
+<tr class="row-even"><td><p>총 이동 시간</p></td>
+<td><p>1.668초</p></td>
+</tr>
+<tr class="row-odd"><td><p>평균 이동 속력</p></td>
+<td><p>194.1 px/s</p></td>
+</tr>
+<tr class="row-even"><td><p>수직 진동 피크 수</p></td>
+<td><p>5회</p></td>
+</tr>
+<tr class="row-odd"><td><p>수직 진동 골 수</p></td>
+<td><p>5회</p></td>
+</tr>
+<tr class="row-even"><td><p>피크 간 평균 간격 (보폭 주기)</p></td>
+<td><p>0.309초 / stride</p></td>
+</tr>
+<tr class="row-odd"><td><p>추정 보폭 빈도</p></td>
+<td><p>≈ 3.2 strides/s</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="interpretation">
+<h3>5. 결과 해석 (Interpretation)<a class="headerlink" href="#interpretation" title="Link to this heading">#</a></h3>
+<p><img alt="Kinematics" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/22-2.png" /></p>
+<section id="horizontal-velocity">
+<h4>5.1 수평 속도 (Horizontal Velocity)<a class="headerlink" href="#horizontal-velocity" title="Link to this heading">#</a></h4>
+<p>수평 속도의 평균은 194.39 px/s(SD = 137.10)로, 변동계수(CV)가 70.5%에 달합니다. 이는 피험자가 화면에 진입·진출하는 과정에서 가·감속이 크게 나타났음을 의미합니다. 중앙값(226.76)이 평균보다 높아 분포가 좌측 편향(negatively skewed)되어 있으며, 이는 진입·퇴출 시 저속 구간의 영향입니다. 안정 구간(3.0~3.8초)에서는 비교적 일정한 수평 속도를 유지하여 <strong>등속 달리기(steady-state running)</strong> 에 근접함을 시사합니다.</p>
+</section>
+<section id="vertical-velocity">
+<h4>5.2 수직 속도 (Vertical Velocity)<a class="headerlink" href="#vertical-velocity" title="Link to this heading">#</a></h4>
+<p>수직 속도의 평균이 8.40 px/s로 거의 0에 가까우나, SD가 231.11로 극도로 크며 CV가 2,751.1%입니다. 이는 달리기 시 상하 방향으로 <strong>강한 주기적 진동(oscillation)</strong> 이 발생하고 있음을 나타냅니다. 양·음의 수직 속도가 번갈아 나타나면서 평균은 상쇄되지만 편차가 매우 큰, 전형적인 보행/주행 패턴입니다. Min(−990.27)과 Max(942.92)의 대칭적 범위는 상승기(이륙/비행)와 하강기(착지)가 유사한 크기로 반복됨을 보여줍니다.</p>
+</section>
+<section id="resultant-speed">
+<h4>5.3 합성 속력 (Resultant Speed)<a class="headerlink" href="#resultant-speed" title="Link to this heading">#</a></h4>
+<p>합성 속력의 평균은 284.32 px/s(SD = 168.32, CV = 59.2%)이며, 수평 속도보다 높은 것은 수직 성분의 기여 때문입니다. 중앙값(281.08)과 평균이 거의 같아 비교적 대칭적 분포를 보입니다. 최댓값(990.57)은 수직 방향 급격한 움직임(착지 충격 등)에서 발생한 것으로, 순간 최대 속력이 평균의 약 3.5배에 달합니다.</p>
+</section>
+<section id="id4">
+<h4>5.4 가속도 (Acceleration)<a class="headerlink" href="#id4" title="Link to this heading">#</a></h4>
+<p>합성 가속도의 평균은 4,442.23 px/s²이며, 수직 가속도의 SD(7,632)가 수평 가속도의 SD(2,192)보다 약 3.5배 큽니다. 이는 달리기 중 착지·이륙 시 <strong>수직 방향의 충격 가속도가 수평 방향보다 훨씬 크다</strong>는 점을 반영합니다. 수직 가속도의 극단값(Min = −29,837, Max = 22,344)은 착지 순간의 강한 감속(음) 및 이륙 시의 가속(양)으로 해석할 수 있으며, 이는 지면반력(GRF)의 수직 성분 패턴과 일치합니다.</p>
+</section>
+<section id="head-oscillation-gait-cycle">
+<h4>5.5 머리 수직 진동 &amp; 보행 주기 (Head Oscillation &amp; Gait Cycle)<a class="headerlink" href="#head-oscillation-gait-cycle" title="Link to this heading">#</a></h4>
+<p>머리 수직 위치의 시계열에서 5개의 피크와 5개의 골이 관찰되었습니다. 피크 간 평균 간격은 0.309초로, 이는 약 <strong>3.2 strides/s</strong>의 보폭 빈도를 의미합니다. 일반적으로 달리기의 보폭 빈도가 2.5-4.0 strides/s인 점을 고려하면, 본 피험자는 보통~빠른 속도의 달리기를 수행한 것으로 추정됩니다. 수직 진동의 detrended 패턴에서 약 ±20-30 px의 규칙적 진동이 확인되며, 이는 달리기 특유의 <strong>비행기(flight phase)와 지지기(stance phase) 교대</strong>를 반영합니다.</p>
+</section>
+<section id="id5">
+<h4>5.6 신체 형태 변수 (Body Morphology)<a class="headerlink" href="#id5" title="Link to this heading">#</a></h4>
+<p>신체 높이(Mean = 161.71 px, CV = 34.6%)와 너비(Mean = 93.76 px, CV = 31.3%)의 변동은 주로 두 가지 요인에 기인합니다. 첫째, 화면 진입·퇴출 시 부분적으로만 보이는 실루엣이 높이·너비를 감소시킵니다. 둘째, 달리기 사이클 내에서 <strong>사지의 개폐에 따라 실루엣 형태가 주기적으로 변합니다</strong>(높이는 지지기에 최대, 비행기에 감소 경향). 실루엣 면적(Mean = 7,672 px², CV = 47.1%)도 유사한 패턴을 따르며, 안정 구간에서 약 9,000~12,000 px²의 비교적 일관된 값을 보입니다.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="limitations-recommendations">
+<h3>6. 분석 한계 및 제언 (Limitations &amp; Recommendations)<a class="headerlink" href="#limitations-recommendations" title="Link to this heading">#</a></h3>
+<p><strong>픽셀 단위 분석:</strong> 공간 캘리브레이션(알려진 거리 기준점) 없이 픽셀 단위로 산출되었으므로, m/s나 m/s² 등 절대 물리단위로의 환산이 불가합니다. 향후 캘리브레이션 마커를 활용하면 실제 속도·가속도 산출이 가능합니다.</p>
+<p><strong>2D 분석:</strong> 단일 카메라의 2D 영상이므로 깊이 방향(z축) 움직임은 반영되지 않습니다. 3D 운동학 분석에는 다시점 촬영이나 깊이 센서가 필요합니다.</p>
+<p><strong>실루엣 기반 추적:</strong> 관절 위치가 아닌 전체 실루엣의 무게중심·윤곽을 추적하였으므로, 관절각(knee angle, hip angle 등), 보폭 길이(stride length) 등 세부 운동학 변수는 포함되지 않습니다. Pose Estimation 모델 적용 시 보다 정밀한 분석이 가능합니다.</p>
+<p><strong>저해상도 영상:</strong> 352×240 해상도에서 프레임 간 1~2 px의 미세 움직임이 양자화 오차로 나타날 수 있으며, 이것이 가속도 변수의 높은 변동에 일부 기여했을 수 있습니다.</p>
+<p><strong>짧은 유효 구간:</strong> 전체 6.31초 중 인체가 탐지된 구간은 약 1.67초에 불과하여, 보행 주기 추정의 통계적 안정성이 제한적입니다. 보다 긴 촬영 구간이 확보되면 주기 분석의 신뢰도가 향상됩니다.</p>
+</section>
+</section>
+<section id="id6">
+<h2><strong>참고: 파이썬 코드</strong><a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">=============================================================</span>
+<span class="sd"> 달리기 동작 운동학 분석</span>
+<span class="sd"> - 방법: 배경 차분(Background Subtraction) + 윤곽 분석(Contour Analysis)</span>
+<span class="sd"> - 산출: 핵심 운동학 변수 추출 → 기초 기술통계 → 시각화</span>
+<span class="sd">=============================================================</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">detrend</span><span class="p">,</span> <span class="n">find_peaks</span>
+
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.family&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;DejaVu Sans&#39;</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.unicode_minus&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<span class="c1"># =============================================================</span>
+<span class="c1"># ★ 영상 파일 경로 (본인 환경에 맞게 수정)</span>
+<span class="c1"># =============================================================</span>
+<span class="n">VIDEO_PATH</span> <span class="o">=</span> <span class="s1">&#39;../Data/22-1.mp4&#39;</span>
+
+
+<span class="c1"># =============================================================</span>
+<span class="c1"># PART 1. 영상 로드 및 기본 정보 확인</span>
+<span class="c1"># =============================================================</span>
+
+<span class="n">cap</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="n">VIDEO_PATH</span><span class="p">)</span>
+<span class="n">fps</span> <span class="o">=</span> <span class="n">cap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FPS</span><span class="p">)</span>                    <span class="c1"># 프레임레이트</span>
+<span class="n">width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_WIDTH</span><span class="p">))</span>      <span class="c1"># 가로 해상도</span>
+<span class="n">height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_HEIGHT</span><span class="p">))</span>    <span class="c1"># 세로 해상도</span>
+<span class="n">total_frames</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">CAP_PROP_FRAME_COUNT</span><span class="p">))</span>  <span class="c1"># 총 프레임 수</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">fps</span>                                      <span class="c1"># 프레임 간 시간 간격</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FPS: </span><span class="si">{</span><span class="n">fps</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, Resolution: </span><span class="si">{</span><span class="n">width</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">height</span><span class="si">}</span><span class="s2">, &quot;</span>
+      <span class="sa">f</span><span class="s2">&quot;Total frames: </span><span class="si">{</span><span class="n">total_frames</span><span class="si">}</span><span class="s2">, Duration: </span><span class="si">{</span><span class="n">total_frames</span><span class="o">/</span><span class="n">fps</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+<span class="n">cap</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+
+
+<span class="c1"># =============================================================</span>
+<span class="c1"># PART 2. 배경 차분으로 인체 실루엣 추적</span>
+<span class="c1"># =============================================================</span>
+
+<span class="c1"># MOG2 배경 차분기 초기화</span>
+<span class="n">bg_sub</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">createBackgroundSubtractorMOG2</span><span class="p">(</span>
+    <span class="n">history</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">varThreshold</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">detectShadows</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+
+<span class="c1"># 1차 패스: 처음 30프레임으로 배경 모델 학습</span>
+<span class="n">cap_bg</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="n">VIDEO_PATH</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="n">total_frames</span><span class="p">)):</span>
+    <span class="n">ret</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">cap_bg</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="n">bg_sub</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+<span class="n">cap_bg</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+
+<span class="c1"># 2차 패스: 전체 프레임에서 인체 탐지 및 특징점 추출</span>
+<span class="n">cap</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="n">VIDEO_PATH</span><span class="p">)</span>
+<span class="n">kernel</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getStructuringElement</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_ELLIPSE</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>  <span class="c1"># 형태학 연산 커널</span>
+<span class="n">all_data</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">frame_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">total_frames</span><span class="p">):</span>
+    <span class="n">ret</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">cap</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">:</span>
+        <span class="k">break</span>
+
+    <span class="c1"># 전경 마스크 생성 및 노이즈 제거</span>
+    <span class="n">fg_mask</span> <span class="o">=</span> <span class="n">bg_sub</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">learningRate</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+    <span class="n">fg_mask</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">morphologyEx</span><span class="p">(</span><span class="n">fg_mask</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_OPEN</span><span class="p">,</span> <span class="n">kernel</span><span class="p">)</span>   <span class="c1"># 열기 연산 (노이즈 제거)</span>
+    <span class="n">fg_mask</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">morphologyEx</span><span class="p">(</span><span class="n">fg_mask</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_CLOSE</span><span class="p">,</span> <span class="n">kernel</span><span class="p">)</span>  <span class="c1"># 닫기 연산 (구멍 메우기)</span>
+    <span class="n">fg_mask</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">dilate</span><span class="p">(</span><span class="n">fg_mask</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>           <span class="c1"># 팽창 (연결 강화)</span>
+
+    <span class="c1"># 윤곽선 검출</span>
+    <span class="n">contours</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findContours</span><span class="p">(</span>
+        <span class="n">fg_mask</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">RETR_EXTERNAL</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CHAIN_APPROX_SIMPLE</span>
+    <span class="p">)</span>
+
+    <span class="n">row</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;frame&#39;</span><span class="p">:</span> <span class="n">frame_idx</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">frame_idx</span> <span class="o">*</span> <span class="n">dt</span><span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">contours</span><span class="p">:</span>
+        <span class="n">largest</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">contours</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">contourArea</span><span class="p">)</span>  <span class="c1"># 가장 큰 윤곽 = 인체</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">contourArea</span><span class="p">(</span><span class="n">largest</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">area</span> <span class="o">&gt;</span> <span class="mi">500</span><span class="p">:</span>  <span class="c1"># 최소 면적 임계값</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">boundingRect</span><span class="p">(</span><span class="n">largest</span><span class="p">)</span>  <span class="c1"># 바운딩 박스</span>
+
+            <span class="c1"># 무게중심(centroid) 계산</span>
+            <span class="n">M</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">moments</span><span class="p">(</span><span class="n">largest</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">M</span><span class="p">[</span><span class="s1">&#39;m00&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">cx</span> <span class="o">=</span> <span class="n">M</span><span class="p">[</span><span class="s1">&#39;m10&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">M</span><span class="p">[</span><span class="s1">&#39;m00&#39;</span><span class="p">]</span>
+                <span class="n">cy</span> <span class="o">=</span> <span class="n">M</span><span class="p">[</span><span class="s1">&#39;m01&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">M</span><span class="p">[</span><span class="s1">&#39;m00&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">h</span> <span class="o">/</span> <span class="mi">2</span>
+
+            <span class="c1"># 극단점 추출 (머리/발/좌/우)</span>
+            <span class="n">topmost</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">largest</span><span class="p">[</span><span class="n">largest</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">argmin</span><span class="p">()][</span><span class="mi">0</span><span class="p">])</span>     <span class="c1"># 최상단 → 머리</span>
+            <span class="n">bottommost</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">largest</span><span class="p">[</span><span class="n">largest</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">()][</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># 최하단 → 발</span>
+            <span class="n">leftmost</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">largest</span><span class="p">[</span><span class="n">largest</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">argmin</span><span class="p">()][</span><span class="mi">0</span><span class="p">])</span>    <span class="c1"># 최좌측</span>
+            <span class="n">rightmost</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">largest</span><span class="p">[</span><span class="n">largest</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">()][</span><span class="mi">0</span><span class="p">])</span>   <span class="c1"># 최우측</span>
+
+            <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+                <span class="s1">&#39;detected&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s1">&#39;bbox_x&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s1">&#39;bbox_y&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;bbox_w&#39;</span><span class="p">:</span> <span class="n">w</span><span class="p">,</span> <span class="s1">&#39;bbox_h&#39;</span><span class="p">:</span> <span class="n">h</span><span class="p">,</span>
+                <span class="s1">&#39;centroid_x&#39;</span><span class="p">:</span> <span class="n">cx</span><span class="p">,</span> <span class="s1">&#39;centroid_y&#39;</span><span class="p">:</span> <span class="n">cy</span><span class="p">,</span>
+                <span class="s1">&#39;area&#39;</span><span class="p">:</span> <span class="n">area</span><span class="p">,</span>
+                <span class="s1">&#39;head_x&#39;</span><span class="p">:</span> <span class="n">topmost</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;head_y&#39;</span><span class="p">:</span> <span class="n">topmost</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="s1">&#39;foot_x&#39;</span><span class="p">:</span> <span class="n">bottommost</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;foot_y&#39;</span><span class="p">:</span> <span class="n">bottommost</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="s1">&#39;left_x&#39;</span><span class="p">:</span> <span class="n">leftmost</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;right_x&#39;</span><span class="p">:</span> <span class="n">rightmost</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="s1">&#39;body_height&#39;</span><span class="p">:</span> <span class="n">bottommost</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">topmost</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>  <span class="c1"># 신체 높이</span>
+                <span class="s1">&#39;body_width&#39;</span><span class="p">:</span> <span class="n">rightmost</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">leftmost</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>   <span class="c1"># 신체 너비</span>
+            <span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">row</span><span class="p">[</span><span class="s1">&#39;detected&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">row</span><span class="p">[</span><span class="s1">&#39;detected&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="n">all_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+<span class="n">cap</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+
+
+<span class="c1"># =============================================================</span>
+<span class="c1"># PART 3. 운동학 변수 산출</span>
+<span class="c1"># =============================================================</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">all_data</span><span class="p">)</span>
+<span class="n">detected</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;detected&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Person detected in </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">detected</span><span class="p">)</span><span class="si">}</span><span class="s2"> / </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> frames&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Detection range: frame </span><span class="si">{</span><span class="n">detected</span><span class="p">[</span><span class="s1">&#39;frame&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">detected</span><span class="p">[</span><span class="s1">&#39;frame&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Time range: </span><span class="si">{</span><span class="n">detected</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">s to </span><span class="si">{</span><span class="n">detected</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+
+<span class="c1"># 변위 (프레임 간 위치 변화)</span>
+<span class="n">detected</span><span class="p">[</span><span class="s1">&#39;disp_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">detected</span><span class="p">[</span><span class="s1">&#39;centroid_x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+<span class="n">detected</span><span class="p">[</span><span class="s1">&#39;disp_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">detected</span><span class="p">[</span><span class="s1">&#39;centroid_y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+
+<span class="c1"># 속도 (변위 / 시간간격, px/s)</span>
+<span class="n">detected</span><span class="p">[</span><span class="s1">&#39;vel_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">detected</span><span class="p">[</span><span class="s1">&#39;disp_x&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">dt</span>   <span class="c1"># 수평 속도</span>
+<span class="n">detected</span><span class="p">[</span><span class="s1">&#39;vel_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">detected</span><span class="p">[</span><span class="s1">&#39;disp_y&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">dt</span>   <span class="c1"># 수직 속도</span>
+<span class="n">detected</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">detected</span><span class="p">[</span><span class="s1">&#39;vel_x&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">detected</span><span class="p">[</span><span class="s1">&#39;vel_y&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># 합성 속력</span>
+
+<span class="c1"># 가속도 (속도의 1차 미분, px/s²)</span>
+<span class="n">detected</span><span class="p">[</span><span class="s1">&#39;acc_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">detected</span><span class="p">[</span><span class="s1">&#39;vel_x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span> <span class="o">/</span> <span class="n">dt</span>   <span class="c1"># 수평 가속도</span>
+<span class="n">detected</span><span class="p">[</span><span class="s1">&#39;acc_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">detected</span><span class="p">[</span><span class="s1">&#39;vel_y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span> <span class="o">/</span> <span class="n">dt</span>   <span class="c1"># 수직 가속도</span>
+<span class="n">detected</span><span class="p">[</span><span class="s1">&#39;acc_mag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">detected</span><span class="p">[</span><span class="s1">&#39;acc_x&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">detected</span><span class="p">[</span><span class="s1">&#39;acc_y&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># 합성 가속도</span>
+
+<span class="c1"># 머리 수직 진동 (보행 주기 분석용)</span>
+<span class="n">detected</span><span class="p">[</span><span class="s1">&#39;head_disp_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">detected</span><span class="p">[</span><span class="s1">&#39;head_y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+<span class="n">detected</span><span class="p">[</span><span class="s1">&#39;head_vel_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">detected</span><span class="p">[</span><span class="s1">&#39;head_disp_y&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">dt</span>
+
+<span class="c1"># 신체 형태 변화량</span>
+<span class="n">detected</span><span class="p">[</span><span class="s1">&#39;body_width_change&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">detected</span><span class="p">[</span><span class="s1">&#39;body_width&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+<span class="n">detected</span><span class="p">[</span><span class="s1">&#39;height_change&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">detected</span><span class="p">[</span><span class="s1">&#39;body_height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+
+
+<span class="c1"># =============================================================</span>
+<span class="c1"># PART 4. 기초 기술통계량 산출</span>
+<span class="c1"># =============================================================</span>
+
+<span class="c1"># 1~2차 미분으로 인한 첫 프레임 NaN 제거</span>
+<span class="n">valid</span> <span class="o">=</span> <span class="n">detected</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;vel_x&#39;</span><span class="p">,</span> <span class="s1">&#39;acc_x&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># 분석 대상 운동학 변수 목록</span>
+<span class="n">kinematic_vars</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Horizontal Velocity Vx (px/s)&#39;</span><span class="p">:</span>   <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;vel_x&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Vertical Velocity Vy (px/s)&#39;</span><span class="p">:</span>     <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;vel_y&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Resultant Speed (px/s)&#39;</span><span class="p">:</span>          <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Horizontal Accel. ax (px/s2)&#39;</span><span class="p">:</span>    <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;acc_x&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Vertical Accel. ay (px/s2)&#39;</span><span class="p">:</span>      <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;acc_y&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Resultant Accel. |a| (px/s2)&#39;</span><span class="p">:</span>    <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;acc_mag&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Head Vertical Vel. (px/s)&#39;</span><span class="p">:</span>       <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;head_vel_y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">(),</span>
+    <span class="s1">&#39;Body Height (px)&#39;</span><span class="p">:</span>                <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;body_height&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Body Width (px)&#39;</span><span class="p">:</span>                 <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;body_width&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Silhouette Area (px2)&#39;</span><span class="p">:</span>           <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">],</span>
+<span class="p">}</span>
+
+<span class="c1"># 변수별 기술통계량 계산 (평균, SD, 최솟값, 최댓값, 범위, 중앙값, 변동계수)</span>
+<span class="n">stats_rows</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">series</span> <span class="ow">in</span> <span class="n">kinematic_vars</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">series</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+    <span class="n">stats_rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s1">&#39;Variable&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+        <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">),</span>
+        <span class="s1">&#39;Mean&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;SD&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;Min&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;Max&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;Range&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">s</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;Median&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;CV(%)&#39;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mf">0.01</span> <span class="k">else</span> <span class="s2">&quot;N/A&quot;</span>
+        <span class="p">),</span>
+    <span class="p">})</span>
+
+<span class="n">stats_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">stats_rows</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">===== Descriptive Statistics =====</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">stats_df</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+
+<span class="c1"># --- 전체 이동 요약 ---</span>
+<span class="n">total_disp_x</span> <span class="o">=</span> <span class="n">detected</span><span class="p">[</span><span class="s1">&#39;centroid_x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">detected</span><span class="p">[</span><span class="s1">&#39;centroid_x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># 총 수평 변위</span>
+<span class="n">total_disp_y</span> <span class="o">=</span> <span class="n">detected</span><span class="p">[</span><span class="s1">&#39;centroid_y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">detected</span><span class="p">[</span><span class="s1">&#39;centroid_y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># 총 수직 변위</span>
+<span class="n">total_time</span> <span class="o">=</span> <span class="n">detected</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">detected</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>               <span class="c1"># 총 이동 시간</span>
+<span class="n">avg_speed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">total_disp_x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">total_disp_y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">total_time</span>             <span class="c1"># 평균 속력</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">===== Global Movement Summary =====&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total horizontal displacement: </span><span class="si">{</span><span class="n">total_disp_x</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> px &quot;</span>
+      <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="s1">&#39;L to R&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">total_disp_x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;R to L&#39;</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total vertical displacement: </span><span class="si">{</span><span class="n">total_disp_y</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> px&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total movement time: </span><span class="si">{</span><span class="n">total_time</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> s&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Average speed: </span><span class="si">{</span><span class="n">avg_speed</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> px/s&quot;</span><span class="p">)</span>
+
+<span class="c1"># --- 보행 주기 분석 (머리 수직 진동 기반) ---</span>
+<span class="n">head_y</span> <span class="o">=</span> <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;head_y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">head_y</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+    <span class="n">peaks</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">find_peaks</span><span class="p">(</span><span class="n">head_y</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>      <span class="c1"># 수직 진동 피크</span>
+    <span class="n">valleys</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">find_peaks</span><span class="p">(</span><span class="o">-</span><span class="n">head_y</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>    <span class="c1"># 수직 진동 골</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">===== Gait Cycle Analysis (Head Vertical Oscillation) =====&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of peaks: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">peaks</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of valleys: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">valleys</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">peaks</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">peak_intervals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">valid</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">peaks</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>  <span class="c1"># 피크 간 시간 간격</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean peak interval (stride period): &quot;</span>
+              <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">peak_intervals</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> s&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Estimated stride frequency: &quot;</span>
+              <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="mi">1</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">peak_intervals</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> strides/s&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># =============================================================</span>
+<span class="c1"># PART 5. 시각화 (화면 출력만, 파일 저장 없음)</span>
+<span class="c1"># =============================================================</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Running Gait Kinematic Analysis&#39;</span><span class="p">,</span>
+             <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.98</span><span class="p">)</span>
+
+<span class="c1"># (a) 무게중심 궤적</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">sc</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">valid</span><span class="p">[</span><span class="s1">&#39;centroid_x&#39;</span><span class="p">],</span> <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;centroid_y&#39;</span><span class="p">],</span>
+                <span class="n">c</span><span class="o">=</span><span class="n">valid</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">valid</span><span class="p">[</span><span class="s1">&#39;centroid_x&#39;</span><span class="p">],</span> <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;centroid_y&#39;</span><span class="p">],</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;X position (px)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Y position (px)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;(a) Centroid Trajectory&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># (b) 수평 속도</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;vel_x&#39;</span><span class="p">],</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Vx&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">valid</span><span class="p">[</span><span class="s1">&#39;vel_x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Mean=</span><span class="si">{</span><span class="n">valid</span><span class="p">[</span><span class="s2">&quot;vel_x&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">t</span><span class="p">,</span>
+                <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;vel_x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;vel_x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">(),</span>
+                <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;vel_x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">+</span> <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;vel_x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">(),</span>
+                <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>  <span class="c1"># 평균 ± 1SD 범위</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Velocity (px/s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;(b) Horizontal Velocity (Vx)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># (c) 수직 속도</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;vel_y&#39;</span><span class="p">],</span> <span class="s1">&#39;g-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Vy&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>       <span class="c1"># 영점 기준선</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">valid</span><span class="p">[</span><span class="s1">&#39;vel_y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Mean=</span><span class="si">{</span><span class="n">valid</span><span class="p">[</span><span class="s2">&quot;vel_y&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Velocity (px/s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;(c) Vertical Velocity (Vy)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># (d) 합성 속력</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">],</span> <span class="s1">&#39;m-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Speed&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">valid</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Mean=</span><span class="si">{</span><span class="n">valid</span><span class="p">[</span><span class="s2">&quot;speed&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">t</span><span class="p">,</span>
+                <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">(),</span>
+                <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">+</span> <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">(),</span>
+                <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>  <span class="c1"># 평균 ± 1SD 범위</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Speed (px/s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;(d) Resultant Speed&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># (e) 합성 가속도 크기</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;acc_mag&#39;</span><span class="p">],</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;|a|&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">valid</span><span class="p">[</span><span class="s1">&#39;acc_mag&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Mean=</span><span class="si">{</span><span class="n">valid</span><span class="p">[</span><span class="s2">&quot;acc_mag&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Acceleration (px/s$^2$)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;(e) Acceleration Magnitude&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># (f) 머리 수직 진동 (보행 주기 파악용)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">head_y_vals</span> <span class="o">=</span> <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;head_y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">head_y_vals</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Head Y&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">head_y_vals</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+    <span class="n">detrended</span> <span class="o">=</span> <span class="n">detrend</span><span class="p">(</span><span class="n">head_y_vals</span><span class="p">)</span>  <span class="c1"># 선형 추세 제거</span>
+    <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">detrended</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Detrended&#39;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Detrended (px)&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Head Y position (px)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;(f) Head Vertical Oscillation&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>  <span class="c1"># 영상 좌표계: Y축 아래가 양</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># (g) 신체 높이·너비 변화</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;body_height&#39;</span><span class="p">],</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Height&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;body_width&#39;</span><span class="p">],</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Width&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Size (px)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;(g) Body Height &amp; Width&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># (h) 실루엣 면적 (신체 형상 변화 지표)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">valid</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">],</span> <span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Area&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">valid</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Mean=</span><span class="si">{</span><span class="n">valid</span><span class="p">[</span><span class="s2">&quot;area&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Area (px$^2$)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;(h) Silhouette Area&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">rect</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="c1"># =============================================================</span>
+<span class="c1"># PART 6. 통계표 이미지 (화면 출력만)</span>
+<span class="c1"># =============================================================</span>
+
+<span class="n">fig2</span><span class="p">,</span> <span class="n">ax_tbl</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax_tbl</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+<span class="n">col_labels</span> <span class="o">=</span> <span class="n">stats_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">cell_text</span> <span class="o">=</span> <span class="n">stats_df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="c1"># 테이블 생성</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">ax_tbl</span><span class="o">.</span><span class="n">table</span><span class="p">(</span>
+    <span class="n">cellText</span><span class="o">=</span><span class="n">cell_text</span><span class="p">,</span> <span class="n">colLabels</span><span class="o">=</span><span class="n">col_labels</span><span class="p">,</span>
+    <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">cellLoc</span><span class="o">=</span><span class="s1">&#39;center&#39;</span>
+<span class="p">)</span>
+<span class="n">table</span><span class="o">.</span><span class="n">auto_set_font_size</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">table</span><span class="o">.</span><span class="n">set_fontsize</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">table</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">)</span>
+
+<span class="c1"># 헤더 스타일 (진한 배경 + 흰색 글씨)</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">col_labels</span><span class="p">)):</span>
+    <span class="n">table</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s1">&#39;#2C3E50&#39;</span><span class="p">)</span>
+    <span class="n">table</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">set_text_props</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+
+<span class="c1"># 데이터 행 줄무늬 배경</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">cell_text</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">col_labels</span><span class="p">)):</span>
+        <span class="n">table</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s1">&#39;#ECF0F1&#39;</span> <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;white&#39;</span><span class="p">)</span>
+
+<span class="n">fig2</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Descriptive Statistics of Kinematic Variables&#39;</span><span class="p">,</span>
+              <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">===== Analysis Complete =====&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FPS: 29.97, Resolution: 352x240, Total frames: 189, Duration: 6.31s
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Person detected in 51 / 189 frames
+Detection range: frame 73 to 123
+Time range: 2.436s to 4.104s
+
+===== Descriptive Statistics =====
+
+                     Variable  N    Mean      SD       Min      Max    Range  Median   CV(%)
+Horizontal Velocity Vx (px/s) 49  194.39  137.10    -76.40   451.75   528.16  226.76    70.5
+  Vertical Velocity Vy (px/s) 49    8.40  231.11   -990.27   942.92  1933.20    8.12  2751.1
+       Resultant Speed (px/s) 49  284.32  168.32     68.34   990.57   922.23  281.08    59.2
+ Horizontal Accel. ax (px/s2) 49  -91.38 2192.33  -7424.22  5277.40 12701.61 -241.82  2399.2
+   Vertical Accel. ay (px/s2) 49   84.00 7632.00 -29837.01 22343.82 52180.83   65.57  9085.3
+ Resultant Accel. |a| (px/s2) 49 4442.23 6551.72    279.28 29965.31 29686.03 2311.39   147.5
+    Head Vertical Vel. (px/s) 49   -3.06  645.99  -3716.28  2337.66  6053.95    0.00 21123.3
+             Body Height (px) 49  161.71   55.90     47.00   212.00   165.00  189.00    34.6
+              Body Width (px) 49   93.76   29.35     32.00   131.00    99.00  103.00    31.3
+        Silhouette Area (px2) 49 7671.89 3612.20    679.00 11969.00 11290.00 9017.50    47.1
+
+===== Global Movement Summary =====
+Total horizontal displacement: 323.5 px (L to R)
+Total vertical displacement: 14.5 px
+Total movement time: 1.668 s
+Average speed: 194.1 px/s
+
+===== Gait Cycle Analysis (Head Vertical Oscillation) =====
+Number of peaks: 5
+Number of valleys: 5
+Mean peak interval (stride period): 0.309 s
+Estimated stride frequency: 3.2 strides/s
+</pre></div>
+</div>
+<img alt="../_images/46cea2d5e141bbac2ad5c6de5c6e08da870ace69f7e7533de38f89906286a690.png" src="../_images/46cea2d5e141bbac2ad5c6de5c6e08da870ace69f7e7533de38f89906286a690.png" />
+<img alt="../_images/ef4a0cb928421c3a2482d02e26f380eac1738bed3571e148ff134914624d5119.png" src="../_images/ef4a0cb928421c3a2482d02e26f380eac1738bed3571e148ff134914624d5119.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>===== Analysis Complete =====
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="21_%EA%B3%A8%EB%B0%80%EB%8F%84_%EA%B2%80%EC%82%AC_%EA%B2%B0%EA%B3%BC_%ED%95%B4%EC%84%9D.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><strong>21장 골밀도 검사 결과 해석</strong></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="23_%EC%B6%95%EA%B5%AC_%EA%B2%BD%EA%B8%B0_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><strong>23장 축구 경기 데이터 분석</strong></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><span style="color: blue;"><strong>러닝 영상 업로드 &amp; 운동학적 분석</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#claude"><strong>Claude 분석 보고서</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-overview">1. 분석 개요 (Analysis Overview)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">영상 사양</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2. 추출된 핵심 운동학 변수</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#displacement-velocity">변위·속도 변수 (Displacement &amp; Velocity)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#acceleration">가속도 변수 (Acceleration)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#body-morphology">형태 변수 (Body Morphology)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#descriptive-statistics">3. 기초 기술통계량 (Descriptive Statistics)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#global-movement-summary">4. 전체 이동 요약 (Global Movement Summary)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation">5. 결과 해석 (Interpretation)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#horizontal-velocity">5.1 수평 속도 (Horizontal Velocity)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#vertical-velocity">5.2 수직 속도 (Vertical Velocity)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#resultant-speed">5.3 합성 속력 (Resultant Speed)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">5.4 가속도 (Acceleration)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#head-oscillation-gait-cycle">5.5 머리 수직 진동 &amp; 보행 주기 (Head Oscillation &amp; Gait Cycle)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5.6 신체 형태 변수 (Body Morphology)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-recommendations">6. 분석 한계 및 제언 (Limitations &amp; Recommendations)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><strong>참고: 파이썬 코드</strong></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By 김원경 최필선
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

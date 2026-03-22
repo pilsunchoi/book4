@@ -1,0 +1,459 @@
+Traceback (most recent call last):
+  File "C:\Users\pilsu\anaconda3\Lib\site-packages\jupyter_cache\executors\utils.py", line 58, in single_nb_execution
+    executenb(
+  File "C:\Users\pilsu\anaconda3\Lib\site-packages\nbclient\client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pilsu\anaconda3\Lib\site-packages\jupyter_core\utils\__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pilsu\anaconda3\Lib\asyncio\base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\pilsu\anaconda3\Lib\site-packages\nbclient\client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "C:\Users\pilsu\anaconda3\Lib\site-packages\nbclient\client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "C:\Users\pilsu\anaconda3\Lib\site-packages\nbclient\client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+"""
+World Bank WDI API를 통한 COVID-19 전후 주요국 경제성장률 분석
+지표: NY.GDP.MKTP.KD.ZG (GDP growth, annual %)
+"""
+
+import pandas as pd
+import requests
+import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
+import numpy as np
+from tabulate import tabulate
+
+
+# ══════════════════════════════════════════════════
+# 1. World Bank API 데이터 호출 함수
+# ══════════════════════════════════════════════════
+
+def wb_fetch(countries, indicator, start=2000, end=2024):
+    """World Bank WDI API v2에서 지표 데이터를 가져오는 함수"""
+    cc = ";".join(countries)
+    url = f"https://api.worldbank.org/v2/country/{cc}/indicator/{indicator}"
+    params = {
+        "date": f"{start}:{end}",
+        "format": "json",
+        "per_page": 20000
+    }
+    r = requests.get(url, params=params, timeout=60)
+    r.raise_for_status()
+    data = r.json()[1]  # [0]=paging, [1]=records
+    rows = []
+    for x in data:
+        rows.append({
+            "country": x["country"]["value"],
+            "iso3": x["countryiso3code"],
+            "year": int(x["date"]),
+            "value": x["value"]
+        })
+    df = pd.DataFrame(rows).dropna(subset=["value"])
+    df = df.sort_values(["iso3", "year"])
+    return df
+
+
+# ══════════════════════════════════════════════════
+# 2. 분석 대상 국가 및 기간 설정
+# ══════════════════════════════════════════════════
+
+# 주요 선진국 + 중국 (G7 + 한국, 중국, 호주)
+countries = ["KOR", "USA", "JPN", "CHN", "DEU", "GBR", "FRA", "CAN", "ITA", "AUS"]
+start, end = 2017, 2023
+
+# 국가코드 → 표시 이름 매핑
+COUNTRY_NAMES = {
+    "KOR": "South Korea",  "USA": "United States", "JPN": "Japan",
+    "CHN": "China",        "DEU": "Germany",       "GBR": "United Kingdom",
+    "FRA": "France",       "CAN": "Canada",        "ITA": "Italy",
+    "AUS": "Australia",
+}
+
+# 국가 표시 순서 (그래프/표에서 사용)
+DISPLAY_ORDER = list(COUNTRY_NAMES.values())
+
+
+# ══════════════════════════════════════════════════
+# 3. API 호출 및 데이터 수집
+# ══════════════════════════════════════════════════
+
+print("📡 World Bank WDI API에서 GDP 성장률 데이터를 가져오는 중...")
+gdp = wb_fetch(countries, "NY.GDP.MKTP.KD.ZG", start, end)
+
+# 국가명을 간결한 이름으로 변환
+gdp["country"] = gdp["iso3"].map(COUNTRY_NAMES)
+print(f"✅ 총 {len(gdp)}건의 데이터를 성공적으로 수신하였습니다.\n")
+
+
+# ══════════════════════════════════════════════════
+# 4. 피벗 테이블 생성 및 콘솔 출력
+# ══════════════════════════════════════════════════
+
+# 피벗: 행=국가, 열=연도, 값=GDP 성장률
+pivot = gdp.pivot_table(index="country", columns="year", values="value")
+pivot = pivot.reindex(DISPLAY_ORDER)
+
+# COVID-19 충격 계산 (2020 - 2019)
+pivot["Shock\n(2020-2019)"] = (pivot[2020] - pivot[2019]).round(1)
+# 회복 반등 계산 (2021 - 2020)
+pivot["Recovery\n(2021-2020)"] = (pivot[2021] - pivot[2020]).round(1)
+
+# 평균 행 추가
+avg = pivot.mean().round(1)
+avg.name = "[Average]"
+table_display = pd.concat([pivot, avg.to_frame().T])
+
+print("=" * 110)
+print("  GDP Growth Rate (annual %) — World Bank WDI (NY.GDP.MKTP.KD.ZG)")
+print("=" * 110)
+print(tabulate(table_display, headers="keys", tablefmt="fancy_grid", floatfmt=".1f"))
+print()
+
+
+# ══════════════════════════════════════════════════
+# 5. 그래프 생성
+# ══════════════════════════════════════════════════
+
+plt.rcParams.update({
+    "font.family": "DejaVu Sans",
+    "axes.unicode_minus": False,
+    "figure.dpi": 150,
+})
+
+# 그래프용 피벗 (추가 열 없이 연도만)
+plot_pivot = gdp.pivot_table(index="country", columns="year", values="value")
+plot_pivot = plot_pivot.reindex(DISPLAY_ORDER)
+
+years = sorted(plot_pivot.columns.tolist())
+
+# 색상 팔레트
+COLORS = [
+    "#E63946", "#1D3557", "#457B9D", "#E9C46A", "#2A9D8F",
+    "#264653", "#F4A261", "#6A4C93", "#1982C4", "#8AC926",
+]
+
+# 주요 강조 국가 (선 굵게 + 원형 마커)
+HIGHLIGHT = {"South Korea", "United States", "China", "Japan"}
+
+fig = plt.figure(figsize=(20, 18), facecolor="white")
+fig.suptitle(
+    "GDP Growth Around COVID-19 Pandemic\n"
+    "Source: World Bank WDI (NY.GDP.MKTP.KD.ZG)",
+    fontsize=16, fontweight="bold", y=0.98,
+)
+
+
+# ── 그래프 1: 선 그래프 (전체 추이) ──
+ax1 = fig.add_subplot(3, 1, 1)
+
+for i, (country, row) in enumerate(plot_pivot.iterrows()):
+    is_highlight = country in HIGHLIGHT
+    ax1.plot(
+        years, row.values,
+        label=country,
+        color=COLORS[i],
+        linewidth=2.8 if is_highlight else 1.4,
+        marker="o" if is_highlight else "s",
+        markersize=7 if is_highlight else 4,
+        alpha=1.0 if is_highlight else 0.65,
+        zorder=3 if is_highlight else 2,
+    )
+
+# COVID-19 발생 연도 강조 영역 표시
+ax1.axvspan(2019.5, 2020.5, color="#FFD6D6", alpha=0.4)
+ax1.annotate(
+    "COVID-19\nPandemic", xy=(2020, plot_pivot.max().max() * 0.85),
+    fontsize=11, color="#C0392B", fontweight="bold", ha="center",
+)
+# 0% 기준선
+ax1.axhline(y=0, color="gray", linewidth=0.8, linestyle="--", alpha=0.7)
+
+ax1.set_title("GDP Growth Rate Trends (2017–2023)", fontsize=14, fontweight="bold", pad=12)
+ax1.set_xlabel("Year", fontsize=11)
+ax1.set_ylabel("GDP Growth (%)", fontsize=11)
+ax1.set_xticks(years)
+ax1.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.1f%%"))
+ax1.legend(loc="lower left", ncol=5, fontsize=8.5, framealpha=0.9)
+ax1.grid(True, alpha=0.3)
+
+
+# ── 그래프 2: 히트맵 (국가 × 연도 성장률) ──
+ax2 = fig.add_subplot(3, 1, 2)
+
+data_arr = plot_pivot.values
+im = ax2.imshow(data_arr, cmap="RdYlGn", aspect="auto", vmin=-11, vmax=9)
+
+# 각 셀에 수치 라벨 표시
+for i in range(data_arr.shape[0]):
+    for j in range(data_arr.shape[1]):
+        val = data_arr[i, j]
+        if np.isnan(val):
+            continue
+        txt_color = "white" if abs(val) > 6 else "black"
+        ax2.text(j, i, f"{val:.1f}%", ha="center", va="center",
+                 fontsize=9, fontweight="bold", color=txt_color)
+
+ax2.set_xticks(range(len(years)))
+ax2.set_xticklabels(years, fontsize=10)
+ax2.set_yticks(range(len(plot_pivot.index)))
+ax2.set_yticklabels(plot_pivot.index, fontsize=10)
+ax2.set_title("Heatmap of GDP Growth by Country and Year", fontsize=14, fontweight="bold", pad=12)
+
+cbar = fig.colorbar(im, ax=ax2, shrink=0.8, pad=0.02)
+cbar.set_label("GDP Growth (%)", fontsize=10)
+
+
+# ── 그래프 3: COVID-19 충격 vs 회복 바 차트 ──
+ax3 = fig.add_subplot(3, 1, 3)
+
+country_labels = plot_pivot.index.tolist()
+x = np.arange(len(country_labels))
+width = 0.35
+
+# 2020년 성장률(충격)과 2021년 성장률(회복)
+shock_vals = plot_pivot[2020].values
+recovery_vals = plot_pivot[2021].values
+
+bars1 = ax3.bar(x - width / 2, shock_vals, width,
+                label="2020 (COVID Shock)", color="#E63946",
+                edgecolor="white", linewidth=0.5)
+bars2 = ax3.bar(x + width / 2, recovery_vals, width,
+                label="2021 (Recovery)", color="#2A9D8F",
+                edgecolor="white", linewidth=0.5)
+
+# 바 위/아래에 수치 라벨 표시
+for bar in bars1:
+    h = bar.get_height()
+    y_pos = h - 0.3 if h < 0 else h + 0.2
+    ax3.text(bar.get_x() + bar.get_width() / 2, y_pos,
+             f"{h:.1f}%", ha="center", va="bottom" if h >= 0 else "top",
+             fontsize=8, fontweight="bold", color="#C0392B")
+for bar in bars2:
+    h = bar.get_height()
+    ax3.text(bar.get_x() + bar.get_width() / 2, h + 0.2,
+             f"{h:.1f}%", ha="center", va="bottom",
+             fontsize=8, fontweight="bold", color="#1B7A6B")
+
+ax3.axhline(y=0, color="gray", linewidth=0.8, linestyle="--")
+ax3.set_xticks(x)
+ax3.set_xticklabels(country_labels, fontsize=9, rotation=25, ha="right")
+ax3.set_ylabel("GDP Growth (%)", fontsize=11)
+ax3.set_title("COVID-19 Shock (2020) vs Recovery (2021)", fontsize=14, fontweight="bold", pad=12)
+ax3.legend(fontsize=10)
+ax3.grid(axis="y", alpha=0.3)
+ax3.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.1f%%"))
+
+plt.show()
+
+
+# ══════════════════════════════════════════════════
+# 6. 주요 분석 결과 요약
+# ══════════════════════════════════════════════════
+
+print("── 주요 분석 결과 ──")
+min_2020_idx = plot_pivot[2020].idxmin()
+print(f"  • 2020년 최대 하락 국가: {min_2020_idx} ({plot_pivot.loc[min_2020_idx, 2020]:.1f}%)")
+
+# 2020년 플러스 성장 국가
+positive_2020 = plot_pivot[plot_pivot[2020] > 0][2020]
+if not positive_2020.empty:
+    for c, v in positive_2020.items():
+        print(f"  • 2020년 플러스 성장 유지: {c} (+{v:.1f}%)")
+
+max_2021_idx = plot_pivot[2021].idxmax()
+print(f"  • 2021년 최대 반등 국가: {max_2021_idx} (+{plot_pivot.loc[max_2021_idx, 2021]:.1f}%)")
+
+shock = plot_pivot[2020] - plot_pivot[2019]
+print(f"  • COVID-19 충격 최대 (2020-2019 갭): {shock.idxmin()} ({shock.min():.1f}%p)")
+------------------
+
+----- stdout -----
+📡 World Bank WDI API에서 GDP 성장률 데이터를 가져오는 중...
+------------------
+
+[31m---------------------------------------------------------------------------[39m
+[31mTimeoutError[39m                              Traceback (most recent call last)
+[36mFile [39m[32m~\anaconda3\Lib\site-packages\urllib3\connectionpool.py:534[39m, in [36mHTTPConnectionPool._make_request[39m[34m(self, conn, method, url, body, headers, retries, timeout, chunked, response_conn, preload_content, decode_content, enforce_content_length)[39m
+[32m    533[39m [38;5;28;01mtry[39;00m:
+[32m--> [39m[32m534[39m     response = [43mconn[49m[43m.[49m[43mgetresponse[49m[43m([49m[43m)[49m
+[32m    535[39m [38;5;28;01mexcept[39;00m (BaseSSLError, [38;5;167;01mOSError[39;00m) [38;5;28;01mas[39;00m e:
+
+[36mFile [39m[32m~\anaconda3\Lib\site-packages\urllib3\connection.py:571[39m, in [36mHTTPConnection.getresponse[39m[34m(self)[39m
+[32m    570[39m [38;5;66;03m# Get the response from http.client.HTTPConnection[39;00m
+[32m--> [39m[32m571[39m httplib_response = [38;5;28;43msuper[39;49m[43m([49m[43m)[49m[43m.[49m[43mgetresponse[49m[43m([49m[43m)[49m
+[32m    573[39m [38;5;28;01mtry[39;00m:
+
+[36mFile [39m[32m~\anaconda3\Lib\http\client.py:1428[39m, in [36mHTTPConnection.getresponse[39m[34m(self)[39m
+[32m   1427[39m [38;5;28;01mtry[39;00m:
+[32m-> [39m[32m1428[39m     [43mresponse[49m[43m.[49m[43mbegin[49m[43m([49m[43m)[49m
+[32m   1429[39m [38;5;28;01mexcept[39;00m [38;5;167;01mConnectionError[39;00m:
+
+[36mFile [39m[32m~\anaconda3\Lib\http\client.py:331[39m, in [36mHTTPResponse.begin[39m[34m(self)[39m
+[32m    330[39m [38;5;28;01mwhile[39;00m [38;5;28;01mTrue[39;00m:
+[32m--> [39m[32m331[39m     version, status, reason = [38;5;28;43mself[39;49m[43m.[49m[43m_read_status[49m[43m([49m[43m)[49m
+[32m    332[39m     [38;5;28;01mif[39;00m status != CONTINUE:
+
+[36mFile [39m[32m~\anaconda3\Lib\http\client.py:292[39m, in [36mHTTPResponse._read_status[39m[34m(self)[39m
+[32m    291[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34m_read_status[39m([38;5;28mself[39m):
+[32m--> [39m[32m292[39m     line = [38;5;28mstr[39m([38;5;28;43mself[39;49m[43m.[49m[43mfp[49m[43m.[49m[43mreadline[49m[43m([49m[43m_MAXLINE[49m[43m [49m[43m+[49m[43m [49m[32;43m1[39;49m[43m)[49m, [33m"[39m[33miso-8859-1[39m[33m"[39m)
+[32m    293[39m     [38;5;28;01mif[39;00m [38;5;28mlen[39m(line) > _MAXLINE:
+
+[36mFile [39m[32m~\anaconda3\Lib\socket.py:707[39m, in [36mSocketIO.readinto[39m[34m(self, b)[39m
+[32m    706[39m [38;5;28;01mtry[39;00m:
+[32m--> [39m[32m707[39m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[43m.[49m[43m_sock[49m[43m.[49m[43mrecv_into[49m[43m([49m[43mb[49m[43m)[49m
+[32m    708[39m [38;5;28;01mexcept[39;00m timeout:
+
+[36mFile [39m[32m~\anaconda3\Lib\ssl.py:1252[39m, in [36mSSLSocket.recv_into[39m[34m(self, buffer, nbytes, flags)[39m
+[32m   1249[39m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(
+[32m   1250[39m           [33m"[39m[33mnon-zero flags not allowed in calls to recv_into() on [39m[38;5;132;01m%s[39;00m[33m"[39m %
+[32m   1251[39m           [38;5;28mself[39m.[34m__class__[39m)
+[32m-> [39m[32m1252[39m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[43m.[49m[43mread[49m[43m([49m[43mnbytes[49m[43m,[49m[43m [49m[43mbuffer[49m[43m)[49m
+[32m   1253[39m [38;5;28;01melse[39;00m:
+
+[36mFile [39m[32m~\anaconda3\Lib\ssl.py:1104[39m, in [36mSSLSocket.read[39m[34m(self, len, buffer)[39m
+[32m   1103[39m [38;5;28;01mif[39;00m buffer [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+[32m-> [39m[32m1104[39m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[43m.[49m[43m_sslobj[49m[43m.[49m[43mread[49m[43m([49m[38;5;28;43mlen[39;49m[43m,[49m[43m [49m[43mbuffer[49m[43m)[49m
+[32m   1105[39m [38;5;28;01melse[39;00m:
+
+[31mTimeoutError[39m: The read operation timed out
+
+The above exception was the direct cause of the following exception:
+
+[31mReadTimeoutError[39m                          Traceback (most recent call last)
+[36mFile [39m[32m~\anaconda3\Lib\site-packages\requests\adapters.py:644[39m, in [36mHTTPAdapter.send[39m[34m(self, request, stream, timeout, verify, cert, proxies)[39m
+[32m    643[39m [38;5;28;01mtry[39;00m:
+[32m--> [39m[32m644[39m     resp = [43mconn[49m[43m.[49m[43murlopen[49m[43m([49m
+[32m    645[39m [43m        [49m[43mmethod[49m[43m=[49m[43mrequest[49m[43m.[49m[43mmethod[49m[43m,[49m
+[32m    646[39m [43m        [49m[43murl[49m[43m=[49m[43murl[49m[43m,[49m
+[32m    647[39m [43m        [49m[43mbody[49m[43m=[49m[43mrequest[49m[43m.[49m[43mbody[49m[43m,[49m
+[32m    648[39m [43m        [49m[43mheaders[49m[43m=[49m[43mrequest[49m[43m.[49m[43mheaders[49m[43m,[49m
+[32m    649[39m [43m        [49m[43mredirect[49m[43m=[49m[38;5;28;43;01mFalse[39;49;00m[43m,[49m
+[32m    650[39m [43m        [49m[43massert_same_host[49m[43m=[49m[38;5;28;43;01mFalse[39;49;00m[43m,[49m
+[32m    651[39m [43m        [49m[43mpreload_content[49m[43m=[49m[38;5;28;43;01mFalse[39;49;00m[43m,[49m
+[32m    652[39m [43m        [49m[43mdecode_content[49m[43m=[49m[38;5;28;43;01mFalse[39;49;00m[43m,[49m
+[32m    653[39m [43m        [49m[43mretries[49m[43m=[49m[38;5;28;43mself[39;49m[43m.[49m[43mmax_retries[49m[43m,[49m
+[32m    654[39m [43m        [49m[43mtimeout[49m[43m=[49m[43mtimeout[49m[43m,[49m
+[32m    655[39m [43m        [49m[43mchunked[49m[43m=[49m[43mchunked[49m[43m,[49m
+[32m    656[39m [43m    [49m[43m)[49m
+[32m    658[39m [38;5;28;01mexcept[39;00m (ProtocolError, [38;5;167;01mOSError[39;00m) [38;5;28;01mas[39;00m err:
+
+[36mFile [39m[32m~\anaconda3\Lib\site-packages\urllib3\connectionpool.py:841[39m, in [36mHTTPConnectionPool.urlopen[39m[34m(self, method, url, body, headers, retries, redirect, assert_same_host, timeout, pool_timeout, release_conn, chunked, body_pos, preload_content, decode_content, **response_kw)[39m
+[32m    839[39m     new_e = ProtocolError([33m"[39m[33mConnection aborted.[39m[33m"[39m, new_e)
+[32m--> [39m[32m841[39m retries = [43mretries[49m[43m.[49m[43mincrement[49m[43m([49m
+[32m    842[39m [43m    [49m[43mmethod[49m[43m,[49m[43m [49m[43murl[49m[43m,[49m[43m [49m[43merror[49m[43m=[49m[43mnew_e[49m[43m,[49m[43m [49m[43m_pool[49m[43m=[49m[38;5;28;43mself[39;49m[43m,[49m[43m [49m[43m_stacktrace[49m[43m=[49m[43msys[49m[43m.[49m[43mexc_info[49m[43m([49m[43m)[49m[43m[[49m[32;43m2[39;49m[43m][49m
+[32m    843[39m [43m[49m[43m)[49m
+[32m    844[39m retries.sleep()
+
+[36mFile [39m[32m~\anaconda3\Lib\site-packages\urllib3\util\retry.py:474[39m, in [36mRetry.increment[39m[34m(self, method, url, response, error, _pool, _stacktrace)[39m
+[32m    473[39m [38;5;28;01mif[39;00m read [38;5;129;01mis[39;00m [38;5;28;01mFalse[39;00m [38;5;129;01mor[39;00m method [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m [38;5;129;01mor[39;00m [38;5;129;01mnot[39;00m [38;5;28mself[39m._is_method_retryable(method):
+[32m--> [39m[32m474[39m     [38;5;28;01mraise[39;00m [43mreraise[49m[43m([49m[38;5;28;43mtype[39;49m[43m([49m[43merror[49m[43m)[49m[43m,[49m[43m [49m[43merror[49m[43m,[49m[43m [49m[43m_stacktrace[49m[43m)[49m
+[32m    475[39m [38;5;28;01melif[39;00m read [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+
+[36mFile [39m[32m~\anaconda3\Lib\site-packages\urllib3\util\util.py:39[39m, in [36mreraise[39m[34m(tp, value, tb)[39m
+[32m     38[39m         [38;5;28;01mraise[39;00m value.with_traceback(tb)
+[32m---> [39m[32m39[39m     [38;5;28;01mraise[39;00m value
+[32m     40[39m [38;5;28;01mfinally[39;00m:
+
+[36mFile [39m[32m~\anaconda3\Lib\site-packages\urllib3\connectionpool.py:787[39m, in [36mHTTPConnectionPool.urlopen[39m[34m(self, method, url, body, headers, retries, redirect, assert_same_host, timeout, pool_timeout, release_conn, chunked, body_pos, preload_content, decode_content, **response_kw)[39m
+[32m    786[39m [38;5;66;03m# Make the request on the HTTPConnection object[39;00m
+[32m--> [39m[32m787[39m response = [38;5;28;43mself[39;49m[43m.[49m[43m_make_request[49m[43m([49m
+[32m    788[39m [43m    [49m[43mconn[49m[43m,[49m
+[32m    789[39m [43m    [49m[43mmethod[49m[43m,[49m
+[32m    790[39m [43m    [49m[43murl[49m[43m,[49m
+[32m    791[39m [43m    [49m[43mtimeout[49m[43m=[49m[43mtimeout_obj[49m[43m,[49m
+[32m    792[39m [43m    [49m[43mbody[49m[43m=[49m[43mbody[49m[43m,[49m
+[32m    793[39m [43m    [49m[43mheaders[49m[43m=[49m[43mheaders[49m[43m,[49m
+[32m    794[39m [43m    [49m[43mchunked[49m[43m=[49m[43mchunked[49m[43m,[49m
+[32m    795[39m [43m    [49m[43mretries[49m[43m=[49m[43mretries[49m[43m,[49m
+[32m    796[39m [43m    [49m[43mresponse_conn[49m[43m=[49m[43mresponse_conn[49m[43m,[49m
+[32m    797[39m [43m    [49m[43mpreload_content[49m[43m=[49m[43mpreload_content[49m[43m,[49m
+[32m    798[39m [43m    [49m[43mdecode_content[49m[43m=[49m[43mdecode_content[49m[43m,[49m
+[32m    799[39m [43m    [49m[43m*[49m[43m*[49m[43mresponse_kw[49m[43m,[49m
+[32m    800[39m [43m[49m[43m)[49m
+[32m    802[39m [38;5;66;03m# Everything went great![39;00m
+
+[36mFile [39m[32m~\anaconda3\Lib\site-packages\urllib3\connectionpool.py:536[39m, in [36mHTTPConnectionPool._make_request[39m[34m(self, conn, method, url, body, headers, retries, timeout, chunked, response_conn, preload_content, decode_content, enforce_content_length)[39m
+[32m    535[39m [38;5;28;01mexcept[39;00m (BaseSSLError, [38;5;167;01mOSError[39;00m) [38;5;28;01mas[39;00m e:
+[32m--> [39m[32m536[39m     [38;5;28;43mself[39;49m[43m.[49m[43m_raise_timeout[49m[43m([49m[43merr[49m[43m=[49m[43me[49m[43m,[49m[43m [49m[43murl[49m[43m=[49m[43murl[49m[43m,[49m[43m [49m[43mtimeout_value[49m[43m=[49m[43mread_timeout[49m[43m)[49m
+[32m    537[39m     [38;5;28;01mraise[39;00m
+
+[36mFile [39m[32m~\anaconda3\Lib\site-packages\urllib3\connectionpool.py:367[39m, in [36mHTTPConnectionPool._raise_timeout[39m[34m(self, err, url, timeout_value)[39m
+[32m    366[39m [38;5;28;01mif[39;00m [38;5;28misinstance[39m(err, SocketTimeout):
+[32m--> [39m[32m367[39m     [38;5;28;01mraise[39;00m ReadTimeoutError(
+[32m    368[39m         [38;5;28mself[39m, url, [33mf[39m[33m"[39m[33mRead timed out. (read timeout=[39m[38;5;132;01m{[39;00mtimeout_value[38;5;132;01m}[39;00m[33m)[39m[33m"[39m
+[32m    369[39m     ) [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01merr[39;00m
+[32m    371[39m [38;5;66;03m# See the above comment about EAGAIN in Python 3.[39;00m
+
+[31mReadTimeoutError[39m: HTTPSConnectionPool(host='api.worldbank.org', port=443): Read timed out. (read timeout=60)
+
+During handling of the above exception, another exception occurred:
+
+[31mReadTimeout[39m                               Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[1][39m[32m, line 68[39m
+[32m     63[39m [38;5;66;03m# ══════════════════════════════════════════════════[39;00m
+[32m     64[39m [38;5;66;03m# 3. API 호출 및 데이터 수집[39;00m
+[32m     65[39m [38;5;66;03m# ══════════════════════════════════════════════════[39;00m
+[32m     67[39m [38;5;28mprint[39m([33m"[39m[33m📡 World Bank WDI API에서 GDP 성장률 데이터를 가져오는 중...[39m[33m"[39m)
+[32m---> [39m[32m68[39m gdp = [43mwb_fetch[49m[43m([49m[43mcountries[49m[43m,[49m[43m [49m[33;43m"[39;49m[33;43mNY.GDP.MKTP.KD.ZG[39;49m[33;43m"[39;49m[43m,[49m[43m [49m[43mstart[49m[43m,[49m[43m [49m[43mend[49m[43m)[49m
+[32m     70[39m [38;5;66;03m# 국가명을 간결한 이름으로 변환[39;00m
+[32m     71[39m gdp[[33m"[39m[33mcountry[39m[33m"[39m] = gdp[[33m"[39m[33miso3[39m[33m"[39m].map(COUNTRY_NAMES)
+
+[36mCell[39m[36m [39m[32mIn[1][39m[32m, line 27[39m, in [36mwb_fetch[39m[34m(countries, indicator, start, end)[39m
+[32m     21[39m url = [33mf[39m[33m"[39m[33mhttps://api.worldbank.org/v2/country/[39m[38;5;132;01m{[39;00mcc[38;5;132;01m}[39;00m[33m/indicator/[39m[38;5;132;01m{[39;00mindicator[38;5;132;01m}[39;00m[33m"[39m
+[32m     22[39m params = {
+[32m     23[39m     [33m"[39m[33mdate[39m[33m"[39m: [33mf[39m[33m"[39m[38;5;132;01m{[39;00mstart[38;5;132;01m}[39;00m[33m:[39m[38;5;132;01m{[39;00mend[38;5;132;01m}[39;00m[33m"[39m,
+[32m     24[39m     [33m"[39m[33mformat[39m[33m"[39m: [33m"[39m[33mjson[39m[33m"[39m,
+[32m     25[39m     [33m"[39m[33mper_page[39m[33m"[39m: [32m20000[39m
+[32m     26[39m }
+[32m---> [39m[32m27[39m r = [43mrequests[49m[43m.[49m[43mget[49m[43m([49m[43murl[49m[43m,[49m[43m [49m[43mparams[49m[43m=[49m[43mparams[49m[43m,[49m[43m [49m[43mtimeout[49m[43m=[49m[32;43m60[39;49m[43m)[49m
+[32m     28[39m r.raise_for_status()
+[32m     29[39m data = r.json()[[32m1[39m]  [38;5;66;03m# [0]=paging, [1]=records[39;00m
+
+[36mFile [39m[32m~\anaconda3\Lib\site-packages\requests\api.py:73[39m, in [36mget[39m[34m(url, params, **kwargs)[39m
+[32m     62[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mget[39m(url, params=[38;5;28;01mNone[39;00m, **kwargs):
+[32m     63[39m [38;5;250m    [39m[33mr[39m[33;03m"""Sends a GET request.[39;00m
+[32m     64[39m 
+[32m     65[39m [33;03m    :param url: URL for the new :class:`Request` object.[39;00m
+[32m   (...)[39m[32m     70[39m [33;03m    :rtype: requests.Response[39;00m
+[32m     71[39m [33;03m    """[39;00m
+[32m---> [39m[32m73[39m     [38;5;28;01mreturn[39;00m [43mrequest[49m[43m([49m[33;43m"[39;49m[33;43mget[39;49m[33;43m"[39;49m[43m,[49m[43m [49m[43murl[49m[43m,[49m[43m [49m[43mparams[49m[43m=[49m[43mparams[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m
+
+[36mFile [39m[32m~\anaconda3\Lib\site-packages\requests\api.py:59[39m, in [36mrequest[39m[34m(method, url, **kwargs)[39m
+[32m     55[39m [38;5;66;03m# By using the 'with' statement we are sure the session is closed, thus we[39;00m
+[32m     56[39m [38;5;66;03m# avoid leaving sockets open which can trigger a ResourceWarning in some[39;00m
+[32m     57[39m [38;5;66;03m# cases, and look like a memory leak in others.[39;00m
+[32m     58[39m [38;5;28;01mwith[39;00m sessions.Session() [38;5;28;01mas[39;00m session:
+[32m---> [39m[32m59[39m     [38;5;28;01mreturn[39;00m [43msession[49m[43m.[49m[43mrequest[49m[43m([49m[43mmethod[49m[43m=[49m[43mmethod[49m[43m,[49m[43m [49m[43murl[49m[43m=[49m[43murl[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m
+
+[36mFile [39m[32m~\anaconda3\Lib\site-packages\requests\sessions.py:589[39m, in [36mSession.request[39m[34m(self, method, url, params, data, headers, cookies, files, auth, timeout, allow_redirects, proxies, hooks, stream, verify, cert, json)[39m
+[32m    584[39m send_kwargs = {
+[32m    585[39m     [33m"[39m[33mtimeout[39m[33m"[39m: timeout,
+[32m    586[39m     [33m"[39m[33mallow_redirects[39m[33m"[39m: allow_redirects,
+[32m    587[39m }
+[32m    588[39m send_kwargs.update(settings)
+[32m--> [39m[32m589[39m resp = [38;5;28;43mself[39;49m[43m.[49m[43msend[49m[43m([49m[43mprep[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43msend_kwargs[49m[43m)[49m
+[32m    591[39m [38;5;28;01mreturn[39;00m resp
+
+[36mFile [39m[32m~\anaconda3\Lib\site-packages\requests\sessions.py:703[39m, in [36mSession.send[39m[34m(self, request, **kwargs)[39m
+[32m    700[39m start = preferred_clock()
+[32m    702[39m [38;5;66;03m# Send the request[39;00m
+[32m--> [39m[32m703[39m r = [43madapter[49m[43m.[49m[43msend[49m[43m([49m[43mrequest[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m
+[32m    705[39m [38;5;66;03m# Total elapsed time of the request (approximately)[39;00m
+[32m    706[39m elapsed = preferred_clock() - start
+
+[36mFile [39m[32m~\anaconda3\Lib\site-packages\requests\adapters.py:690[39m, in [36mHTTPAdapter.send[39m[34m(self, request, stream, timeout, verify, cert, proxies)[39m
+[32m    688[39m     [38;5;28;01mraise[39;00m SSLError(e, request=request)
+[32m    689[39m [38;5;28;01melif[39;00m [38;5;28misinstance[39m(e, ReadTimeoutError):
+[32m--> [39m[32m690[39m     [38;5;28;01mraise[39;00m ReadTimeout(e, request=request)
+[32m    691[39m [38;5;28;01melif[39;00m [38;5;28misinstance[39m(e, _InvalidHeader):
+[32m    692[39m     [38;5;28;01mraise[39;00m InvalidHeader(e, request=request)
+
+[31mReadTimeout[39m: HTTPSConnectionPool(host='api.worldbank.org', port=443): Read timed out. (read timeout=60)
+

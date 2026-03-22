@@ -1,0 +1,38 @@
+# Book settings
+# Learn more at https://jupyterbook.org/customize/config.html
+
+title: 데이터 분석 이제 AI에게 맡겨라 
+author: 김원경 최필선
+logo: logo.png
+copyright: ""
+
+# Force re-execution of notebooks on each build.
+execute:
+  execute_notebooks: force
+
+# Define the name of the latex output file for PDF builds
+latex:
+  latex_documents:
+    targetname: book.tex
+
+# Add a bibtex file so that we can create citations
+# bibtex_bibfiles:
+#  - references.bib
+
+# Information about where the book exists on the web
+repository:
+  url: https://github.com/pilsunchoi/book4  # Online location of your book
+  path_to_book: docs  # Optional path to your book, relative to the repository root
+  branch: main  # Branch of the repository to use when creating links
+
+# Add GitHub buttons to your book
+html:
+  use_issues_button: true
+  use_repository_button: true
+
+# GitHub Pages specific settings
+url: "https://pilsunchoi.github.io"  # Your GitHub Pages site URL
+base_url: "/book4/"  # Path to your book on GitHub Pages
+
+execute:
+  timeout: 600  # 실행 시간 초과를 600초(10분)로 설정

@@ -1,0 +1,2679 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>11장 보스턴 주택 가격 분석 &#8212; 데이터 분석 이제 AI에게 맡겨라</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/11_보스턴_주택_가격_분석';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="12장 종부세와 월세의 관계" href="12_%EC%A2%85%EB%B6%80%EC%84%B8%EC%99%80_%EC%9B%94%EC%84%B8%EC%9D%98_%EA%B4%80%EA%B3%84.html" />
+    <link rel="prev" title="10장 탐색적 요인분석" href="10_%ED%83%90%EC%83%89%EC%A0%81_%EC%9A%94%EC%9D%B8%EB%B6%84%EC%84%9D.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00_%EC%84%9C%EB%AC%B8.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="00_%EC%84%9C%EB%AC%B8.html">
+                    서문
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_%EC%8B%9C%ED%97%98%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>1장 시험성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_%EB%8C%80%ED%86%B5%EB%A0%B9_%EC%A7%80%EC%A7%80%EC%9C%A8_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>2장 대통령 지지율 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_KBO_%EC%A0%95%EA%B7%9C%EC%8B%9C%EC%A6%8C_%ED%8C%80%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>3장 KBO 정규시즌 팀성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_PPP_%EA%B7%B8%EB%9E%98%ED%94%84_%EB%B6%84%EC%84%9D.html"><strong>4장 PPP 그래프 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_%EC%84%B8%EA%B3%84%EC%9D%80%ED%96%89_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EC%B6%94%EC%B6%9C.html"><strong>5장 세계은행 데이터 추출</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_%EC%A3%BC%EA%B0%80_%EC%98%88%EC%B8%A1_%EC%8B%9C%EC%8A%A4%ED%85%9C_%EA%B5%AC%EC%B6%95.html"><strong>6장 주가 예측 시스템 구축</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_%EB%8C%93%EA%B8%80_%ED%86%B5%EA%B3%84_%EB%B6%84%EC%84%9D.html"><strong>7장 댓글 통계 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_%EC%84%9C%EC%9A%B8_%EC%95%84%ED%8C%8C%ED%8A%B8_%EB%A7%A4%EB%AC%BC_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>8장 서울 아파트 매물 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_%EC%84%A4%EB%AC%B8%EC%A1%B0%EC%82%AC_%EB%B6%84%EC%84%9D.html"><strong>9장 설문조사 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_%ED%83%90%EC%83%89%EC%A0%81_%EC%9A%94%EC%9D%B8%EB%B6%84%EC%84%9D.html"><strong>10장 탐색적 요인분석</strong></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>11장 보스턴 주택 가격 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_%EC%A2%85%EB%B6%80%EC%84%B8%EC%99%80_%EC%9B%94%EC%84%B8%EC%9D%98_%EA%B4%80%EA%B3%84.html"><strong>12장 종부세와 월세의 관계</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_%EB%8C%80%ED%98%95%EB%A7%88%ED%8A%B8_%EC%87%A0%EB%9D%BD_%EC%9B%90%EC%9D%B8_%EC%8B%A4%EC%A6%9D%EB%B6%84%EC%84%9D.html"><strong>13장 대형마트 쇠락 원인 실증분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_%EC%8B%A0%EC%83%9D%EC%95%84_%ED%8A%B9%EB%A1%80%EB%8C%80%EC%B6%9C%EA%B3%BC_%EC%B6%9C%EC%82%B0%EC%9C%A8.html"><strong>14장 신생아 특례대출과 출산율</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_Ridge_%EB%B0%8F_Lasso_%ED%9A%8C%EA%B7%80.html"><strong>15장 Ridge 및 Lasso 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1_%ED%9A%8C%EA%B7%80.html"><strong>16장 로지스틱 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95_%ED%8A%B8%EB%A6%AC_%EB%AA%A8%ED%98%95.html"><strong>17장 의사결정 트리 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_%ED%8A%B8%EB%A6%AC_%EA%B8%B0%EB%B0%98_%EB%AA%A8%ED%98%95.html"><strong>18장 트리 기반 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="19_%EB%94%A5%EB%9F%AC%EB%8B%9D_%EA%B3%B5%EB%B6%80%ED%95%98%EA%B8%B0.html"><strong>19장 딥러닝 공부하기</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_%ED%8C%A8%EB%84%90_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>20장 패널 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="21_%EA%B3%A8%EB%B0%80%EB%8F%84_%EA%B2%80%EC%82%AC_%EA%B2%B0%EA%B3%BC_%ED%95%B4%EC%84%9D.html"><strong>21장 골밀도 검사 결과 해석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_%EC%9A%B4%EB%8F%99%ED%95%99_Kinematics.html"><strong>22장 운동학 (Kinematics)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_%EC%B6%95%EA%B5%AC_%EA%B2%BD%EA%B8%B0_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>23장 축구 경기 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_%ED%8F%AD%EA%B2%A9_%ED%8C%8C%EA%B4%B4%EB%A0%A5_%EB%B6%84%EC%84%9D.html"><strong>24장 폭격 파괴력 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_%EC%84%B8%EA%B3%84_%ED%99%94%EC%9E%A5%ED%92%88_%EA%B5%90%EC%97%AD_%ED%8A%B8%EB%A0%8C%EB%93%9C.html"><strong>25장 세계 화장품 교역 트렌드</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_Texas_Special_Education.html"><strong>26장 텍사스주 특수교육 현황</strong></a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4/issues/new?title=Issue%20on%20page%20%2Fnotebooks/11_보스턴_주택_가격_분석.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/11_보스턴_주택_가격_분석.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>11장 보스턴 주택 가격 분석</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span style="color: blue;"><strong>1. 데이터 업로드</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chatgpt"><strong>ChatGPT 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1. 데이터셋 개요</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2. 변수 구성</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3. 분석적 관점에서의 해석</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">4. 데이터의 특징</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">5. 요약</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"><span style="color: blue;"><strong>2. 기초 통계량, 상관관계, 산점도 행렬</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><strong>ChatGPT 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">1. 기초 통계량 요약</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">읽는 포인트</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">2. 변수 간 상관관계</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#medv">MEDV와의 상관관계 요약(절댓값 큰 순)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">해석의 핵심</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">상관행렬</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">3. 산점도 행렬</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">읽는 포인트(이 그림에서 특히 확인할 것)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id17"><span style="color: blue;"><strong>3. 단순선형회귀</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18"><strong>ChatGPT 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">1. 회귀계수 추정 결과</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">2. 적합도 요약</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">3. 산점도와 회귀직선</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">4. 잔차 진단</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#residuals-vs-fitted">(1) Residuals vs Fitted</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#normal-q-q">(2) Normal Q-Q</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#scale-location">(3) Scale-Location</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#leverage-vs-standardized-residuals">(4) Leverage vs Standardized Residuals, 영향점</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lstat">정리: LSTAT 단일 설명변수 선형회귀에서 보이는 이슈</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id23"><span style="color: blue;"><strong>4. 다중 회귀분석</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24"><strong>ChatGPT 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">1. 모형 설정</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">2. 회귀계수 요약(핵심 변수 중심)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#medv-ols">다중회귀: MEDV ~ 모든 설명변수 (OLS) 계수 표</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">3. 적합도 해석</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vs">4. 잔차 vs 적합값 그림의 의미</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">5. 핵심 정리</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id29"><span style="color: blue;"><strong>5. 다중공선성 진단</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id30"><strong>ChatGPT 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">핵심 직관</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">해석 기준(관행)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vif">VIF 진단 결과(내림차순)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">직관적 해석(이 데이터에서 무슨 일이 벌어지나)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vif-r-j-2">VIF와 <span class="math notranslate nohighlight">\(R_j^2\)</span>의 관계(상위)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">왜 중요한가(실전에서 생기는 문제)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">다음 단계 옵션</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id36"><span style="color: blue;"><strong>6. 표준화 계수</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id37"><strong>ChatGPT 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id38">표준화 계수가 뭔가</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id39">표준화 계수 기반 변수 중요도 표</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id40">직관적 해석</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id41">한 문장 요약</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id42"><span style="color: blue;"><strong>7. 로그 변환 회귀분석</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id43"><strong>ChatGPT 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id44">1. 적절한 변수에 로그를 취하는 의미(직관)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id45">2. 로그 변환 회귀 모형</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id46">3. 계수 추정치 표</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id47">4. 계수 해석(핵심)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#loglog">(1) log–log 변수: <strong>탄력성</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#loglevel">(2) log–level 변수: <strong>반탄력성</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id48">(3) 더미 변수</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id49">5. 정리</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id50"><strong>참고: 파이썬 코드</strong></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><strong>11장 보스턴 주택 가격 분석</strong><a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2><span style="color: blue;"><strong>1. 데이터 업로드</strong></span><a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p><img alt="Regression1" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/11-1.png" /></p>
+</section>
+<section id="chatgpt">
+<h2><strong>ChatGPT 설명</strong><a class="headerlink" href="#chatgpt" title="Link to this heading">#</a></h2>
+<section id="id3">
+<h3>1. 데이터셋 개요<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>이 데이터는 1970년대 미국 매사추세츠 주 Boston 지역의 여러 행정 구역(횡단면 단위)에 대한 주택 가격과 사회·경제적 특성을 담고 있다. 각 행은 하나의 지역을 나타내며, 열은 해당 지역의 특성(설명 변수) 또는 주택 가격(반응 변수)을 의미한다. 회귀 분석(regression analysis) 예제로 가장 널리 사용된 고전 데이터셋 중 하나다.</p>
+<ul class="simple">
+<li><p><strong>관측 단위</strong>: 보스턴 내 지역 (횡단면 데이터)</p></li>
+<li><p><strong>관측 수</strong>: 506</p></li>
+<li><p><strong>설명 변수 수</strong>: 13</p></li>
+<li><p><strong>반응 변수</strong>: 1 (주택 가격)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id4">
+<h3>2. 변수 구성<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>변수명</p></th>
+<th class="head"><p>의미</p></th>
+<th class="head text-center"><p>유형</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>CRIM</p></td>
+<td><p>지역 범죄율</p></td>
+<td class="text-center"><p>연속형</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>ZN</p></td>
+<td><p>25,000 sq.ft 이상 대형 주택 비율</p></td>
+<td class="text-center"><p>연속형</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>INDUS</p></td>
+<td><p>비소매 상업지역 면적 비율</p></td>
+<td class="text-center"><p>연속형</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>CHAS</p></td>
+<td><p>찰스강 인접 여부 (1=인접)</p></td>
+<td class="text-center"><p>이진형</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>NOX</p></td>
+<td><p>일산화질소 농도</p></td>
+<td class="text-center"><p>연속형</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>RM</p></td>
+<td><p>주택당 평균 방 개수</p></td>
+<td class="text-center"><p>연속형</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>AGE</p></td>
+<td><p>1940년 이전 건축 주택 비율</p></td>
+<td class="text-center"><p>연속형</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>DIS</p></td>
+<td><p>고용 중심지까지 가중 거리</p></td>
+<td class="text-center"><p>연속형</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>RAD</p></td>
+<td><p>방사형 고속도로 접근성 지수</p></td>
+<td class="text-center"><p>연속형</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>TAX</p></td>
+<td><p>재산세율</p></td>
+<td class="text-center"><p>연속형</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>PTRATIO</p></td>
+<td><p>학생/교사 비율</p></td>
+<td class="text-center"><p>연속형</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>B</p></td>
+<td><p>흑인 인구 비율 기반 지수 (역사적 변수)</p></td>
+<td class="text-center"><p>연속형</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>LSTAT</p></td>
+<td><p>저소득층 인구 비율 (%)</p></td>
+<td class="text-center"><p>연속형</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>MEDV</p></td>
+<td><p><strong>주택 가격 중앙값 (단위: $1000)</strong></p></td>
+<td class="text-center"><p><strong>반응 변수</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id5">
+<h3>3. 분석적 관점에서의 해석<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>이 데이터는 전형적인 <strong>다중 선형회귀 모형</strong></p>
+<div class="math notranslate nohighlight">
+\[
+Y = X\beta + \epsilon
+\]</div>
+<p>을 설명하기에 적합한 구조를 가진다.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Y\)</span> = <code class="docutils literal notranslate"><span class="pre">MEDV</span></code> (주택 가격)</p></li>
+<li><p><span class="math notranslate nohighlight">\(X\)</span> = 지역 특성 벡터</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta\)</span> = 각 특성이 가격에 미치는 한계 효과</p></li>
+<li><p><span class="math notranslate nohighlight">\(\epsilon\)</span> = 설명되지 않는 오차</p></li>
+</ul>
+<p>즉, 이 데이터는 <strong>주택 가격의 결정요인을 추정</strong>하는 문제로 해석할 수 있다.</p>
+</section>
+<hr class="docutils" />
+<section id="id6">
+<h3>4. 데이터의 특징<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>횡단면 데이터</strong>
+시간 변화가 아니라 지역 간 차이를 분석한다.</p></li>
+<li><p><strong>연속형 + 이산형 변수 혼합</strong>
+회귀 모형에서 더미 변수 처리 예제를 다루기 좋다 (<code class="docutils literal notranslate"><span class="pre">CHAS</span></code>).</p></li>
+<li><p><strong>다중공선성 가능성</strong>
+<code class="docutils literal notranslate"><span class="pre">RAD</span></code>, <code class="docutils literal notranslate"><span class="pre">TAX</span></code>, <code class="docutils literal notranslate"><span class="pre">INDUS</span></code> 등은 서로 높은 상관을 가질 수 있어 회귀 진단 예제로 적합하다.</p></li>
+<li><p><strong>비선형 관계 존재 가능</strong>
+<code class="docutils literal notranslate"><span class="pre">LSTAT</span></code>와 <code class="docutils literal notranslate"><span class="pre">MEDV</span></code>는 선형보다 곡선 관계에 가까워 모형 확장의 필요성을 보여준다.</p></li>
+<li><p><strong>사회경제 데이터 특성</strong>
+단순 물리적 특성뿐 아니라 사회적 요인도 가격 결정에 영향을 준다.</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="id7">
+<h3>5. 요약<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>이 데이터셋은</p>
+<ul class="simple">
+<li><p><strong>회귀 모형의 구조 이해</strong></p></li>
+<li><p><strong>모형 가정 진단</strong></p></li>
+<li><p><strong>예측과 인과 해석의 차이 설명</strong>
+을 위한 교육용 데이터로 매우 적합하다.</p></li>
+</ul>
+<p>즉, 이 데이터는 단순한 가격 예측을 넘어서 <strong>통계적 추론과 계량모형 해석을 연습하는 교재용 표준 사례</strong>로 볼 수 있다.</p>
+<hr class="docutils" />
+<p>다음 단계로</p>
+<ul class="simple">
+<li><p>기초 통계량 요약</p></li>
+<li><p>변수 간 상관관계</p></li>
+<li><p>산점도 행렬
+중 무엇부터 진행할까?</p></li>
+</ul>
+</section>
+</section>
+<section id="id8">
+<h2><span style="color: blue;"><strong>2. 기초 통계량, 상관관계, 산점도 행렬</strong></span><a class="headerlink" href="#id8" title="Link to this heading">#</a></h2>
+</section>
+<section id="id9">
+<h2><strong>ChatGPT 설명</strong><a class="headerlink" href="#id9" title="Link to this heading">#</a></h2>
+<section id="id10">
+<h3>1. 기초 통계량 요약<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>표는 각 변수의 분포를 한 번에 훑기 위한 출발점이다. 평균과 표준편차는 중심과 산포를, 사분위수는 비대칭과 이상치 가능성을 빠르게 보여준다.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>변수</p></th>
+<th class="head text-center"><p>개수</p></th>
+<th class="head text-center"><p>평균</p></th>
+<th class="head text-center"><p>표준편차</p></th>
+<th class="head text-center"><p>최솟값</p></th>
+<th class="head text-center"><p>1사분위수(25%)</p></th>
+<th class="head text-center"><p>중앙값(50%)</p></th>
+<th class="head text-center"><p>3사분위수(75%)</p></th>
+<th class="head text-center"><p>최댓값</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>CRIM</p></td>
+<td class="text-center"><p>506</p></td>
+<td class="text-center"><p>3.614</p></td>
+<td class="text-center"><p>8.602</p></td>
+<td class="text-center"><p>0.006</p></td>
+<td class="text-center"><p>0.082</p></td>
+<td class="text-center"><p>0.257</p></td>
+<td class="text-center"><p>3.677</p></td>
+<td class="text-center"><p>88.976</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>ZN</p></td>
+<td class="text-center"><p>506</p></td>
+<td class="text-center"><p>11.364</p></td>
+<td class="text-center"><p>23.322</p></td>
+<td class="text-center"><p>0.000</p></td>
+<td class="text-center"><p>0.000</p></td>
+<td class="text-center"><p>0.000</p></td>
+<td class="text-center"><p>12.500</p></td>
+<td class="text-center"><p>100.000</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>INDUS</p></td>
+<td class="text-center"><p>506</p></td>
+<td class="text-center"><p>11.137</p></td>
+<td class="text-center"><p>6.860</p></td>
+<td class="text-center"><p>0.460</p></td>
+<td class="text-center"><p>5.190</p></td>
+<td class="text-center"><p>9.690</p></td>
+<td class="text-center"><p>18.100</p></td>
+<td class="text-center"><p>27.740</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>CHAS</p></td>
+<td class="text-center"><p>506</p></td>
+<td class="text-center"><p>0.069</p></td>
+<td class="text-center"><p>0.254</p></td>
+<td class="text-center"><p>0.000</p></td>
+<td class="text-center"><p>0.000</p></td>
+<td class="text-center"><p>0.000</p></td>
+<td class="text-center"><p>0.000</p></td>
+<td class="text-center"><p>1.000</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>NOX</p></td>
+<td class="text-center"><p>506</p></td>
+<td class="text-center"><p>0.555</p></td>
+<td class="text-center"><p>0.116</p></td>
+<td class="text-center"><p>0.385</p></td>
+<td class="text-center"><p>0.449</p></td>
+<td class="text-center"><p>0.538</p></td>
+<td class="text-center"><p>0.624</p></td>
+<td class="text-center"><p>0.871</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>RM</p></td>
+<td class="text-center"><p>506</p></td>
+<td class="text-center"><p>6.285</p></td>
+<td class="text-center"><p>0.703</p></td>
+<td class="text-center"><p>3.561</p></td>
+<td class="text-center"><p>5.885</p></td>
+<td class="text-center"><p>6.208</p></td>
+<td class="text-center"><p>6.623</p></td>
+<td class="text-center"><p>8.780</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>AGE</p></td>
+<td class="text-center"><p>506</p></td>
+<td class="text-center"><p>68.575</p></td>
+<td class="text-center"><p>28.149</p></td>
+<td class="text-center"><p>2.900</p></td>
+<td class="text-center"><p>45.025</p></td>
+<td class="text-center"><p>77.500</p></td>
+<td class="text-center"><p>94.075</p></td>
+<td class="text-center"><p>100.000</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>DIS</p></td>
+<td class="text-center"><p>506</p></td>
+<td class="text-center"><p>3.795</p></td>
+<td class="text-center"><p>2.106</p></td>
+<td class="text-center"><p>1.130</p></td>
+<td class="text-center"><p>2.100</p></td>
+<td class="text-center"><p>3.207</p></td>
+<td class="text-center"><p>5.188</p></td>
+<td class="text-center"><p>12.127</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>RAD</p></td>
+<td class="text-center"><p>506</p></td>
+<td class="text-center"><p>9.549</p></td>
+<td class="text-center"><p>8.707</p></td>
+<td class="text-center"><p>1.000</p></td>
+<td class="text-center"><p>4.000</p></td>
+<td class="text-center"><p>5.000</p></td>
+<td class="text-center"><p>24.000</p></td>
+<td class="text-center"><p>24.000</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>TAX</p></td>
+<td class="text-center"><p>506</p></td>
+<td class="text-center"><p>408.237</p></td>
+<td class="text-center"><p>168.537</p></td>
+<td class="text-center"><p>187.000</p></td>
+<td class="text-center"><p>279.000</p></td>
+<td class="text-center"><p>330.000</p></td>
+<td class="text-center"><p>666.000</p></td>
+<td class="text-center"><p>711.000</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>PTRATIO</p></td>
+<td class="text-center"><p>506</p></td>
+<td class="text-center"><p>18.456</p></td>
+<td class="text-center"><p>2.165</p></td>
+<td class="text-center"><p>12.600</p></td>
+<td class="text-center"><p>17.400</p></td>
+<td class="text-center"><p>19.050</p></td>
+<td class="text-center"><p>20.200</p></td>
+<td class="text-center"><p>22.000</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>B</p></td>
+<td class="text-center"><p>506</p></td>
+<td class="text-center"><p>356.674</p></td>
+<td class="text-center"><p>91.295</p></td>
+<td class="text-center"><p>0.320</p></td>
+<td class="text-center"><p>375.377</p></td>
+<td class="text-center"><p>391.440</p></td>
+<td class="text-center"><p>396.225</p></td>
+<td class="text-center"><p>396.900</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>LSTAT</p></td>
+<td class="text-center"><p>506</p></td>
+<td class="text-center"><p>12.653</p></td>
+<td class="text-center"><p>7.141</p></td>
+<td class="text-center"><p>1.730</p></td>
+<td class="text-center"><p>6.950</p></td>
+<td class="text-center"><p>11.360</p></td>
+<td class="text-center"><p>16.955</p></td>
+<td class="text-center"><p>37.970</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>MEDV</p></td>
+<td class="text-center"><p>506</p></td>
+<td class="text-center"><p>22.533</p></td>
+<td class="text-center"><p>9.197</p></td>
+<td class="text-center"><p>5.000</p></td>
+<td class="text-center"><p>17.025</p></td>
+<td class="text-center"><p>21.200</p></td>
+<td class="text-center"><p>25.000</p></td>
+<td class="text-center"><p>50.000</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+<section id="id11">
+<h4>읽는 포인트<a class="headerlink" href="#id11" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>CHAS는 0/1의 이진 변수라 평균 0.069는 1의 비율(약 6.9%)로 해석된다.</p></li>
+<li><p>CRIM은 최댓값이 평균 대비 매우 커서 오른쪽 꼬리가 긴 분포(강한 양의 비대칭) 가능성이 높다.</p></li>
+<li><p>MEDV는 최댓값이 50으로 ‘상한’처럼 보인다. 회귀에서 종속변수 절단(censoring) 또는 ceiling effect를 의심할 수 있다.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id12">
+<h3>2. 변수 간 상관관계<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>상관계수는 두 연속형 변수 사이의 선형적 동행 정도를 요약한다. 여기서는 Pearson 상관계수 <span class="math notranslate nohighlight">\(r\)</span>를 사용한다. <span class="math notranslate nohighlight">\(r\)</span>의 부호는 방향(증가/감소), 절댓값은 선형 관계의 강도를 나타낸다.</p>
+<hr class="docutils" />
+<section id="medv">
+<h4>MEDV와의 상관관계 요약(절댓값 큰 순)<a class="headerlink" href="#medv" title="Link to this heading">#</a></h4>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>변수</p></th>
+<th class="head text-center"><p>MEDV와의 상관계수</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>LSTAT</p></td>
+<td class="text-center"><p>-0.738</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>RM</p></td>
+<td class="text-center"><p>0.695</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>PTRATIO</p></td>
+<td class="text-center"><p>-0.508</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>INDUS</p></td>
+<td class="text-center"><p>-0.484</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>TAX</p></td>
+<td class="text-center"><p>-0.469</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>NOX</p></td>
+<td class="text-center"><p>-0.427</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>CRIM</p></td>
+<td class="text-center"><p>-0.388</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>RAD</p></td>
+<td class="text-center"><p>-0.382</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>AGE</p></td>
+<td class="text-center"><p>-0.377</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>ZN</p></td>
+<td class="text-center"><p>0.360</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>B</p></td>
+<td class="text-center"><p>0.333</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>DIS</p></td>
+<td class="text-center"><p>0.250</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>CHAS</p></td>
+<td class="text-center"><p>0.175</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id13">
+<h4>해석의 핵심<a class="headerlink" href="#id13" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>LSTAT–MEDV: 강한 음의 상관. 저소득층 비율이 높을수록 주택가격이 낮아지는 경향이 뚜렷하다.</p></li>
+<li><p>RM–MEDV: 강한 양의 상관. 방 개수가 많을수록 주택가격이 높아지는 경향이 뚜렷하다.</p></li>
+<li><p>TAX, RAD, INDUS, NOX 등은 서로도 상관이 클 가능성이 높다. 이런 경우 다중회귀에서 다중공선성이 생길 수 있으므로 단순 상관만으로 ‘원인’을 말하면 안 된다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id14">
+<h4>상관행렬<a class="headerlink" href="#id14" title="Link to this heading">#</a></h4>
+<p><img alt="Regression2" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/11-2.png" /></p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id15">
+<h3>3. 산점도 행렬<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<p>산점도 행렬은</p>
+<ul class="simple">
+<li><p>(대각선) 각 변수의 단변량 분포(히스토그램)</p></li>
+<li><p>(비대각선) 변수 쌍의 관계(선형/비선형, 군집, 이상치, 분산의 이질성)
+를 한 번에 보여준다.</p></li>
+</ul>
+<p><img alt="Regression3" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/11-3.png" /></p>
+<hr class="docutils" />
+<section id="id16">
+<h4>읽는 포인트(이 그림에서 특히 확인할 것)<a class="headerlink" href="#id16" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>MEDV–LSTAT: 음의 방향이며, 선형이라기보다 굴곡(비선형) 가능성이 보인다. 선형회귀에서 변환(예: log, polynomial, spline) 후보가 된다.</p></li>
+<li><p>MEDV–RM: 양의 방향이며 비교적 뚜렷하지만, 상단(50)에서 값이 눌리는 패턴이 있으면 종속변수 상한의 영향일 수 있다.</p></li>
+<li><p>CRIM: 많은 값이 0 근처에 몰리고 일부 큰 값이 튀는 형태가 흔하다. 회귀에서 로그 변환(log(CRIM))이 자주 고려된다.</p></li>
+<li><p>TAX–RAD: 점들이 격자처럼 뭉치면 이산형(혹은 단계적) 값 구조가 있다는 뜻이며, 단순 연속형 가정이 어색할 수 있다.</p></li>
+</ul>
+<hr class="docutils" />
+<p>원하면 다음 단계로</p>
+<ul class="simple">
+<li><p>MEDV에 대해 단순회귀 2개(LSTAT, RM)부터 적합하고 잔차 진단(Residual vs Fitted, Q-Q)까지 이어가서, 왜 변환/비선형/이상치 처리가 필요해지는지 자연스럽게 연결해줄게.</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="id17">
+<h2><span style="color: blue;"><strong>3. 단순선형회귀</strong></span><a class="headerlink" href="#id17" title="Link to this heading">#</a></h2>
+</section>
+<section id="id18">
+<h2><strong>ChatGPT 설명</strong><a class="headerlink" href="#id18" title="Link to this heading">#</a></h2>
+<p>아래에서는 <span class="math notranslate nohighlight">\(Y=\text{MEDV}\)</span>, <span class="math notranslate nohighlight">\(X=\text{LSTAT}\)</span>에 대해 단순선형회귀를 적합하고, 잔차 진단으로 모형 가정을 점검한다.</p>
+<p>모형은</p>
+<div class="math notranslate nohighlight">
+\[
+Y_i = \beta_0 + \beta_1 X_i + \epsilon_i
+\]</div>
+<p>로 둔다.</p>
+<hr class="docutils" />
+<section id="id19">
+<h3>1. 회귀계수 추정 결과<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>항</p></th>
+<th class="head text-center"><p>추정치</p></th>
+<th class="head text-center"><p>표준오차</p></th>
+<th class="head text-center"><p>t값</p></th>
+<th class="head text-center"><p>p값</p></th>
+<th class="head text-center"><p>95% 신뢰구간(하한)</p></th>
+<th class="head text-center"><p>95% 신뢰구간(상한)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>절편(constant)</p></td>
+<td class="text-center"><p>34.554</p></td>
+<td class="text-center"><p>0.563</p></td>
+<td class="text-center"><p>61.415</p></td>
+<td class="text-center"><p>3.74e-236</p></td>
+<td class="text-center"><p>33.448</p></td>
+<td class="text-center"><p>35.659</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>LSTAT</p></td>
+<td class="text-center"><p>-0.950</p></td>
+<td class="text-center"><p>0.039</p></td>
+<td class="text-center"><p>-24.528</p></td>
+<td class="text-center"><p>5.08e-88</p></td>
+<td class="text-center"><p>-1.026</p></td>
+<td class="text-center"><p>-0.874</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>해석</p>
+<ul class="simple">
+<li><p>기울기 <span class="math notranslate nohighlight">\(\hat\beta_1=-0.95\)</span>: LSTAT가 1만큼 증가할 때 MEDV의 조건부 평균이 약 0.95만큼 감소하는 선형 경향이 추정된다. (MEDV 단위는 $1000)</p></li>
+<li><p><span class="math notranslate nohighlight">\(p\)</span>값이 매우 작으므로, “선형 기울기=0” 가설은 강하게 기각된다. 다만 이는 선형 관계의 존재를 말해줄 뿐, 인과를 보장하지 않는다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id20">
+<h3>2. 적합도 요약<a class="headerlink" href="#id20" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>지표</p></th>
+<th class="head text-center"><p>값</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>관측치 수</p></td>
+<td class="text-center"><p>506</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>R^2</p></td>
+<td class="text-center"><p>0.544</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Adj. R^2</p></td>
+<td class="text-center"><p>0.543</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>잔차 표준편차(σ̂)</p></td>
+<td class="text-center"><p>6.216</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>F-통계량</p></td>
+<td class="text-center"><p>601.6</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>F-통계량 p값</p></td>
+<td class="text-center"><p>5.08e-88</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>해석</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(R^2=0.544\)</span>: LSTAT 하나만으로 MEDV 변동의 약 54.4%를 선형적으로 설명한다는 뜻이다.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\hat\sigma=6.216\)</span>: 예측오차의 전형적 크기가 약 6.2(천 달러 단위) 수준이다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id21">
+<h3>3. 산점도와 회귀직선<a class="headerlink" href="#id21" title="Link to this heading">#</a></h3>
+<p><img alt="Regression4" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/11-4.png" /></p>
+<ul class="simple">
+<li><p>전체적으로 뚜렷한 음의 관계가 보인다.</p></li>
+<li><p>오른쪽(큰 LSTAT) 구간에서 선형 직선이 자료의 곡률을 충분히 따라가지 못하는 느낌이 있다. 이는 비선형성 가능성을 시사한다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id22">
+<h3>4. 잔차 진단<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
+<section id="residuals-vs-fitted">
+<h4>(1) Residuals vs Fitted<a class="headerlink" href="#residuals-vs-fitted" title="Link to this heading">#</a></h4>
+<p><img alt="Regression5" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/11-5.png" /></p>
+<ul class="simple">
+<li><p>“Residuals vs Fitted (MEDV ~ LSTAT)” 그림에서, 잔차가 0을 중심으로 무작위로 흩어지면 선형성/등분산성 가정이 비교적 괜찮다.</p></li>
+<li><p>실제로는 적합값이 큰 구간에서 잔차 분산이 커지는 부채꼴 패턴이 보인다. 이는 이분산(heteroskedasticity) 가능성을 강하게 시사한다.</p></li>
+<li><p>또한 곡선 형태의 체계적 패턴이 보이면, <span class="math notranslate nohighlight">\(E[Y|X]\)</span>가 직선이 아닐 수 있다(비선형성).</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="normal-q-q">
+<h4>(2) Normal Q-Q<a class="headerlink" href="#normal-q-q" title="Link to this heading">#</a></h4>
+<p><img alt="Regression6" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/11-6.png" /></p>
+<ul class="simple">
+<li><p>“Normal Q-Q (Residuals)” 그림에서, 직선에서 벗어나는 꼬리 부분(특히 상단)이 눈에 띈다.</p></li>
+<li><p>잔차 정규성이 완벽하지 않을 가능성이 있다. 표본이 506으로 커서 추정량의 근사정규성 자체는 기대할 수 있지만, 구간추정/가설검정에서 강건 표준오차 등 대안이 실무적으로 유용해진다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="scale-location">
+<h4>(3) Scale-Location<a class="headerlink" href="#scale-location" title="Link to this heading">#</a></h4>
+<p><img alt="Regression7" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/11-7.png" /></p>
+<ul class="simple">
+<li><p>“Scale-Location” 그림에서, 적합값이 커질수록 <span class="math notranslate nohighlight">\(\sqrt{|\text{표준화 잔차}|}\)</span>가 커지는 경향은 등분산 가정 위반(이분산)을 다시 확인해준다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="leverage-vs-standardized-residuals">
+<h4>(4) Leverage vs Standardized Residuals, 영향점<a class="headerlink" href="#leverage-vs-standardized-residuals" title="Link to this heading">#</a></h4>
+<p><img alt="Regression8" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/11-8.png" /></p>
+<ul class="simple">
+<li><p>“Leverage vs Standardized Residuals” 그림에서, 레버리지(leverage)가 큰 점이나 표준화 잔차가 큰 점이 영향점 후보가 된다.</p></li>
+<li><p>아래 표는 Cook’s distance 상위 10개다(값이 클수록 회귀계수에 영향).</p></li>
+</ul>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>관측치 인덱스</p></th>
+<th class="head text-center"><p>LSTAT</p></th>
+<th class="head text-center"><p>MEDV</p></th>
+<th class="head text-center"><p>FITTED</p></th>
+<th class="head text-center"><p>RESID</p></th>
+<th class="head text-center"><p>LEVERAGE</p></th>
+<th class="head text-center"><p>COOKS_D</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>374</p></td>
+<td class="text-center"><p>37.970</p></td>
+<td class="text-center"><p>13.800</p></td>
+<td class="text-center"><p>-1.520</p></td>
+<td class="text-center"><p>15.320</p></td>
+<td class="text-center"><p>0.027</p></td>
+<td class="text-center"><p>0.086</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>412</p></td>
+<td class="text-center"><p>34.370</p></td>
+<td class="text-center"><p>17.900</p></td>
+<td class="text-center"><p>1.901</p></td>
+<td class="text-center"><p>15.999</p></td>
+<td class="text-center"><p>0.020</p></td>
+<td class="text-center"><p>0.070</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>214</p></td>
+<td class="text-center"><p>29.550</p></td>
+<td class="text-center"><p>23.700</p></td>
+<td class="text-center"><p>6.480</p></td>
+<td class="text-center"><p>17.220</p></td>
+<td class="text-center"><p>0.013</p></td>
+<td class="text-center"><p>0.051</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>141</p></td>
+<td class="text-center"><p>34.410</p></td>
+<td class="text-center"><p>14.400</p></td>
+<td class="text-center"><p>1.863</p></td>
+<td class="text-center"><p>12.537</p></td>
+<td class="text-center"><p>0.020</p></td>
+<td class="text-center"><p>0.043</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>373</p></td>
+<td class="text-center"><p>34.770</p></td>
+<td class="text-center"><p>13.800</p></td>
+<td class="text-center"><p>1.521</p></td>
+<td class="text-center"><p>12.279</p></td>
+<td class="text-center"><p>0.021</p></td>
+<td class="text-center"><p>0.043</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>161</p></td>
+<td class="text-center"><p>1.730</p></td>
+<td class="text-center"><p>50.000</p></td>
+<td class="text-center"><p>32.910</p></td>
+<td class="text-center"><p>17.090</p></td>
+<td class="text-center"><p>0.007</p></td>
+<td class="text-center"><p>0.025</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>162</p></td>
+<td class="text-center"><p>1.920</p></td>
+<td class="text-center"><p>50.000</p></td>
+<td class="text-center"><p>32.730</p></td>
+<td class="text-center"><p>17.270</p></td>
+<td class="text-center"><p>0.006</p></td>
+<td class="text-center"><p>0.025</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>204</p></td>
+<td class="text-center"><p>2.880</p></td>
+<td class="text-center"><p>50.000</p></td>
+<td class="text-center"><p>31.818</p></td>
+<td class="text-center"><p>18.182</p></td>
+<td class="text-center"><p>0.006</p></td>
+<td class="text-center"><p>0.025</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>370</p></td>
+<td class="text-center"><p>2.960</p></td>
+<td class="text-center"><p>50.000</p></td>
+<td class="text-center"><p>31.742</p></td>
+<td class="text-center"><p>18.258</p></td>
+<td class="text-center"><p>0.006</p></td>
+<td class="text-center"><p>0.025</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>195</p></td>
+<td class="text-center"><p>2.970</p></td>
+<td class="text-center"><p>50.000</p></td>
+<td class="text-center"><p>31.732</p></td>
+<td class="text-center"><p>18.268</p></td>
+<td class="text-center"><p>0.006</p></td>
+<td class="text-center"><p>0.025</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>여기서 특히 눈에 띄는 점</p>
+<ul class="simple">
+<li><p>LSTAT가 매우 큰 관측치(예: 374)는 <span class="math notranslate nohighlight">\(X\)</span>의 극단값이라 레버리지가 커지고, 직선모형이 그 구간을 잘 설명하지 못하면 잔차도 커져 영향점이 되기 쉽다.</p></li>
+<li><p>MEDV가 50인 관측치들이 반복적으로 등장한다. 종속변수 상한(ceiling) 때문에 큰 양의 잔차가 생기면서 모형 적합/진단에 영향을 줄 수 있다.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="lstat">
+<h3>정리: LSTAT 단일 설명변수 선형회귀에서 보이는 이슈<a class="headerlink" href="#lstat" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>평균 관계의 강한 음의 선형 경향은 분명하다(기울기 유의, <span class="math notranslate nohighlight">\(R^2\)</span>도 큼).</p></li>
+<li><p>하지만 잔차 그림에서 비선형성 신호와 이분산 신호가 동시에 나타난다.</p></li>
+<li><p>극단적 LSTAT 구간 및 MEDV 상한(50) 관측치가 진단에서 중요하게 작동한다.</p></li>
+</ul>
+<hr class="docutils" />
+<p>다음으로 바로 이어서 할 만한 작업 2가지 중 하나를 고르면, 그 방향으로 계속 진행하겠다.</p>
+<ul class="simple">
+<li><p>(A) LSTAT 변환/비선형 확장: 예를 들어 $<span class="math notranslate nohighlight">\(\text{MEDV}=\beta_0+\beta_1\text{LSTAT}+\beta_2\text{LSTAT}^2+\epsilon\)</span>$ 같은 2차항 포함 모형과 비교</p></li>
+<li><p>(B) 추론을 강건화: 이분산을 고려한 robust(heteroskedasticity-consistent) 표준오차로 계수 유의성/신뢰구간 재계산</p></li>
+</ul>
+</section>
+</section>
+<section id="id23">
+<h2><span style="color: blue;"><strong>4. 다중 회귀분석</strong></span><a class="headerlink" href="#id23" title="Link to this heading">#</a></h2>
+</section>
+<section id="id24">
+<h2><strong>ChatGPT 분석</strong><a class="headerlink" href="#id24" title="Link to this heading">#</a></h2>
+<p>아래에서는 <strong>모든 설명변수를 동시에 포함한 다중 회귀분석</strong> 결과를 요약하고, 핵심만 직관적으로 설명한다.</p>
+<hr class="docutils" />
+<section id="id25">
+<h3>1. 모형 설정<a class="headerlink" href="#id25" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[
+\text{MEDV}
+= \beta_0
++ \beta_1 \text{CRIM}
++ \beta_2 \text{ZN}
++ \cdots
++ \beta_{13} \text{LSTAT}
++ \epsilon
+\]</div>
+<p>의미는 간단하다.
+각 계수는 <strong>다른 변수들을 고정한 상태에서</strong> 해당 변수 하나가 MEDV에 미치는 평균적 변화다.</p>
+</section>
+<hr class="docutils" />
+<section id="id26">
+<h3>2. 회귀계수 요약(핵심 변수 중심)<a class="headerlink" href="#id26" title="Link to this heading">#</a></h3>
+<section id="medv-ols">
+<h4>다중회귀: MEDV ~ 모든 설명변수 (OLS) 계수 표<a class="headerlink" href="#medv-ols" title="Link to this heading">#</a></h4>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>변수</p></th>
+<th class="head text-center"><p>추정치</p></th>
+<th class="head text-center"><p>표준오차</p></th>
+<th class="head text-center"><p>t값</p></th>
+<th class="head text-center"><p>p값</p></th>
+<th class="head text-center"><p>95% 신뢰구간(하한)</p></th>
+<th class="head text-center"><p>95% 신뢰구간(상한)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>const</p></td>
+<td class="text-center"><p>36.459</p></td>
+<td class="text-center"><p>5.103</p></td>
+<td class="text-center"><p>7.144</p></td>
+<td class="text-center"><p>3.28e-12</p></td>
+<td class="text-center"><p>26.432</p></td>
+<td class="text-center"><p>46.487</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>CRIM</p></td>
+<td class="text-center"><p>-0.108</p></td>
+<td class="text-center"><p>0.033</p></td>
+<td class="text-center"><p>-3.287</p></td>
+<td class="text-center"><p>0.00109</p></td>
+<td class="text-center"><p>-0.173</p></td>
+<td class="text-center"><p>-0.043</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>ZN</p></td>
+<td class="text-center"><p>0.046</p></td>
+<td class="text-center"><p>0.014</p></td>
+<td class="text-center"><p>3.382</p></td>
+<td class="text-center"><p>0.000778</p></td>
+<td class="text-center"><p>0.019</p></td>
+<td class="text-center"><p>0.073</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>INDUS</p></td>
+<td class="text-center"><p>0.021</p></td>
+<td class="text-center"><p>0.061</p></td>
+<td class="text-center"><p>0.334</p></td>
+<td class="text-center"><p>0.738</p></td>
+<td class="text-center"><p>-0.100</p></td>
+<td class="text-center"><p>0.141</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>CHAS</p></td>
+<td class="text-center"><p>2.687</p></td>
+<td class="text-center"><p>0.862</p></td>
+<td class="text-center"><p>3.118</p></td>
+<td class="text-center"><p>0.00193</p></td>
+<td class="text-center"><p>0.994</p></td>
+<td class="text-center"><p>4.380</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>NOX</p></td>
+<td class="text-center"><p>-17.767</p></td>
+<td class="text-center"><p>3.820</p></td>
+<td class="text-center"><p>-4.651</p></td>
+<td class="text-center"><p>4.25e-06</p></td>
+<td class="text-center"><p>-25.272</p></td>
+<td class="text-center"><p>-10.262</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>RM</p></td>
+<td class="text-center"><p>3.810</p></td>
+<td class="text-center"><p>0.418</p></td>
+<td class="text-center"><p>9.116</p></td>
+<td class="text-center"><p>1.98e-18</p></td>
+<td class="text-center"><p>2.989</p></td>
+<td class="text-center"><p>4.631</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>AGE</p></td>
+<td class="text-center"><p>0.001</p></td>
+<td class="text-center"><p>0.013</p></td>
+<td class="text-center"><p>0.052</p></td>
+<td class="text-center"><p>0.958</p></td>
+<td class="text-center"><p>-0.025</p></td>
+<td class="text-center"><p>0.027</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>DIS</p></td>
+<td class="text-center"><p>-1.476</p></td>
+<td class="text-center"><p>0.199</p></td>
+<td class="text-center"><p>-7.398</p></td>
+<td class="text-center"><p>6.01e-13</p></td>
+<td class="text-center"><p>-1.867</p></td>
+<td class="text-center"><p>-1.084</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>RAD</p></td>
+<td class="text-center"><p>0.306</p></td>
+<td class="text-center"><p>0.066</p></td>
+<td class="text-center"><p>4.613</p></td>
+<td class="text-center"><p>5.07e-06</p></td>
+<td class="text-center"><p>0.176</p></td>
+<td class="text-center"><p>0.436</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>TAX</p></td>
+<td class="text-center"><p>-0.012</p></td>
+<td class="text-center"><p>0.004</p></td>
+<td class="text-center"><p>-3.280</p></td>
+<td class="text-center"><p>0.00111</p></td>
+<td class="text-center"><p>-0.020</p></td>
+<td class="text-center"><p>-0.005</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>PTRATIO</p></td>
+<td class="text-center"><p>-0.953</p></td>
+<td class="text-center"><p>0.131</p></td>
+<td class="text-center"><p>-7.283</p></td>
+<td class="text-center"><p>1.31e-12</p></td>
+<td class="text-center"><p>-1.210</p></td>
+<td class="text-center"><p>-0.696</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>B</p></td>
+<td class="text-center"><p>0.009</p></td>
+<td class="text-center"><p>0.003</p></td>
+<td class="text-center"><p>3.467</p></td>
+<td class="text-center"><p>0.000573</p></td>
+<td class="text-center"><p>0.004</p></td>
+<td class="text-center"><p>0.015</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>LSTAT</p></td>
+<td class="text-center"><p>-0.525</p></td>
+<td class="text-center"><p>0.051</p></td>
+<td class="text-center"><p>-10.347</p></td>
+<td class="text-center"><p>7.78e-23</p></td>
+<td class="text-center"><p>-0.624</p></td>
+<td class="text-center"><p>-0.425</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>눈에 띄는 변수들만 해석하면 다음과 같다.</p>
+<ul class="simple">
+<li><p><strong>LSTAT (−0.525)</strong>
+다른 모든 변수를 통제한 상태에서도 LSTAT가 1 증가하면 MEDV는 평균적으로 약 0.53 감소한다.
+단순회귀(−0.95)보다 효과가 작아졌는데, 이는 LSTAT가 다른 변수들과 설명력을 공유하고 있기 때문이다.</p></li>
+<li><p><strong>RM (+3.81)</strong>
+방 수가 1개 늘어나면 MEDV가 약 3.8 증가한다. 다중 회귀에서도 가장 강력한 양(+)의 효과다.</p></li>
+<li><p><strong>NOX (−17.77)</strong>
+오염도가 높은 지역일수록 주택가격이 크게 낮다. 계수 크기와 유의성이 모두 크다.</p></li>
+<li><p><strong>PTRATIO (−0.95)</strong>
+학생/교사 비율이 높을수록(교육 여건이 나쁠수록) 주택가격이 낮다.</p></li>
+<li><p><strong>CHAS (+2.69)</strong>
+강변 지역 여부는 다른 조건이 같을 때 가격을 평균적으로 끌어올린다.</p></li>
+</ul>
+<p>반면</p>
+<ul class="simple">
+<li><p><strong>INDUS, AGE</strong>는 다른 변수들을 함께 넣으면 더 이상 유의하지 않다.
+→ 단순 상관은 있었지만, 실제로는 다른 변수들이 그 관계를 설명하고 있었다는 뜻이다.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id27">
+<h3>3. 적합도 해석<a class="headerlink" href="#id27" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>지표</p></th>
+<th class="head text-center"><p>값</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\(R^2\)</span></p></td>
+<td class="text-center"><p>0.741</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>Adj. <span class="math notranslate nohighlight">\(R^2\)</span></p></td>
+<td class="text-center"><p>0.734</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>잔차 표준편차</p></td>
+<td class="text-center"><p>4.745</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul class="simple">
+<li><p>단순회귀(LSTAT 하나)에서는 <span class="math notranslate nohighlight">\(R^2 \approx 0.54\)</span>였는데,
+다중회귀에서는 <strong>약 74%</strong> 까지 설명력이 증가했다.</p></li>
+<li><p>여러 요인을 동시에 고려해야 주택가격을 더 잘 설명할 수 있음을 보여준다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="vs">
+<h3>4. 잔차 vs 적합값 그림의 의미<a class="headerlink" href="#vs" title="Link to this heading">#</a></h3>
+<p><img alt="Regression9" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/11-9.png" /></p>
+<ul class="simple">
+<li><p>단순회귀보다 <strong>잔차의 구조적 패턴이 줄어들었다</strong>.
+→ 중요한 설명변수들이 추가되면서 모형이 개선되었다는 신호다.</p></li>
+<li><p>다만 완전히 무작위는 아니어서,
+비선형성·이분산·상한(MEDV=50) 문제는 여전히 일부 남아 있다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id28">
+<h3>5. 핵심 정리<a class="headerlink" href="#id28" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>다중 회귀에서의 계수는 <strong>“다른 조건이 같을 때”의 효과</strong>다.</p></li>
+<li><p>LSTAT는 여전히 중요한 변수지만, 단순회귀에서 보였던 효과의 일부는 다른 변수들과 겹친 결과였다.</p></li>
+<li><p>다중 회귀는 설명력을 크게 높이지만,
+해석은 반드시 <strong>통제 효과(controlled effect)</strong> 라는 점을 염두에 둬야 한다.</p></li>
+</ul>
+<hr class="docutils" />
+<p>다음으로 자연스럽게 이어지는 주제는</p>
+<ul class="simple">
+<li><p>다중공선성(VIF) 진단</p></li>
+<li><p>표준화 계수로 변수 중요도 비교</p></li>
+<li><p>비선형 항(LSTAT² 등) 추가
+중 하나다.</p></li>
+</ul>
+</section>
+</section>
+<section id="id29">
+<h2><span style="color: blue;"><strong>5. 다중공선성 진단</strong></span><a class="headerlink" href="#id29" title="Link to this heading">#</a></h2>
+</section>
+<section id="id30">
+<h2><strong>ChatGPT 분석</strong><a class="headerlink" href="#id30" title="Link to this heading">#</a></h2>
+<p>다중공선성(VIF) 진단은 “설명변수끼리 서로 비슷한 정보를 너무 많이 공유해서, 각 변수의 효과를 따로 떼어내기 어려운가?”를 확인하는 절차다.</p>
+<hr class="docutils" />
+<section id="id31">
+<h3>핵심 직관<a class="headerlink" href="#id31" title="Link to this heading">#</a></h3>
+<p>다중회귀에서 어떤 변수 <span class="math notranslate nohighlight">\(X_j\)</span>의 계수 <span class="math notranslate nohighlight">\(\hat\beta_j\)</span>는 “다른 변수들을 고정했을 때 <span class="math notranslate nohighlight">\(X_j\)</span>만 1 증가시키면 <span class="math notranslate nohighlight">\(Y\)</span>가 얼마나 변하나”를 의미한다. 그런데 <span class="math notranslate nohighlight">\(X_j\)</span>가 다른 변수들과 거의 같이 움직이면(서로 강하게 상관) “<span class="math notranslate nohighlight">\(X_j\)</span>만 바뀌는 상황” 자체가 데이터 안에서 거의 없다. 그러면 기울기를 정하는 데 쓸 ‘정보’가 부족해져서 계수의 표준오차가 커지고(불확실성이 커짐), 같은 데이터라도 추정치가 흔들리기 쉬워진다.</p>
+<p>VIF의 정의는</p>
+<div class="math notranslate nohighlight">
+\[
+\text{VIF}_j=\frac{1}{1-R_j^2}
+\]</div>
+<p>여기서 <span class="math notranslate nohighlight">\(R_j^2\)</span>는 “<span class="math notranslate nohighlight">\(X_j\)</span>를 나머지 모든 설명변수들로 회귀했을 때의 결정계수”다.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(R_j^2\)</span>가 크다 = <span class="math notranslate nohighlight">\(X_j\)</span>가 다른 변수들로 거의 예측된다 = 독립적인 정보가 거의 없다</p></li>
+<li><p>그 결과 분모 <span class="math notranslate nohighlight">\(1-R_j^2\)</span>가 작아져 VIF가 커진다</p></li>
+<li><p>VIF가 커질수록 <span class="math notranslate nohighlight">\(\hat\beta_j\)</span>의 분산(표준오차)이 커진다(분산이 ‘부풀려짐’)</p></li>
+</ul>
+</section>
+<section id="id32">
+<h3>해석 기준(관행)<a class="headerlink" href="#id32" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>VIF ≈ 1: 거의 문제 없음</p></li>
+<li><p>VIF 5 이상: 주의</p></li>
+<li><p>VIF 10 이상: 강한 다중공선성 의심(상황에 따라 다름)</p></li>
+</ul>
+</section>
+<section id="vif">
+<h3>VIF 진단 결과(내림차순)<a class="headerlink" href="#vif" title="Link to this heading">#</a></h3>
+<p><img alt="Regression10" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/11-10.png" /></p>
+</section>
+<section id="id33">
+<h3>직관적 해석(이 데이터에서 무슨 일이 벌어지나)<a class="headerlink" href="#id33" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>TAX(9.01), RAD(7.48)가 가장 크다. 즉 “세금(TAX)”과 “고속도로 접근성(RAD)”은 다른 변수들과 함께 거의 한 덩어리로 움직인다. 그래서 둘을 동시에 넣으면 각각의 ‘순수 효과’를 따로 분리하기가 어렵다.</p></li>
+<li><p>NOX–INDUS–DIS–AGE도 VIF가 3~4대다. 오염(NOXT), 산업지역(INDUS), 도심거리(DIS), 주택 노후(AGE) 같은 것들이 도시 구조와 함께 묶여 움직이는 경향이 있어서 서로 정보를 공유한다.</p></li>
+<li><p>CHAS는 1.07로 거의 독립적이다(다른 변수로 잘 예측되지 않음).</p></li>
+</ul>
+</section>
+<section id="vif-r-j-2">
+<h3>VIF와 <span class="math notranslate nohighlight">\(R_j^2\)</span>의 관계(상위)<a class="headerlink" href="#vif-r-j-2" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>변수</p></th>
+<th class="head text-center"><p>VIF</p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\(R_j^2\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>TAX</p></td>
+<td class="text-center"><p>9.01</p></td>
+<td class="text-center"><p>0.889</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>RAD</p></td>
+<td class="text-center"><p>7.48</p></td>
+<td class="text-center"><p>0.866</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>NOX</p></td>
+<td class="text-center"><p>4.39</p></td>
+<td class="text-center"><p>0.772</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>INDUS</p></td>
+<td class="text-center"><p>3.99</p></td>
+<td class="text-center"><p>0.749</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>DIS</p></td>
+<td class="text-center"><p>3.96</p></td>
+<td class="text-center"><p>0.747</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>예를 들어 TAX의 <span class="math notranslate nohighlight">\(R_j^2=0.889\)</span>는 “TAX는 나머지 변수들로 88.9%나 설명된다”는 뜻이고, 그래서 VIF가 9까지 올라간다. 즉 TAX는 독자적인 정보가 많지 않다.</p>
+</section>
+<section id="id34">
+<h3>왜 중요한가(실전에서 생기는 문제)<a class="headerlink" href="#id34" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>예측 성능 자체는 괜찮을 수 있다. 다중공선성은 예측을 무조건 망치는 문제가 아니다.</p></li>
+<li><p>하지만 해석(각 변수의 효과)과 추론(유의성, 신뢰구간)은 흔들린다.</p>
+<ul>
+<li><p>표준오차가 커져서 p값이 커질 수 있고(유의하지 않게 보임),</p></li>
+<li><p>계수 부호가 직관과 다르게 뒤집히는 경우도 생긴다.</p></li>
+<li><p>변수 하나를 빼거나 데이터를 조금만 바꿔도 계수가 크게 변할 수 있다.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id35">
+<h3>다음 단계 옵션<a class="headerlink" href="#id35" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>TAX와 RAD 중 하나를 제외/대체해서 계수 안정성이 좋아지는지 비교</p></li>
+<li><p>표준화 계수(또는 부분 <span class="math notranslate nohighlight">\(R^2\)</span>)로 중요도 비교</p></li>
+<li><p>Ridge(릿지) 같은 규제 회귀로 공선성에 강한 추정으로 전환</p></li>
+</ul>
+<p>원하면 TAX–RAD를 동시에 넣었을 때와 하나를 뺐을 때의 계수 변화(표)로 “공선성이 계수 해석을 어떻게 흔드는지”를 바로 보여줄게.</p>
+</section>
+</section>
+<section id="id36">
+<h2><span style="color: blue;"><strong>6. 표준화 계수</strong></span><a class="headerlink" href="#id36" title="Link to this heading">#</a></h2>
+</section>
+<section id="id37">
+<h2><strong>ChatGPT 분석</strong><a class="headerlink" href="#id37" title="Link to this heading">#</a></h2>
+<p>표준화 계수로 변수 중요도를 비교한다는 건, <strong>“단위가 다른 변수들을 같은 출발선에 세워 놓고 누가 더 센 영향을 주는지 보는 것”</strong> 이다.</p>
+<hr class="docutils" />
+<section id="id38">
+<h3>표준화 계수가 뭔가<a class="headerlink" href="#id38" title="Link to this heading">#</a></h3>
+<p>원래 회귀계수는 단위에 크게 의존한다.</p>
+<ul class="simple">
+<li><p>RM: “방 1개 증가”</p></li>
+<li><p>NOX: “오염 농도 0.01 증가”</p></li>
+<li><p>TAX: “세금 1 증가”</p></li>
+</ul>
+<p>이런 계수들은 <strong>단위가 다르기 때문에 크기를 직접 비교할 수 없다</strong>.</p>
+<p>표준화 계수는 이렇게 만든다.</p>
+<ol class="arabic simple">
+<li><p>각 설명변수를 평균 0, 표준편차 1로 변환</p></li>
+<li><p>종속변수(MEDV)도 평균 0, 표준편차 1로 변환</p></li>
+<li><p>그 상태에서 회귀를 돌린 계수 = 표준화 계수(<span class="math notranslate nohighlight">\(\beta\)</span>)</p></li>
+</ol>
+<p>그래서 표준화 계수는 다음 의미를 가진다.</p>
+<blockquote>
+<div><p>해당 변수가 <strong>1 표준편차만큼 변할 때</strong>,
+MEDV가 <strong>몇 표준편차만큼 변하는가</strong></p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="id39">
+<h3>표준화 계수 기반 변수 중요도 표<a class="headerlink" href="#id39" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>변수</p></th>
+<th class="head text-center"><p>표준화 계수(<span class="math notranslate nohighlight">\(\beta\)</span>)</p></th>
+<th class="head text-center"><p><span class="math notranslate nohighlight">\(\vert\beta\vert\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>LSTAT</p></td>
+<td class="text-center"><p>-0.407</p></td>
+<td class="text-center"><p>0.407</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>DIS</p></td>
+<td class="text-center"><p>-0.338</p></td>
+<td class="text-center"><p>0.338</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>RM</p></td>
+<td class="text-center"><p>0.291</p></td>
+<td class="text-center"><p>0.291</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>RAD</p></td>
+<td class="text-center"><p>0.290</p></td>
+<td class="text-center"><p>0.290</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>TAX</p></td>
+<td class="text-center"><p>-0.226</p></td>
+<td class="text-center"><p>0.226</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>PTRATIO</p></td>
+<td class="text-center"><p>-0.224</p></td>
+<td class="text-center"><p>0.224</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>NOX</p></td>
+<td class="text-center"><p>-0.224</p></td>
+<td class="text-center"><p>0.224</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>ZN</p></td>
+<td class="text-center"><p>0.118</p></td>
+<td class="text-center"><p>0.118</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>CRIM</p></td>
+<td class="text-center"><p>-0.101</p></td>
+<td class="text-center"><p>0.101</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>B</p></td>
+<td class="text-center"><p>0.092</p></td>
+<td class="text-center"><p>0.092</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>CHAS</p></td>
+<td class="text-center"><p>0.074</p></td>
+<td class="text-center"><p>0.074</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>INDUS</p></td>
+<td class="text-center"><p>0.015</p></td>
+<td class="text-center"><p>0.015</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>AGE</p></td>
+<td class="text-center"><p>0.002</p></td>
+<td class="text-center"><p>0.002</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>(<span class="math notranslate nohighlight">\(|\beta|\)</span>가 클수록 상대적으로 중요)</p>
+</section>
+<hr class="docutils" />
+<section id="id40">
+<h3>직관적 해석<a class="headerlink" href="#id40" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>LSTAT가 가장 중요</strong>
+→ “다른 변수들이 동일할 때”, LSTAT의 변동이 주택가격 변동에 가장 큰 영향을 준다.</p></li>
+<li><p><strong>DIS, RM, RAD</strong>도 영향력이 크다
+→ 거리, 방 수, 도로 접근성이 가격 형성에서 핵심 축이라는 뜻이다.</p></li>
+<li><p><strong>INDUS, AGE</strong>는 거의 영향이 없다
+→ 다른 변수들을 이미 통제하면, 이 변수들은 추가 설명력이 거의 없다.</p></li>
+</ul>
+<p>여기서 중요한 점 하나.</p>
+<blockquote>
+<div><p>표준화 계수는 <strong>‘누가 더 중요해 보이는지’</strong> 를 비교하는 도구이지,
+<strong>인과 크기</strong>를 말해주는 숫자는 아니다.</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="id41">
+<h3>한 문장 요약<a class="headerlink" href="#id41" title="Link to this heading">#</a></h3>
+<p>표준화 계수는</p>
+<blockquote>
+<div><p>“모든 변수를 같은 단위(표준편차)로 맞춰 놓고,
+주택가격을 가장 세게 흔드는 변수가 무엇인지 보여주는 척도”다.</p>
+</div></blockquote>
+</section>
+</section>
+<section id="id42">
+<h2><span style="color: blue;"><strong>7. 로그 변환 회귀분석</strong></span><a class="headerlink" href="#id42" title="Link to this heading">#</a></h2>
+</section>
+<section id="id43">
+<h2><strong>ChatGPT 분석</strong><a class="headerlink" href="#id43" title="Link to this heading">#</a></h2>
+<p>아래에서는 <strong>왜 로그를 취하는지의 의미를 먼저 설명</strong>하고, 이어서 <strong>로그 변환 회귀의 계수 추정치 표</strong>와 <strong>해석</strong>을 제시한다.</p>
+<hr class="docutils" />
+<section id="id44">
+<h3>1. 적절한 변수에 로그를 취하는 의미(직관)<a class="headerlink" href="#id44" title="Link to this heading">#</a></h3>
+<p>로그 변환은 “선형회귀를 억지로 쓰기 위해 꾸미는 기술”이 아니라, <strong>현실에서 더 자연스러운 관계를 모델로 옮기는 방법</strong>이다. 핵심 이유는 세 가지다.</p>
+<ol class="arabic simple">
+<li><p><strong>비율 변화로 해석하기 위함</strong>
+주택가격은 “1만 달러 증가”보다 “몇 % 증가”로 움직이는 경우가 많다.
+<span class="math notranslate nohighlight">\(\log(\text{MEDV})\)</span>를 쓰면, 설명변수의 효과를 <strong>% 변화</strong>로 해석할 수 있다.</p></li>
+<li><p><strong>비선형 관계를 직선으로 펴기 위함</strong>
+LSTAT, CRIM처럼 값이 커질수록 영향이 완만해지는 변수는
+원자료에서는 곡선 관계지만, 로그를 취하면 직선에 가까워진다.</p></li>
+<li><p><strong>이분산과 극단값 영향 완화</strong>
+큰 값 몇 개가 회귀를 지배하는 문제를 줄이고,
+가격 수준이 커질수록 오차가 커지는 패턴을 완화한다.</p></li>
+</ol>
+<p>그래서 여기서는</p>
+<ul class="simple">
+<li><p>MEDV, LSTAT, CRIM, NOX, DIS, TAX처럼 <strong>양수·왜도 큰 변수</strong>에 로그를 취하고</p></li>
+<li><p>RM, PTRATIO는 수준(level) 그대로 두었다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id45">
+<h3>2. 로그 변환 회귀 모형<a class="headerlink" href="#id45" title="Link to this heading">#</a></h3>
+<p>모형은 다음과 같다.</p>
+<div class="math notranslate nohighlight">
+\[
+\log(\text{MEDV}) =
+\beta_0
++ \beta_1 \log(\text{LSTAT})
++ \beta_2 \text{RM}
++ \beta_3 \text{PTRATIO}
++ \beta_4 \log(\text{CRIM})
++ \beta_5 \log(\text{NOX})
++ \beta_6 \log(\text{DIS})
++ \beta_7 \text{CHAS}
++ \epsilon
+\]</div>
+</section>
+<hr class="docutils" />
+<section id="id46">
+<h3>3. 계수 추정치 표<a class="headerlink" href="#id46" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>변수</p></th>
+<th class="head text-center"><p>추정치</p></th>
+<th class="head text-center"><p>표준오차</p></th>
+<th class="head text-center"><p>t값</p></th>
+<th class="head text-center"><p>p값</p></th>
+<th class="head text-center"><p>95% 신뢰구간(하한)</p></th>
+<th class="head text-center"><p>95% 신뢰구간(상한)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>const</p></td>
+<td class="text-center"><p>3.982</p></td>
+<td class="text-center"><p>0.193</p></td>
+<td class="text-center"><p>20.607</p></td>
+<td class="text-center"><p>1.09e-68</p></td>
+<td class="text-center"><p>3.603</p></td>
+<td class="text-center"><p>4.362</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>L_LSTAT</p></td>
+<td class="text-center"><p>-0.403</p></td>
+<td class="text-center"><p>0.026</p></td>
+<td class="text-center"><p>-15.659</p></td>
+<td class="text-center"><p>3.14e-45</p></td>
+<td class="text-center"><p>-0.453</p></td>
+<td class="text-center"><p>-0.352</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>RM</p></td>
+<td class="text-center"><p>0.080</p></td>
+<td class="text-center"><p>0.018</p></td>
+<td class="text-center"><p>4.433</p></td>
+<td class="text-center"><p>1.15e-05</p></td>
+<td class="text-center"><p>0.045</p></td>
+<td class="text-center"><p>0.116</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>PTRATIO</p></td>
+<td class="text-center"><p>-0.029</p></td>
+<td class="text-center"><p>0.005</p></td>
+<td class="text-center"><p>-5.748</p></td>
+<td class="text-center"><p>1.57e-08</p></td>
+<td class="text-center"><p>-0.039</p></td>
+<td class="text-center"><p>-0.019</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>L_CRIM</p></td>
+<td class="text-center"><p>-0.028</p></td>
+<td class="text-center"><p>0.008</p></td>
+<td class="text-center"><p>-3.574</p></td>
+<td class="text-center"><p>0.000386</p></td>
+<td class="text-center"><p>-0.044</p></td>
+<td class="text-center"><p>-0.013</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>L_NOX</p></td>
+<td class="text-center"><p>-0.334</p></td>
+<td class="text-center"><p>0.108</p></td>
+<td class="text-center"><p>-3.103</p></td>
+<td class="text-center"><p>0.00202</p></td>
+<td class="text-center"><p>-0.545</p></td>
+<td class="text-center"><p>-0.122</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>L_DIS</p></td>
+<td class="text-center"><p>-0.169</p></td>
+<td class="text-center"><p>0.034</p></td>
+<td class="text-center"><p>-4.924</p></td>
+<td class="text-center"><p>1.15e-06</p></td>
+<td class="text-center"><p>-0.236</p></td>
+<td class="text-center"><p>-0.101</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>CHAS</p></td>
+<td class="text-center"><p>0.132</p></td>
+<td class="text-center"><p>0.037</p></td>
+<td class="text-center"><p>3.538</p></td>
+<td class="text-center"><p>0.000441</p></td>
+<td class="text-center"><p>0.059</p></td>
+<td class="text-center"><p>0.205</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>적합도:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(R^2 = 0.744\)</span>, Adj. <span class="math notranslate nohighlight">\(R^2 = 0.740\)</span></p></li>
+<li><p>로그를 쓰지 않은 다중회귀와 비슷하거나 약간 더 안정적인 설명력을 보인다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id47">
+<h3>4. 계수 해석(핵심)<a class="headerlink" href="#id47" title="Link to this heading">#</a></h3>
+<section id="loglog">
+<h4>(1) log–log 변수: <strong>탄력성</strong><a class="headerlink" href="#loglog" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>LSTAT (−0.403)</strong>
+→ LSTAT가 <strong>1% 증가</strong>하면 MEDV는 <strong>약 0.40% 감소</strong>
+→ 단순선형보다 훨씬 자연스럽고 안정적인 해석</p></li>
+<li><p><strong>CRIM (−0.028)</strong>
+→ 범죄율이 1% 증가하면 주택가격은 약 0.03% 감소</p></li>
+<li><p><strong>NOX (−0.334)</strong>
+→ 오염도가 1% 증가하면 가격은 약 0.33% 감소</p></li>
+<li><p><strong>DIS (−0.169)</strong>
+→ 고용 중심지까지의 거리가 1% 증가하면 가격은 약 0.17% 감소</p></li>
+</ul>
+</section>
+<section id="loglevel">
+<h4>(2) log–level 변수: <strong>반탄력성</strong><a class="headerlink" href="#loglevel" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>RM (0.080)</strong>
+→ 방 1개 증가 시 주택가격은 <strong>약 8% 상승</strong></p></li>
+<li><p><strong>PTRATIO (−0.029)</strong>
+→ 학생/교사 비율이 1 증가하면 가격은 <strong>약 2.9% 하락</strong></p></li>
+</ul>
+</section>
+<section id="id48">
+<h4>(3) 더미 변수<a class="headerlink" href="#id48" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>CHAS (0.132)</strong>
+→ 강변 지역은 비강변 대비
+$<span class="math notranslate nohighlight">\(\exp(0.132)-1 \approx 14.1%\)</span>$
+<strong>약 14% 더 비싸다</strong></p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id49">
+<h3>5. 정리<a class="headerlink" href="#id49" title="Link to this heading">#</a></h3>
+<p>로그 변환 회귀는</p>
+<ul class="simple">
+<li><p>관계를 “얼마나 변하나”가 아니라 <strong>“몇 % 변하나”</strong> 로 바꾸고</p></li>
+<li><p>비선형·이분산 문제를 완화하며</p></li>
+<li><p>계수 해석을 <strong>탄력성</strong>이라는 직관적인 언어로 바꿔준다.</p></li>
+</ul>
+<p>이 결과를 보면</p>
+<blockquote>
+<div><p>LSTAT, RM, PTRATIO, NOX는
+로그 스케일에서도 여전히 주택가격의 핵심 결정요인이다.</p>
+</div></blockquote>
+<p>다음으로 이어가면 좋은 주제는</p>
+<ul class="simple">
+<li><p>로그 모형 vs 원자료 모형의 잔차 비교</p></li>
+<li><p>로그–로그 vs 다항식(LSTAT²) 모형 비교</p></li>
+<li><p>정책 해석에서 “% 변화”가 왜 중요한지
+중 하나다.</p></li>
+</ul>
+</section>
+</section>
+<section id="id50">
+<h2><strong>참고: 파이썬 코드</strong><a class="headerlink" href="#id50" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://raw.githubusercontent.com/selva86/datasets/master/BostonHousing.csv&quot;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>CRIM</th>
+      <th>ZN</th>
+      <th>INDUS</th>
+      <th>CHAS</th>
+      <th>NOX</th>
+      <th>RM</th>
+      <th>AGE</th>
+      <th>DIS</th>
+      <th>RAD</th>
+      <th>TAX</th>
+      <th>PTRATIO</th>
+      <th>B</th>
+      <th>LSTAT</th>
+      <th>MEDV</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.00632</td>
+      <td>18.0</td>
+      <td>2.31</td>
+      <td>0</td>
+      <td>0.538</td>
+      <td>6.575</td>
+      <td>65.2</td>
+      <td>4.0900</td>
+      <td>1</td>
+      <td>296</td>
+      <td>15.3</td>
+      <td>396.90</td>
+      <td>4.98</td>
+      <td>24.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.02731</td>
+      <td>0.0</td>
+      <td>7.07</td>
+      <td>0</td>
+      <td>0.469</td>
+      <td>6.421</td>
+      <td>78.9</td>
+      <td>4.9671</td>
+      <td>2</td>
+      <td>242</td>
+      <td>17.8</td>
+      <td>396.90</td>
+      <td>9.14</td>
+      <td>21.6</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.02729</td>
+      <td>0.0</td>
+      <td>7.07</td>
+      <td>0</td>
+      <td>0.469</td>
+      <td>7.185</td>
+      <td>61.1</td>
+      <td>4.9671</td>
+      <td>2</td>
+      <td>242</td>
+      <td>17.8</td>
+      <td>392.83</td>
+      <td>4.03</td>
+      <td>34.7</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.03237</td>
+      <td>0.0</td>
+      <td>2.18</td>
+      <td>0</td>
+      <td>0.458</td>
+      <td>6.998</td>
+      <td>45.8</td>
+      <td>6.0622</td>
+      <td>3</td>
+      <td>222</td>
+      <td>18.7</td>
+      <td>394.63</td>
+      <td>2.94</td>
+      <td>33.4</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.06905</td>
+      <td>0.0</td>
+      <td>2.18</td>
+      <td>0</td>
+      <td>0.458</td>
+      <td>7.147</td>
+      <td>54.2</td>
+      <td>6.0622</td>
+      <td>3</td>
+      <td>222</td>
+      <td>18.7</td>
+      <td>396.90</td>
+      <td>5.33</td>
+      <td>36.2</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>501</th>
+      <td>0.06263</td>
+      <td>0.0</td>
+      <td>11.93</td>
+      <td>0</td>
+      <td>0.573</td>
+      <td>6.593</td>
+      <td>69.1</td>
+      <td>2.4786</td>
+      <td>1</td>
+      <td>273</td>
+      <td>21.0</td>
+      <td>391.99</td>
+      <td>9.67</td>
+      <td>22.4</td>
+    </tr>
+    <tr>
+      <th>502</th>
+      <td>0.04527</td>
+      <td>0.0</td>
+      <td>11.93</td>
+      <td>0</td>
+      <td>0.573</td>
+      <td>6.120</td>
+      <td>76.7</td>
+      <td>2.2875</td>
+      <td>1</td>
+      <td>273</td>
+      <td>21.0</td>
+      <td>396.90</td>
+      <td>9.08</td>
+      <td>20.6</td>
+    </tr>
+    <tr>
+      <th>503</th>
+      <td>0.06076</td>
+      <td>0.0</td>
+      <td>11.93</td>
+      <td>0</td>
+      <td>0.573</td>
+      <td>6.976</td>
+      <td>91.0</td>
+      <td>2.1675</td>
+      <td>1</td>
+      <td>273</td>
+      <td>21.0</td>
+      <td>396.90</td>
+      <td>5.64</td>
+      <td>23.9</td>
+    </tr>
+    <tr>
+      <th>504</th>
+      <td>0.10959</td>
+      <td>0.0</td>
+      <td>11.93</td>
+      <td>0</td>
+      <td>0.573</td>
+      <td>6.794</td>
+      <td>89.3</td>
+      <td>2.3889</td>
+      <td>1</td>
+      <td>273</td>
+      <td>21.0</td>
+      <td>393.45</td>
+      <td>6.48</td>
+      <td>22.0</td>
+    </tr>
+    <tr>
+      <th>505</th>
+      <td>0.04741</td>
+      <td>0.0</td>
+      <td>11.93</td>
+      <td>0</td>
+      <td>0.573</td>
+      <td>6.030</td>
+      <td>80.8</td>
+      <td>2.5050</td>
+      <td>1</td>
+      <td>273</td>
+      <td>21.0</td>
+      <td>396.90</td>
+      <td>7.88</td>
+      <td>11.9</td>
+    </tr>
+  </tbody>
+</table>
+<p>506 rows × 14 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ==============</span>
+<span class="c1"># Boston Housing</span>
+<span class="c1"># ==============</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.graphics.gofplots</span><span class="w"> </span><span class="kn">import</span> <span class="n">qqplot</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.stats.outliers_influence</span><span class="w"> </span><span class="kn">import</span> <span class="n">variance_inflation_factor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pandas.plotting</span><span class="w"> </span><span class="kn">import</span> <span class="n">scatter_matrix</span>
+
+<span class="c1"># ------------------------------------------------------------</span>
+<span class="c1"># 1) 기초 통계량</span>
+<span class="c1"># ------------------------------------------------------------</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Descriptive Statistics ===</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Descriptive Statistics ===
+
+             CRIM          ZN       INDUS        CHAS         NOX          RM  \
+count  506.000000  506.000000  506.000000  506.000000  506.000000  506.000000   
+mean     3.613524   11.363636   11.136779    0.069170    0.554695    6.284634   
+std      8.601545   23.322453    6.860353    0.253994    0.115878    0.702617   
+min      0.006320    0.000000    0.460000    0.000000    0.385000    3.561000   
+25%      0.082045    0.000000    5.190000    0.000000    0.449000    5.885500   
+50%      0.256510    0.000000    9.690000    0.000000    0.538000    6.208500   
+75%      3.677083   12.500000   18.100000    0.000000    0.624000    6.623500   
+max     88.976200  100.000000   27.740000    1.000000    0.871000    8.780000   
+
+              AGE         DIS         RAD         TAX     PTRATIO           B  \
+count  506.000000  506.000000  506.000000  506.000000  506.000000  506.000000   
+mean    68.574901    3.795043    9.549407  408.237154   18.455534  356.674032   
+std     28.148861    2.105710    8.707259  168.537116    2.164946   91.294864   
+min      2.900000    1.129600    1.000000  187.000000   12.600000    0.320000   
+25%     45.025000    2.100175    4.000000  279.000000   17.400000  375.377500   
+50%     77.500000    3.207450    5.000000  330.000000   19.050000  391.440000   
+75%     94.075000    5.188425   24.000000  666.000000   20.200000  396.225000   
+max    100.000000   12.126500   24.000000  711.000000   22.000000  396.900000   
+
+            LSTAT        MEDV  
+count  506.000000  506.000000  
+mean    12.653063   22.532806  
+std      7.141062    9.197104  
+min      1.730000    5.000000  
+25%      6.950000   17.025000  
+50%     11.360000   21.200000  
+75%     16.955000   25.000000  
+max     37.970000   50.000000  
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ------------------------------------------------------------</span>
+<span class="c1"># 2) 상관관계</span>
+<span class="c1"># ------------------------------------------------------------</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Correlation Matrix ===</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Correlation Matrix ===
+
+             CRIM        ZN     INDUS      CHAS       NOX        RM       AGE  \
+CRIM     1.000000 -0.200469  0.406583 -0.055892  0.420972 -0.219247  0.352734   
+ZN      -0.200469  1.000000 -0.533828 -0.042697 -0.516604  0.311991 -0.569537   
+INDUS    0.406583 -0.533828  1.000000  0.062938  0.763651 -0.391676  0.644779   
+CHAS    -0.055892 -0.042697  0.062938  1.000000  0.091203  0.091251  0.086518   
+NOX      0.420972 -0.516604  0.763651  0.091203  1.000000 -0.302188  0.731470   
+RM      -0.219247  0.311991 -0.391676  0.091251 -0.302188  1.000000 -0.240265   
+AGE      0.352734 -0.569537  0.644779  0.086518  0.731470 -0.240265  1.000000   
+DIS     -0.379670  0.664408 -0.708027 -0.099176 -0.769230  0.205246 -0.747881   
+RAD      0.625505 -0.311948  0.595129 -0.007368  0.611441 -0.209847  0.456022   
+TAX      0.582764 -0.314563  0.720760 -0.035587  0.668023 -0.292048  0.506456   
+PTRATIO  0.289946 -0.391679  0.383248 -0.121515  0.188933 -0.355501  0.261515   
+B       -0.385064  0.175520 -0.356977  0.048788 -0.380051  0.128069 -0.273534   
+LSTAT    0.455621 -0.412995  0.603800 -0.053929  0.590879 -0.613808  0.602339   
+MEDV    -0.388305  0.360445 -0.483725  0.175260 -0.427321  0.695360 -0.376955   
+
+              DIS       RAD       TAX   PTRATIO         B     LSTAT      MEDV  
+CRIM    -0.379670  0.625505  0.582764  0.289946 -0.385064  0.455621 -0.388305  
+ZN       0.664408 -0.311948 -0.314563 -0.391679  0.175520 -0.412995  0.360445  
+INDUS   -0.708027  0.595129  0.720760  0.383248 -0.356977  0.603800 -0.483725  
+CHAS    -0.099176 -0.007368 -0.035587 -0.121515  0.048788 -0.053929  0.175260  
+NOX     -0.769230  0.611441  0.668023  0.188933 -0.380051  0.590879 -0.427321  
+RM       0.205246 -0.209847 -0.292048 -0.355501  0.128069 -0.613808  0.695360  
+AGE     -0.747881  0.456022  0.506456  0.261515 -0.273534  0.602339 -0.376955  
+DIS      1.000000 -0.494588 -0.534432 -0.232471  0.291512 -0.496996  0.249929  
+RAD     -0.494588  1.000000  0.910228  0.464741 -0.444413  0.488676 -0.381626  
+TAX     -0.534432  0.910228  1.000000  0.460853 -0.441808  0.543993 -0.468536  
+PTRATIO -0.232471  0.464741  0.460853  1.000000 -0.177383  0.374044 -0.507787  
+B        0.291512 -0.444413 -0.441808 -0.177383  1.000000 -0.366087  0.333461  
+LSTAT   -0.496996  0.488676  0.543993  0.374044 -0.366087  1.000000 -0.737663  
+MEDV     0.249929 -0.381626 -0.468536 -0.507787  0.333461 -0.737663  1.000000  
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ------------------------------------------------------------</span>
+<span class="c1"># 3) 산점도 행렬</span>
+<span class="c1"># ------------------------------------------------------------</span>
+<span class="n">subset_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MEDV&#39;</span><span class="p">,</span><span class="s1">&#39;LSTAT&#39;</span><span class="p">,</span><span class="s1">&#39;RM&#39;</span><span class="p">,</span><span class="s1">&#39;PTRATIO&#39;</span><span class="p">,</span><span class="s1">&#39;NOX&#39;</span><span class="p">,</span><span class="s1">&#39;CRIM&#39;</span><span class="p">,</span><span class="s1">&#39;DIS&#39;</span><span class="p">,</span><span class="s1">&#39;TAX&#39;</span><span class="p">]</span>
+<span class="n">scatter_matrix</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">subset_cols</span><span class="p">],</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="n">diagonal</span><span class="o">=</span><span class="s1">&#39;hist&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Scatter Plot Matrix (selected variables)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">rect</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.98</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c5cf7d7398b317a40e120d9c8d368caa7820522bf7119e1e9fac58d558f84305.png" src="../_images/c5cf7d7398b317a40e120d9c8d368caa7820522bf7119e1e9fac58d558f84305.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ------------------------------------------------------------</span>
+<span class="c1"># 4) 단순회귀: MEDV ~ LSTAT</span>
+<span class="c1"># ------------------------------------------------------------</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;MEDV&quot;</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;LSTAT&quot;</span><span class="p">]])</span>
+
+<span class="n">model_simple</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Simple Regression: MEDV ~ LSTAT ===</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model_simple</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Simple Regression: MEDV ~ LSTAT ===
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                   MEDV   R-squared:                       0.544
+Model:                            OLS   Adj. R-squared:                  0.543
+Method:                 Least Squares   F-statistic:                     601.6
+Date:                Thu, 19 Mar 2026   Prob (F-statistic):           5.08e-88
+Time:                        02:24:35   Log-Likelihood:                -1641.5
+No. Observations:                 506   AIC:                             3287.
+Df Residuals:                     504   BIC:                             3295.
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const         34.5538      0.563     61.415      0.000      33.448      35.659
+LSTAT         -0.9500      0.039    -24.528      0.000      -1.026      -0.874
+==============================================================================
+Omnibus:                      137.043   Durbin-Watson:                   0.892
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              291.373
+Skew:                           1.453   Prob(JB):                     5.36e-64
+Kurtosis:                       5.319   Cond. No.                         29.7
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 잔차 진단</span>
+<span class="n">infl</span> <span class="o">=</span> <span class="n">model_simple</span><span class="o">.</span><span class="n">get_influence</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">model_simple</span><span class="o">.</span><span class="n">fittedvalues</span><span class="p">,</span> <span class="n">model_simple</span><span class="o">.</span><span class="n">resid</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Fitted values&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Residuals&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Residuals vs Fitted (MEDV ~ LSTAT)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">qqplot</span><span class="p">(</span><span class="n">model_simple</span><span class="o">.</span><span class="n">resid</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="s2">&quot;45&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Normal Q-Q (Residuals)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/250322547d8ea6fdc7a4c000441b953931b095e52be88b69bef0dbbd0a46f654.png" src="../_images/250322547d8ea6fdc7a4c000441b953931b095e52be88b69bef0dbbd0a46f654.png" />
+<img alt="../_images/75a5a041694483a8e89fd82b3dcd2648e78022a2e0091312b8668d84e5978eb8.png" src="../_images/75a5a041694483a8e89fd82b3dcd2648e78022a2e0091312b8668d84e5978eb8.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ------------------------------------------------------------</span>
+<span class="c1"># 5) 다중회귀: MEDV ~ 모든 설명변수</span>
+<span class="c1"># ------------------------------------------------------------</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;MEDV&quot;</span><span class="p">]))</span>
+<span class="n">model_multi</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Multiple Regression: MEDV ~ all covariates ===</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model_multi</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Multiple Regression: MEDV ~ all covariates ===
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                   MEDV   R-squared:                       0.741
+Model:                            OLS   Adj. R-squared:                  0.734
+Method:                 Least Squares   F-statistic:                     108.1
+Date:                Thu, 19 Mar 2026   Prob (F-statistic):          6.72e-135
+Time:                        02:24:36   Log-Likelihood:                -1498.8
+No. Observations:                 506   AIC:                             3026.
+Df Residuals:                     492   BIC:                             3085.
+Df Model:                          13                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const         36.4595      5.103      7.144      0.000      26.432      46.487
+CRIM          -0.1080      0.033     -3.287      0.001      -0.173      -0.043
+ZN             0.0464      0.014      3.382      0.001       0.019       0.073
+INDUS          0.0206      0.061      0.334      0.738      -0.100       0.141
+CHAS           2.6867      0.862      3.118      0.002       0.994       4.380
+NOX          -17.7666      3.820     -4.651      0.000     -25.272     -10.262
+RM             3.8099      0.418      9.116      0.000       2.989       4.631
+AGE            0.0007      0.013      0.052      0.958      -0.025       0.027
+DIS           -1.4756      0.199     -7.398      0.000      -1.867      -1.084
+RAD            0.3060      0.066      4.613      0.000       0.176       0.436
+TAX           -0.0123      0.004     -3.280      0.001      -0.020      -0.005
+PTRATIO       -0.9527      0.131     -7.283      0.000      -1.210      -0.696
+B              0.0093      0.003      3.467      0.001       0.004       0.015
+LSTAT         -0.5248      0.051    -10.347      0.000      -0.624      -0.425
+==============================================================================
+Omnibus:                      178.041   Durbin-Watson:                   1.078
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              783.126
+Skew:                           1.521   Prob(JB):                    8.84e-171
+Kurtosis:                       8.281   Cond. No.                     1.51e+04
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 1.51e+04. This might indicate that there are
+strong multicollinearity or other numerical problems.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ------------------------------------------------------------</span>
+<span class="c1"># 6) 다중공선성: VIF</span>
+<span class="c1"># ------------------------------------------------------------</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Variance Inflation Factors (VIF) ===</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">X_vif</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;MEDV&quot;</span><span class="p">])</span>
+<span class="n">X_vif_const</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">X_vif</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">X_vif_const</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+    <span class="n">vif</span> <span class="o">=</span> <span class="n">variance_inflation_factor</span><span class="p">(</span><span class="n">X_vif_const</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="si">:</span><span class="s2">&gt;10s</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">vif</span><span class="si">:</span><span class="s2">6.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Variance Inflation Factors (VIF) ===
+
+     const : 585.27
+      CRIM :   1.79
+        ZN :   2.30
+     INDUS :   3.99
+      CHAS :   1.07
+       NOX :   4.39
+        RM :   1.93
+       AGE :   3.10
+       DIS :   3.96
+       RAD :   7.48
+       TAX :   9.01
+   PTRATIO :   1.80
+         B :   1.35
+     LSTAT :   2.94
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ------------------------------------------------------------</span>
+<span class="c1"># 7) 표준화 계수</span>
+<span class="c1"># ------------------------------------------------------------</span>
+<span class="n">X_std</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_vif</span> <span class="o">-</span> <span class="n">X_vif</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">X_vif</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">ddof</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">y_std</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">y</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">ddof</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">model_std</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">y_std</span><span class="p">,</span> <span class="n">X_std</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Standardized Regression (no intercept) ===</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model_std</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Standardized Regression (no intercept) ===
+
+                                 OLS Regression Results                                
+=======================================================================================
+Dep. Variable:                   MEDV   R-squared (uncentered):                   0.741
+Model:                            OLS   Adj. R-squared (uncentered):              0.734
+Method:                 Least Squares   F-statistic:                              108.3
+Date:                Thu, 19 Mar 2026   Prob (F-statistic):                   3.46e-135
+Time:                        02:24:36   Log-Likelihood:                         -376.55
+No. Observations:                 506   AIC:                                      779.1
+Df Residuals:                     493   BIC:                                      834.0
+Df Model:                          13                                                  
+Covariance Type:            nonrobust                                                  
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+CRIM          -0.1010      0.031     -3.290      0.001      -0.161      -0.041
+ZN             0.1177      0.035      3.385      0.001       0.049       0.186
+INDUS          0.0153      0.046      0.335      0.738      -0.075       0.105
+CHAS           0.0742      0.024      3.122      0.002       0.027       0.121
+NOX           -0.2238      0.048     -4.656      0.000      -0.318      -0.129
+RM             0.2911      0.032      9.125      0.000       0.228       0.354
+AGE            0.0021      0.040      0.052      0.958      -0.077       0.081
+DIS           -0.3378      0.046     -7.406      0.000      -0.427      -0.248
+RAD            0.2897      0.063      4.618      0.000       0.166       0.413
+TAX           -0.2260      0.069     -3.283      0.001      -0.361      -0.091
+PTRATIO       -0.2243      0.031     -7.290      0.000      -0.285      -0.164
+B              0.0924      0.027      3.470      0.001       0.040       0.145
+LSTAT         -0.4074      0.039    -10.358      0.000      -0.485      -0.330
+==============================================================================
+Omnibus:                      178.041   Durbin-Watson:                   1.078
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              783.126
+Skew:                           1.521   Prob(JB):                    8.84e-171
+Kurtosis:                       8.281   Cond. No.                         9.82
+==============================================================================
+
+Notes:
+[1] R² is computed without centering (uncentered) since the model does not contain a constant.
+[2] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ------------------------------------------------------------</span>
+<span class="c1"># 8) 로그 변환 회귀</span>
+<span class="c1"># ------------------------------------------------------------</span>
+<span class="n">df_log</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;MEDV&quot;</span><span class="p">,</span> <span class="s2">&quot;CRIM&quot;</span><span class="p">,</span> <span class="s2">&quot;NOX&quot;</span><span class="p">,</span> <span class="s2">&quot;DIS&quot;</span><span class="p">,</span> <span class="s2">&quot;LSTAT&quot;</span><span class="p">]:</span>
+    <span class="n">df_log</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;L_</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">df_log</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
+
+<span class="n">y_log</span> <span class="o">=</span> <span class="n">df_log</span><span class="p">[</span><span class="s2">&quot;L_MEDV&quot;</span><span class="p">]</span>
+<span class="n">X_log</span> <span class="o">=</span> <span class="n">df_log</span><span class="p">[[</span>
+    <span class="s2">&quot;L_LSTAT&quot;</span><span class="p">,</span>   <span class="c1"># log-log</span>
+    <span class="s2">&quot;RM&quot;</span><span class="p">,</span>        <span class="c1"># level-log</span>
+    <span class="s2">&quot;PTRATIO&quot;</span><span class="p">,</span>   <span class="c1"># level-log</span>
+    <span class="s2">&quot;L_CRIM&quot;</span><span class="p">,</span>    <span class="c1"># log-log</span>
+    <span class="s2">&quot;L_NOX&quot;</span><span class="p">,</span>     <span class="c1"># log-log</span>
+    <span class="s2">&quot;L_DIS&quot;</span><span class="p">,</span>     <span class="c1"># log-log</span>
+    <span class="s2">&quot;CHAS&quot;</span>       <span class="c1"># dummy</span>
+<span class="p">]]</span>
+
+<span class="n">X_log</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">X_log</span><span class="p">)</span>
+<span class="n">model_log</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">y_log</span><span class="p">,</span> <span class="n">X_log</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Log-transformed Regression: log(MEDV) ===</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model_log</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Log-transformed Regression: log(MEDV) ===
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                 L_MEDV   R-squared:                       0.744
+Model:                            OLS   Adj. R-squared:                  0.740
+Method:                 Least Squares   F-statistic:                     206.3
+Date:                Thu, 19 Mar 2026   Prob (F-statistic):          1.00e-142
+Time:                        02:24:36   Log-Likelihood:                 79.486
+No. Observations:                 506   AIC:                            -143.0
+Df Residuals:                     498   BIC:                            -109.2
+Df Model:                           7                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          3.9825      0.193     20.607      0.000       3.603       4.362
+L_LSTAT       -0.4028      0.026    -15.659      0.000      -0.453      -0.352
+RM             0.0801      0.018      4.433      0.000       0.045       0.116
+PTRATIO       -0.0288      0.005     -5.748      0.000      -0.039      -0.019
+L_CRIM        -0.0284      0.008     -3.574      0.000      -0.044      -0.013
+L_NOX         -0.3337      0.108     -3.103      0.002      -0.545      -0.122
+L_DIS         -0.1686      0.034     -4.924      0.000      -0.236      -0.101
+CHAS           0.1320      0.037      3.538      0.000       0.059       0.205
+==============================================================================
+Omnibus:                       47.821   Durbin-Watson:                   0.913
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):              162.394
+Skew:                          -0.373   Prob(JB):                     5.45e-36
+Kurtosis:                       5.673   Cond. No.                         419.
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="10_%ED%83%90%EC%83%89%EC%A0%81_%EC%9A%94%EC%9D%B8%EB%B6%84%EC%84%9D.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><strong>10장 탐색적 요인분석</strong></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="12_%EC%A2%85%EB%B6%80%EC%84%B8%EC%99%80_%EC%9B%94%EC%84%B8%EC%9D%98_%EA%B4%80%EA%B3%84.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><strong>12장 종부세와 월세의 관계</strong></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span style="color: blue;"><strong>1. 데이터 업로드</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chatgpt"><strong>ChatGPT 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1. 데이터셋 개요</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2. 변수 구성</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3. 분석적 관점에서의 해석</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">4. 데이터의 특징</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">5. 요약</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"><span style="color: blue;"><strong>2. 기초 통계량, 상관관계, 산점도 행렬</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><strong>ChatGPT 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">1. 기초 통계량 요약</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">읽는 포인트</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">2. 변수 간 상관관계</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#medv">MEDV와의 상관관계 요약(절댓값 큰 순)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">해석의 핵심</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">상관행렬</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">3. 산점도 행렬</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">읽는 포인트(이 그림에서 특히 확인할 것)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id17"><span style="color: blue;"><strong>3. 단순선형회귀</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18"><strong>ChatGPT 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">1. 회귀계수 추정 결과</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">2. 적합도 요약</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">3. 산점도와 회귀직선</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">4. 잔차 진단</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#residuals-vs-fitted">(1) Residuals vs Fitted</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#normal-q-q">(2) Normal Q-Q</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#scale-location">(3) Scale-Location</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#leverage-vs-standardized-residuals">(4) Leverage vs Standardized Residuals, 영향점</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lstat">정리: LSTAT 단일 설명변수 선형회귀에서 보이는 이슈</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id23"><span style="color: blue;"><strong>4. 다중 회귀분석</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24"><strong>ChatGPT 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">1. 모형 설정</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">2. 회귀계수 요약(핵심 변수 중심)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#medv-ols">다중회귀: MEDV ~ 모든 설명변수 (OLS) 계수 표</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">3. 적합도 해석</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vs">4. 잔차 vs 적합값 그림의 의미</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">5. 핵심 정리</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id29"><span style="color: blue;"><strong>5. 다중공선성 진단</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id30"><strong>ChatGPT 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id31">핵심 직관</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id32">해석 기준(관행)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vif">VIF 진단 결과(내림차순)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id33">직관적 해석(이 데이터에서 무슨 일이 벌어지나)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vif-r-j-2">VIF와 <span class="math notranslate nohighlight">\(R_j^2\)</span>의 관계(상위)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id34">왜 중요한가(실전에서 생기는 문제)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id35">다음 단계 옵션</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id36"><span style="color: blue;"><strong>6. 표준화 계수</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id37"><strong>ChatGPT 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id38">표준화 계수가 뭔가</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id39">표준화 계수 기반 변수 중요도 표</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id40">직관적 해석</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id41">한 문장 요약</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id42"><span style="color: blue;"><strong>7. 로그 변환 회귀분석</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id43"><strong>ChatGPT 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id44">1. 적절한 변수에 로그를 취하는 의미(직관)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id45">2. 로그 변환 회귀 모형</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id46">3. 계수 추정치 표</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id47">4. 계수 해석(핵심)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#loglog">(1) log–log 변수: <strong>탄력성</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#loglevel">(2) log–level 변수: <strong>반탄력성</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id48">(3) 더미 변수</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id49">5. 정리</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id50"><strong>참고: 파이썬 코드</strong></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By 김원경 최필선
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

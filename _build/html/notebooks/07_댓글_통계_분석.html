@@ -1,0 +1,902 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>7장 댓글 통계 분석 &#8212; 데이터 분석 이제 AI에게 맡겨라</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/07_댓글_통계_분석';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="8장 서울 아파트 매물 변화 분석" href="08_%EC%84%9C%EC%9A%B8_%EC%95%84%ED%8C%8C%ED%8A%B8_%EB%A7%A4%EB%AC%BC_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html" />
+    <link rel="prev" title="6장 주가 예측 시스템 구축" href="06_%EC%A3%BC%EA%B0%80_%EC%98%88%EC%B8%A1_%EC%8B%9C%EC%8A%A4%ED%85%9C_%EA%B5%AC%EC%B6%95.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00_%EC%84%9C%EB%AC%B8.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="00_%EC%84%9C%EB%AC%B8.html">
+                    서문
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_%EC%8B%9C%ED%97%98%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>1장 시험성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_%EB%8C%80%ED%86%B5%EB%A0%B9_%EC%A7%80%EC%A7%80%EC%9C%A8_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>2장 대통령 지지율 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_KBO_%EC%A0%95%EA%B7%9C%EC%8B%9C%EC%A6%8C_%ED%8C%80%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>3장 KBO 정규시즌 팀성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_PPP_%EA%B7%B8%EB%9E%98%ED%94%84_%EB%B6%84%EC%84%9D.html"><strong>4장 PPP 그래프 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_%EC%84%B8%EA%B3%84%EC%9D%80%ED%96%89_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EC%B6%94%EC%B6%9C.html"><strong>5장 세계은행 데이터 추출</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_%EC%A3%BC%EA%B0%80_%EC%98%88%EC%B8%A1_%EC%8B%9C%EC%8A%A4%ED%85%9C_%EA%B5%AC%EC%B6%95.html"><strong>6장 주가 예측 시스템 구축</strong></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>7장 댓글 통계 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_%EC%84%9C%EC%9A%B8_%EC%95%84%ED%8C%8C%ED%8A%B8_%EB%A7%A4%EB%AC%BC_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>8장 서울 아파트 매물 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_%EC%84%A4%EB%AC%B8%EC%A1%B0%EC%82%AC_%EB%B6%84%EC%84%9D.html"><strong>9장 설문조사 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_%ED%83%90%EC%83%89%EC%A0%81_%EC%9A%94%EC%9D%B8%EB%B6%84%EC%84%9D.html"><strong>10장 탐색적 요인분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_%EB%B3%B4%EC%8A%A4%ED%84%B4_%EC%A3%BC%ED%83%9D_%EA%B0%80%EA%B2%A9_%EB%B6%84%EC%84%9D.html"><strong>11장 보스턴 주택 가격 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_%EC%A2%85%EB%B6%80%EC%84%B8%EC%99%80_%EC%9B%94%EC%84%B8%EC%9D%98_%EA%B4%80%EA%B3%84.html"><strong>12장 종부세와 월세의 관계</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_%EB%8C%80%ED%98%95%EB%A7%88%ED%8A%B8_%EC%87%A0%EB%9D%BD_%EC%9B%90%EC%9D%B8_%EC%8B%A4%EC%A6%9D%EB%B6%84%EC%84%9D.html"><strong>13장 대형마트 쇠락 원인 실증분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_%EC%8B%A0%EC%83%9D%EC%95%84_%ED%8A%B9%EB%A1%80%EB%8C%80%EC%B6%9C%EA%B3%BC_%EC%B6%9C%EC%82%B0%EC%9C%A8.html"><strong>14장 신생아 특례대출과 출산율</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_Ridge_%EB%B0%8F_Lasso_%ED%9A%8C%EA%B7%80.html"><strong>15장 Ridge 및 Lasso 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1_%ED%9A%8C%EA%B7%80.html"><strong>16장 로지스틱 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95_%ED%8A%B8%EB%A6%AC_%EB%AA%A8%ED%98%95.html"><strong>17장 의사결정 트리 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_%ED%8A%B8%EB%A6%AC_%EA%B8%B0%EB%B0%98_%EB%AA%A8%ED%98%95.html"><strong>18장 트리 기반 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="19_%EB%94%A5%EB%9F%AC%EB%8B%9D_%EA%B3%B5%EB%B6%80%ED%95%98%EA%B8%B0.html"><strong>19장 딥러닝 공부하기</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_%ED%8C%A8%EB%84%90_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>20장 패널 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="21_%EA%B3%A8%EB%B0%80%EB%8F%84_%EA%B2%80%EC%82%AC_%EA%B2%B0%EA%B3%BC_%ED%95%B4%EC%84%9D.html"><strong>21장 골밀도 검사 결과 해석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_%EC%9A%B4%EB%8F%99%ED%95%99_Kinematics.html"><strong>22장 운동학 (Kinematics)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_%EC%B6%95%EA%B5%AC_%EA%B2%BD%EA%B8%B0_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>23장 축구 경기 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_%ED%8F%AD%EA%B2%A9_%ED%8C%8C%EA%B4%B4%EB%A0%A5_%EB%B6%84%EC%84%9D.html"><strong>24장 폭격 파괴력 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_%EC%84%B8%EA%B3%84_%ED%99%94%EC%9E%A5%ED%92%88_%EA%B5%90%EC%97%AD_%ED%8A%B8%EB%A0%8C%EB%93%9C.html"><strong>25장 세계 화장품 교역 트렌드</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_Texas_Special_Education.html"><strong>26장 텍사스주 특수교육 현황</strong></a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4/issues/new?title=Issue%20on%20page%20%2Fnotebooks/07_댓글_통계_분석.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/07_댓글_통계_분석.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>7장 댓글 통계 분석</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span style="color: blue;"><strong>1. 댓글 입력</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gemini"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#descriptive-statistics">1. 기초 통계 요약 (Descriptive Statistics)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-clustering">2. 주요 담론 군집 분석 (Topic Clustering)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sentiment-analysis">3. 감성 분석 (Sentiment Analysis)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#engagement-analysis">4. 참여도 기반 주요 여론 (Engagement Analysis)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a-top-consensus">A. 최다 공감 댓글 (Top Consensus)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#b-high-variance">B. 논쟁적 댓글 (High Variance)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5. 통계적 시사점</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><span style="color: blue;"><strong>2. 시각적 분석</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><strong>Gemini 분석</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><span style="color: blue;"><strong>3. 감성 분석 방법론</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><strong>Gemini 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dictionary-based-approach">1. 사전 기반 방식 (Dictionary-based Approach)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#machine-learning-approach">2. 머신러닝 기반 방식 (Machine Learning Approach)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-learning-approach">3. 딥러닝 기반 방식 (Deep Learning Approach)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">요약</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><strong>참고: 파이썬 코드</strong></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><strong>7장 댓글 통계 분석</strong><a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2><span style="color: blue;"><strong>1. 댓글 입력</strong></span><a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p><span style="color: blue;">2026학년도 대학 정시모집에서 서울대 최초 합격자 가운데 107명이 등록을 포기한 것으로 나타났다. 등록 포기자 중 자연계열이 86명으로 대부분을 차지해, 최상위권 수험생들이 서울대 자연계 대신 다른 대학 의대 등 의약학 계열로 이동했을 가능성이 크다는 분석이 나온다… </span></p>
+<p><img alt="Comments" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/7-1.png" /></p>
+<p>(출처: <a class="reference external" href="https://n.news.naver.com/article/243/0000092729?cds=news_media_pc&amp;amp;type=editn">여전히 ‘의대한민국’ 7.6% 서울대 포기→의대 향했다, 이코노미스트, 2026.02.08</a>)</p>
+</section>
+<section id="gemini">
+<h2><strong>Gemini 분석</strong><a class="headerlink" href="#gemini" title="Link to this heading">#</a></h2>
+<p>제공된 뉴스 기사 댓글 데이터를 바탕으로 텍스트 마이닝 및 통계적 분석을 수행한 결과는 다음과 같다. 데이터는 클린봇 차단 및 삭제된 댓글을 제외한 유효 텍스트 댓글을 대상으로 분석했다.</p>
+<section id="descriptive-statistics">
+<h3>1. 기초 통계 요약 (Descriptive Statistics)<a class="headerlink" href="#descriptive-statistics" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>총 분석 댓글 수:</strong> 55건 (삭제/차단 제외)</p></li>
+<li><p><strong>총 공감(좋아요) 수:</strong> 259회</p></li>
+<li><p><strong>총 비공감(싫어요) 수:</strong> 84회</p></li>
+<li><p><strong>공감/비공감 비율:</strong> 약 3.1 : 1 (공감 우세)</p></li>
+<li><p><strong>주요 키워드 빈도(Frequency):</strong></p></li>
+</ul>
+<ol class="arabic simple">
+<li><p><strong>의사/의대:</strong> 42회 (압도적 1위)</p></li>
+<li><p><strong>돈/수입/연봉:</strong> 18회</p></li>
+<li><p><strong>서울대/공대:</strong> 16회</p></li>
+<li><p><strong>AI/로봇/머스크:</strong> 12회</p></li>
+<li><p><strong>나라/망/걱정:</strong> 10회</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="topic-clustering">
+<h3>2. 주요 담론 군집 분석 (Topic Clustering)<a class="headerlink" href="#topic-clustering" title="Link to this heading">#</a></h3>
+<p>댓글의 내용을 주제별로 분류하여 비중을 분석했다.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>순위</p></th>
+<th class="head"><p>주제 (Topic)</p></th>
+<th class="head"><p>비중 (%)</p></th>
+<th class="head"><p>주요 내용 요약</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>1</strong></p></td>
+<td><p><strong>경제적 합리성 &amp; 현실론</strong></p></td>
+<td><p><strong>35%</strong></p></td>
+<td><p>자본주의 사회에서 돈 많이 버는 곳으로 가는 것은 당연하다. 직업 안정성과 고령화 사회 수요를 반영한다.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>2</strong></p></td>
+<td><p><strong>이공계 위기 &amp; 국가 경쟁력 우려</strong></p></td>
+<td><p><strong>25%</strong></p></td>
+<td><p>인재 쏠림 현상에 대한 국가적 손실을 우려한다. 공대 처우 개선 및 국가 멸망(망조)에 대한 비관론이 제기된다.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>3</strong></p></td>
+<td><p><strong>AI 및 기술 대체 가능성</strong></p></td>
+<td><p><strong>20%</strong></p></td>
+<td><p>일론 머스크 언급이 다수이다. 의사는 미래에 AI/로봇으로 대체될 직종이라는 회의적 시각을 보인다.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>4</strong></p></td>
+<td><p><strong>의료계 비판 &amp; 반감</strong></p></td>
+<td><p><strong>15%</strong></p></td>
+<td><p>의사 집단에 대한 ‘카르텔’, ‘돈벌이 수단’ 등의 부정적 인식이 있다. 파업 및 특권 의식을 비판한다.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>5</strong></p></td>
+<td><p><strong>입시/교육 시스템 비판</strong></p></td>
+<td><p><strong>5%</strong></p></td>
+<td><p>서울대 위상 하락, 줄 세우기식 입시 구조에 대해 비판한다.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="sentiment-analysis">
+<h3>3. 감성 분석 (Sentiment Analysis)<a class="headerlink" href="#sentiment-analysis" title="Link to this heading">#</a></h3>
+<p>댓글 작성자들의 주된 감정 상태를 3가지로 분류했다.</p>
+<ul class="simple">
+<li><p><strong>부정적 (Negative) - 65%:</strong></p></li>
+<li><p>현 사회 구조(의대 쏠림)에 대한 개탄, 국가 미래에 대한 걱정, 의사 집단에 대한 적개심이 지배적이다.</p></li>
+<li><p><em>키워드: 망조, 씁쓸, 이기주의, 카르텔, 밥그릇.</em></p></li>
+<li><p><strong>중립/냉소적 (Neutral/Cynical) - 25%:</strong></p></li>
+<li><p>개인의 선택을 존중하거나, 어쩔 수 없는 현실임을 인정하는 태도이다.</p></li>
+<li><p><em>키워드: 당연하다, 각자도생, 현실, 팩트.</em></p></li>
+<li><p><strong>긍정적 (Positive) - 10%:</strong></p></li>
+<li><p>학생들의 선택을 응원하거나(드뭄), 공대/과학 기술의 미래 가치를 역설하는 희망적 의견이다.</p></li>
+<li><p><em>키워드: 공대가 미래다, 혁신.</em></p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="engagement-analysis">
+<h3>4. 참여도 기반 주요 여론 (Engagement Analysis)<a class="headerlink" href="#engagement-analysis" title="Link to this heading">#</a></h3>
+<p>공감(Likes)과 비공감(Dislikes) 데이터를 통해 여론의 강도를 분석했다.</p>
+<section id="a-top-consensus">
+<h4>A. 최다 공감 댓글 (Top Consensus)<a class="headerlink" href="#a-top-consensus" title="Link to this heading">#</a></h4>
+<p>대중적으로 가장 많은 지지를 받은 의견은 <strong>“공대/과학기술 중요성 강조”</strong> 와 <strong>“사회 구조 비판”</strong> 이다.</p>
+<ol class="arabic simple">
+<li><p>ID: pch5** (“공대가 미래다..”)</p></li>
+</ol>
+<ul class="simple">
+<li><p>공감: 51 / 비공감: 4</p></li>
+<li><p><em>해석:</em> 현실은 의대로 쏠리지만, 당위적으로는 공대가 살아야 한다는 대중의 강력한 열망을 반영한다.</p></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p>ID: dlee** (“법조인/의사가 기득권인 나라는 발전 없다”)</p></li>
+</ol>
+<ul class="simple">
+<li><p>공감: 28 / 비공감: 1</p></li>
+<li><p><em>해석:</em> 이공계가 홀대받는 기형적 사회 구조에 대한 비판적 공감대가 형성되었다.</p></li>
+</ul>
+<ol class="arabic simple" start="3">
+<li><p>ID: cuia** (“의대는 이렇게 많이 가는데 왜 의사가 부족한가?”)</p></li>
+</ol>
+<ul class="simple">
+<li><p>공감: 19 / 비공감: 7</p></li>
+<li><p><em>해석:</em> 의료 인력 수급 불균형에 대한 의구심과 불만을 나타낸다.</p></li>
+</ul>
+</section>
+<section id="b-high-variance">
+<h4>B. 논쟁적 댓글 (High Variance)<a class="headerlink" href="#b-high-variance" title="Link to this heading">#</a></h4>
+<p>찬반이 팽팽하게 갈린 의견은 <strong>“의사 수입/처우 제한”</strong> 과 관련된 내용이다.</p>
+<ol class="arabic simple">
+<li><p>ID: pine** (“의사면허 특권 타파, 의료수가 손보고 정원 늘려라”)</p></li>
+</ol>
+<ul class="simple">
+<li><p>공감: 14 / 비공감: 14 (정확히 1:1 대립)</p></li>
+<li><p><em>해석:</em> 의사 집단에 대한 강한 반감(개혁 요구)과 의료 시스템 붕괴를 우려하는 시각(또는 의사 옹호)이 팽팽하게 맞서고 있다.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id3">
+<h3>5. 통계적 시사점<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>‘AI 대체론’의 급부상:</strong> 과거 입시 관련 댓글에서는 주로 ‘돈’과 ‘명예’가 주된 논쟁 거리였으나, 이번 데이터에서는 유의미한 비율(약 20%)로 <strong>“AI/로봇에 의한 대체 가능성”</strong> 이 언급되었다. 이는 기술 발전이 직업 안정성 인식에 영향을 미치기 시작했음을 시사한다.</p></li>
+<li><p><strong>괴리된 이상과 현실:</strong> 공감수 1위는 “공대가 미래”라는 당위적 주장이었으나, 댓글 전체 빈도수는 “돈/현실적 선택”을 옹호하는 내용이 다수였다. 이는 대중이 <strong>‘국가적 올바름(공대 육성)’과 ‘개인적 합리성(의대 진학)’ 사이의 딜레마</strong>를 명확히 인지하고 있음을 보여준다.</p></li>
+<li><p><strong>반(反) 의사 정서 감지:</strong> 의대 진학 열풍 기사임에도 불구하고, 의사 집단의 소득 독점이나 파업 등을 비판하는 키워드가 다수 검출되어 잠재적인 사회적 갈등 요인이 큼을 나타낸다.</p></li>
+</ol>
+</section>
+</section>
+<section id="id4">
+<h2><span style="color: blue;"><strong>2. 시각적 분석</strong></span><a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+</section>
+<section id="id5">
+<h2><strong>Gemini 분석</strong><a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<p>댓글 데이터를 바탕으로 분석한 주요 주제 분포, 감성 분석, 그리고 키워드 빈도를 시각화한 차트이다.</p>
+<p><strong>1. 주요 담론 주제 분포 (Major Discourse Topics Analysis)</strong></p>
+<p><img alt="Topics" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/7-2.png" /></p>
+<ul class="simple">
+<li><p>가로 막대 그래프는 댓글에서 가장 많이 논의된 주제들의 비율을 보여준다.</p></li>
+<li><p><strong>경제적 합리성(35%)</strong> 이 가장 큰 비중을 차지하며, <strong>이공계 위기(25%)</strong> 와 <strong>AI 대체 가능성(20%)</strong> 이 그 뒤를 잇고 있다.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>2. 감성 분석 분포 (Sentiment Analysis Distribution)</strong></p>
+<p><img alt="Sentiment" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/7-3.png" /></p>
+<ul class="simple">
+<li><p>파이 차트는 댓글의 전반적인 감정 상태를 나타낸다.</p></li>
+<li><p><strong>부정적(Negative, 65.0%)</strong> 반응이 압도적으로 높으며, 이는 현 상황에 대한 우려와 비판이 지배적임을 시사한다.</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>3. 상위 키워드 빈도 (Top Keyword Frequency)</strong></p>
+<p><img alt="Keyword" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/7-4.png" /></p>
+<ul class="simple">
+<li><p>세로 막대 그래프는 가장 자주 등장한 단어들의 빈도수를 보여준다.</p></li>
+<li><p><strong>의사/의대(Doctor/Med)</strong> 관련 키워드가 42회로 가장 많이 언급되었으며, 그 외 수입, 공대, AI 등이 주요 키워드로 나타났다.</p></li>
+</ul>
+</section>
+<section id="id6">
+<h2><span style="color: blue;"><strong>3. 감성 분석 방법론</strong></span><a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+</section>
+<section id="id7">
+<h2><strong>Gemini 설명</strong><a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<p>감성 분석(Sentiment Analysis)은 텍스트에 숨겨진 사람의 감정, 태도, 의견을 통계적으로 수치화하여 ‘긍정’, ‘부정’, ‘중립’ 등으로 분류하는 기술이다. 크게 세 가지 접근 방식으로 나뉜다.</p>
+<p><img alt="Sentiment_Analysis" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/7-5.png" /></p>
+<hr class="docutils" />
+<section id="dictionary-based-approach">
+<h3>1. 사전 기반 방식 (Dictionary-based Approach)<a class="headerlink" href="#dictionary-based-approach" title="Link to this heading">#</a></h3>
+<p>가장 직관적이고 기초적인 방법이다. 미리 만들어둔 ‘감성 사전’을 활용한다.</p>
+<ul class="simple">
+<li><p><strong>원리:</strong> 각 단어에 점수를 매겨둔다. (예: ‘행복’ +2점, ‘슬픔’ -2점, ‘최악’ -5점)</p></li>
+<li><p><strong>계산:</strong> 문장에 등장한 단어들의 점수를 모두 합산한다. 총점이 양수면 긍정, 음수면 부정으로 판별한다.</p></li>
+<li><p><strong>특징:</strong> 빠르고 간단하지만, “안 좋다(Not bad)”처럼 부정어가 긍정 의미로 쓰이는 문맥이나, 반어법을 파악하기 어렵다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="machine-learning-approach">
+<h3>2. 머신러닝 기반 방식 (Machine Learning Approach)<a class="headerlink" href="#machine-learning-approach" title="Link to this heading">#</a></h3>
+<p>통계적 기법을 본격적으로 사용하는 방식이다. 컴퓨터에게 수만 개의 문장을 학습(Training)시켜 스스로 규칙을 찾게 한다.</p>
+<ul class="simple">
+<li><p><strong>데이터 변환:</strong> 컴퓨터는 글자를 모르기 때문에, 문장을 숫자(벡터)로 바꾼다. 주로 단어의 빈도수(Count)를 센다. (예: ‘맛있다’가 많이 나오면 긍정 확률 상승)</p></li>
+<li><p><strong>통계적 알고리즘:</strong></p></li>
+<li><p><strong>나이브 베이즈(Naive Bayes):</strong> “이 단어가 들어갔을 때 긍정일 확률”을 조건부 확률로 계산한다.</p></li>
+<li><p><strong>로지스틱 회귀(Logistic Regression):</strong> 단어들과 감정 사이의 관계를 나타내는 최적의 선(함수)을 그린다.</p></li>
+<li><p><strong>SVM (Support Vector Machine):</strong> 긍정 데이터와 부정 데이터 무리를 가장 잘 나누는 경계선을 찾는다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="deep-learning-approach">
+<h3>3. 딥러닝 기반 방식 (Deep Learning Approach)<a class="headerlink" href="#deep-learning-approach" title="Link to this heading">#</a></h3>
+<p>최근 가장 많이 쓰이는 고도화된 방식이다. 인간의 뇌 신경망을 모방하여 문맥 전체를 이해한다.</p>
+<ul class="simple">
+<li><p><strong>원리:</strong> 단순히 단어 하나하나를 보는 것이 아니라, 문장의 순서와 앞뒤 문맥을 파악한다. (예: ‘배’가 먹는 배인지 타는 배인지 구분)</p></li>
+<li><p><strong>모델:</strong> RNN, LSTM, 그리고 최근의 <strong>BERT</strong>나 <strong>GPT</strong> 같은 트랜스포머(Transformer) 모델이 여기에 해당한다.</p></li>
+<li><p><strong>특징:</strong> 학습 데이터가 많이 필요하지만, 반어법이나 복잡한 문장 구조에서도 정확도가 매우 높다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id8">
+<h3>요약<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>통계적으로 보았을 때 감성 분석은 <strong>“특정 단어들의 조합이 나타났을 때, 그것이 긍정 집단에 속할 확률이 높은가, 부정 집단에 속할 확률이 높은가”</strong> 를 수학적으로 계산하는 과정이다.</p>
+</section>
+</section>
+<section id="id9">
+<h2><strong>참고: 파이썬 코드</strong><a class="headerlink" href="#id9" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. 주요 담론 주제 분석 (가로 막대 그래프)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># 스타일 설정</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
+
+<span class="c1"># 데이터 정의</span>
+<span class="n">topic_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Topic&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Economic Rationality</span><span class="se">\n</span><span class="s1">(Realism)&#39;</span><span class="p">,</span> <span class="s1">&#39;Sci/Eng Crisis</span><span class="se">\n</span><span class="s1">(National Comp.)&#39;</span><span class="p">,</span> <span class="s1">&#39;AI &amp; Tech</span><span class="se">\n</span><span class="s1">Replacement&#39;</span><span class="p">,</span> <span class="s1">&#39;Medical Sector</span><span class="se">\n</span><span class="s1">Criticism&#39;</span><span class="p">,</span> <span class="s1">&#39;Edu System</span><span class="se">\n</span><span class="s1">Criticism&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Percentage&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">35</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">df_topics</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">topic_data</span><span class="p">)</span>
+
+<span class="c1"># 그래프 그리기</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">barplot</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Percentage&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Topic&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;Topic&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df_topics</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Major Discourse Topics Analysis (%)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Percentage (%)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+
+<span class="c1"># 수치 텍스트 추가</span>
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">barplot</span><span class="o">.</span><span class="n">patches</span><span class="p">:</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">width</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">get_y</span><span class="p">()</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="o">/</span><span class="mf">2.</span> <span class="o">+</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{:1.0f}</span><span class="s1">%&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">width</span><span class="p">),</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a9fe310f2822ac74c0814f6c3e2cd1325f72df3ec81ce70a96511e60f5f424e4.png" src="../_images/a9fe310f2822ac74c0814f6c3e2cd1325f72df3ec81ce70a96511e60f5f424e4.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 2. 감성 분석 (파이 차트)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+
+<span class="c1"># 스타일 설정</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
+
+<span class="c1"># 데이터 정의</span>
+<span class="n">sentiment_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Negative&#39;</span><span class="p">,</span> <span class="s1">&#39;Neutral/Cynical&#39;</span><span class="p">,</span> <span class="s1">&#39;Positive&#39;</span><span class="p">]</span>
+<span class="n">sentiment_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">65</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+<span class="c1"># 색상 정의 (빨강, 회색, 초록 계열)</span>
+<span class="n">sentiment_colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#ff9999&#39;</span><span class="p">,</span> <span class="s1">&#39;#d3d3d3&#39;</span><span class="p">,</span> <span class="s1">&#39;#99ff99&#39;</span><span class="p">]</span>
+
+<span class="c1"># 그래프 그리기</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span><span class="n">sentiment_sizes</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">sentiment_labels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">sentiment_colors</span><span class="p">,</span> 
+        <span class="n">autopct</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%1.1f%%</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">startangle</span><span class="o">=</span><span class="mi">140</span><span class="p">,</span> <span class="n">explode</span><span class="o">=</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">shadow</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Sentiment Analysis Distribution&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2976096e4330a1286c3b9789b29cab678f9e3b499e57ad9f4a6b7912f83cb432.png" src="../_images/2976096e4330a1286c3b9789b29cab678f9e3b499e57ad9f4a6b7912f83cb432.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 3. 상위 키워드 빈도 (세로 막대 그래프)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># 스타일 설정</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
+
+<span class="c1"># 데이터 정의</span>
+<span class="n">keyword_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Keyword&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Doctor/Med&#39;</span><span class="p">,</span> <span class="s1">&#39;Money/Income&#39;</span><span class="p">,</span> <span class="s1">&#39;SNU/Eng&#39;</span><span class="p">,</span> <span class="s1">&#39;AI/Robot&#39;</span><span class="p">,</span> <span class="s1">&#39;Country/Worry&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Frequency&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">42</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+<span class="p">}</span>
+<span class="n">df_keywords</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">keyword_data</span><span class="p">)</span>
+
+<span class="c1"># 그래프 그리기</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="c1"># 수정: hue를 x와 동일하게 설정하고 legend=False 추가</span>
+<span class="n">barplot_k</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Keyword&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Frequency&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;Keyword&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df_keywords</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;magma&#39;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Top Keyword Frequency&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Count&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Keywords&#39;</span><span class="p">)</span>
+
+<span class="c1"># 수치 텍스트 추가</span>
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">barplot_k</span><span class="o">.</span><span class="n">patches</span><span class="p">:</span>
+    <span class="n">barplot_k</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">get_height</span><span class="p">(),</span> <span class="s1">&#39;.0f&#39;</span><span class="p">),</span> 
+                   <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">get_height</span><span class="p">()),</span> 
+                   <span class="n">ha</span> <span class="o">=</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span> <span class="o">=</span> <span class="s1">&#39;center&#39;</span><span class="p">,</span> 
+                   <span class="n">xytext</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> 
+                   <span class="n">textcoords</span> <span class="o">=</span> <span class="s1">&#39;offset points&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f3b6fa841e0d50a2a8a663d8e6c5080281d3a37f1f94cb0dcd1bfbea0b24ed2e.png" src="../_images/f3b6fa841e0d50a2a8a663d8e6c5080281d3a37f1f94cb0dcd1bfbea0b24ed2e.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="06_%EC%A3%BC%EA%B0%80_%EC%98%88%EC%B8%A1_%EC%8B%9C%EC%8A%A4%ED%85%9C_%EA%B5%AC%EC%B6%95.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><strong>6장 주가 예측 시스템 구축</strong></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="08_%EC%84%9C%EC%9A%B8_%EC%95%84%ED%8C%8C%ED%8A%B8_%EB%A7%A4%EB%AC%BC_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><strong>8장 서울 아파트 매물 변화 분석</strong></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span style="color: blue;"><strong>1. 댓글 입력</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gemini"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#descriptive-statistics">1. 기초 통계 요약 (Descriptive Statistics)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-clustering">2. 주요 담론 군집 분석 (Topic Clustering)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sentiment-analysis">3. 감성 분석 (Sentiment Analysis)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#engagement-analysis">4. 참여도 기반 주요 여론 (Engagement Analysis)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a-top-consensus">A. 최다 공감 댓글 (Top Consensus)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#b-high-variance">B. 논쟁적 댓글 (High Variance)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5. 통계적 시사점</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><span style="color: blue;"><strong>2. 시각적 분석</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><strong>Gemini 분석</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><span style="color: blue;"><strong>3. 감성 분석 방법론</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><strong>Gemini 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dictionary-based-approach">1. 사전 기반 방식 (Dictionary-based Approach)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#machine-learning-approach">2. 머신러닝 기반 방식 (Machine Learning Approach)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-learning-approach">3. 딥러닝 기반 방식 (Deep Learning Approach)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">요약</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><strong>참고: 파이썬 코드</strong></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By 김원경 최필선
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
