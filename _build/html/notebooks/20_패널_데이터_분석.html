@@ -1489,6 +1489,14 @@ RE가 잘못되었다
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\pilsu\AppData\Local\Temp\ipykernel_36844\1754337777.py:30: AbsorbingEffectWarning: 
+Variables have been fully absorbed and have removed from the regression:
+
+educ, black, hisp
+
+  fe_res = fe_mod.fit(cov_type=&quot;clustered&quot;, cluster_entity=True)
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span># Pooled OLS
 
 |         |        coef |     std_err |         t |           p |
@@ -1525,14 +1533,6 @@ RE가 잘못되었다
 | hisp    |  0.0201501  | 0.0398977   |  0.505046 | 0.613552    |
 
 FE에 남은 계수들: [&#39;exper&#39;, &#39;expersq&#39;, &#39;union&#39;, &#39;married&#39;]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\pilsu\AppData\Local\Temp\ipykernel_5988\1754337777.py:30: AbsorbingEffectWarning: 
-Variables have been fully absorbed and have removed from the regression:
-
-educ, black, hisp
-
-  fe_res = fe_mod.fit(cov_type=&quot;clustered&quot;, cluster_entity=True)
 </pre></div>
 </div>
 </div>
@@ -1635,8 +1635,9 @@ educ, black, hisp
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hausman test (clustered cov) 결과
 {&#39;stat&#39;: 16.145323927833108, &#39;df&#39;: 4, &#39;pvalue&#39;: 0.0028302329625596867, &#39;common_params&#39;: [&#39;exper&#39;, &#39;expersq&#39;, &#39;union&#39;, &#39;married&#39;]}
-
-Hausman test (non-robust cov) 결과
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hausman test (non-robust cov) 결과
 {&#39;stat&#39;: 31.573567767145832, &#39;df&#39;: 4, &#39;pvalue&#39;: 2.3380531072314525e-06, &#39;common_params&#39;: [&#39;exper&#39;, &#39;expersq&#39;, &#39;union&#39;, &#39;married&#39;]}
 
 # Hausman (clustered)
