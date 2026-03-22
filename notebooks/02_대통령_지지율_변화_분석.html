@@ -1,0 +1,1502 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2장 대통령 지지율 변화 분석 &#8212; 데이터 분석 이제 AI에게 맡겨라</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/02_대통령_지지율_변화_분석';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3장 KBO 정규시즌 팀성적 분석" href="03_KBO_%EC%A0%95%EA%B7%9C%EC%8B%9C%EC%A6%8C_%ED%8C%80%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html" />
+    <link rel="prev" title="1장 시험성적 분석" href="01_%EC%8B%9C%ED%97%98%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00_%EC%84%9C%EB%AC%B8.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="00_%EC%84%9C%EB%AC%B8.html">
+                    서문
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_%EC%8B%9C%ED%97%98%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>1장 시험성적 분석</strong></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>2장 대통령 지지율 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_KBO_%EC%A0%95%EA%B7%9C%EC%8B%9C%EC%A6%8C_%ED%8C%80%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>3장 KBO 정규시즌 팀성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_PPP_%EA%B7%B8%EB%9E%98%ED%94%84_%EB%B6%84%EC%84%9D.html"><strong>4장 PPP 그래프 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_%EC%84%B8%EA%B3%84%EC%9D%80%ED%96%89_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EC%B6%94%EC%B6%9C.html"><strong>5장 세계은행 데이터 추출</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_%EC%A3%BC%EA%B0%80_%EC%98%88%EC%B8%A1_%EC%8B%9C%EC%8A%A4%ED%85%9C_%EA%B5%AC%EC%B6%95.html"><strong>6장 주가 예측 시스템 구축</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_%EB%8C%93%EA%B8%80_%ED%86%B5%EA%B3%84_%EB%B6%84%EC%84%9D.html"><strong>7장 댓글 통계 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_%EC%84%9C%EC%9A%B8_%EC%95%84%ED%8C%8C%ED%8A%B8_%EB%A7%A4%EB%AC%BC_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>8장 서울 아파트 매물 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_%EC%84%A4%EB%AC%B8%EC%A1%B0%EC%82%AC_%EB%B6%84%EC%84%9D.html"><strong>9장 설문조사 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_%ED%83%90%EC%83%89%EC%A0%81_%EC%9A%94%EC%9D%B8%EB%B6%84%EC%84%9D.html"><strong>10장 탐색적 요인분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_%EB%B3%B4%EC%8A%A4%ED%84%B4_%EC%A3%BC%ED%83%9D_%EA%B0%80%EA%B2%A9_%EB%B6%84%EC%84%9D.html"><strong>11장 보스턴 주택 가격 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_%EC%A2%85%EB%B6%80%EC%84%B8%EC%99%80_%EC%9B%94%EC%84%B8%EC%9D%98_%EA%B4%80%EA%B3%84.html"><strong>12장 종부세와 월세의 관계</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_%EB%8C%80%ED%98%95%EB%A7%88%ED%8A%B8_%EC%87%A0%EB%9D%BD_%EC%9B%90%EC%9D%B8_%EC%8B%A4%EC%A6%9D%EB%B6%84%EC%84%9D.html"><strong>13장 대형마트 쇠락 원인 실증분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_%EC%8B%A0%EC%83%9D%EC%95%84_%ED%8A%B9%EB%A1%80%EB%8C%80%EC%B6%9C%EA%B3%BC_%EC%B6%9C%EC%82%B0%EC%9C%A8.html"><strong>14장 신생아 특례대출과 출산율</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_Ridge_%EB%B0%8F_Lasso_%ED%9A%8C%EA%B7%80.html"><strong>15장 Ridge 및 Lasso 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1_%ED%9A%8C%EA%B7%80.html"><strong>16장 로지스틱 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95_%ED%8A%B8%EB%A6%AC_%EB%AA%A8%ED%98%95.html"><strong>17장 의사결정 트리 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_%ED%8A%B8%EB%A6%AC_%EA%B8%B0%EB%B0%98_%EB%AA%A8%ED%98%95.html"><strong>18장 트리 기반 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="19_%EB%94%A5%EB%9F%AC%EB%8B%9D_%EA%B3%B5%EB%B6%80%ED%95%98%EA%B8%B0.html"><strong>19장 딥러닝 공부하기</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_%ED%8C%A8%EB%84%90_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>20장 패널 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="21_%EA%B3%A8%EB%B0%80%EB%8F%84_%EA%B2%80%EC%82%AC_%EA%B2%B0%EA%B3%BC_%ED%95%B4%EC%84%9D.html"><strong>21장 골밀도 검사 결과 해석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_%EC%9A%B4%EB%8F%99%ED%95%99_Kinematics.html"><strong>22장 운동학 (Kinematics)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_%EC%B6%95%EA%B5%AC_%EA%B2%BD%EA%B8%B0_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>23장 축구 경기 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_%ED%8F%AD%EA%B2%A9_%ED%8C%8C%EA%B4%B4%EB%A0%A5_%EB%B6%84%EC%84%9D.html"><strong>24장 폭격 파괴력 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_%EC%84%B8%EA%B3%84_%ED%99%94%EC%9E%A5%ED%92%88_%EA%B5%90%EC%97%AD_%ED%8A%B8%EB%A0%8C%EB%93%9C.html"><strong>25장 세계 화장품 교역 트렌드</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_Texas_Special_Education.html"><strong>26장 텍사스주 특수교육 현황</strong></a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4/issues/new?title=Issue%20on%20page%20%2Fnotebooks/02_대통령_지지율_변화_분석.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/02_대통령_지지율_변화_분석.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>2장 대통령 지지율 변화 분석</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span style="color: blue;"><strong>1. 파일 업로드</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#claude"><strong>Claude 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">전체 변화</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">연령별 변화</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">지역별 변화</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">종합 해석</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><span style="color: blue;"><strong>2. 주요 인사이트 그래프 분석</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"><strong>Claude 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">1. 전체 직무 수행 평가 변화 (1월 → 2월)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">2. 연령별 긍정률 변화</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">3. 연령별 부정률 변화</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">4. 지역별 긍정률 변화 (수평 발산형)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">5. 부산/울산/경남 부정률 변화 심층 분석 (가장 큰 변화)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">6. 정당 지지도 변화</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">전체 요약</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id16"><span style="color: blue;"><strong>3. 젊은층의 지지 이탈은 통계적으로 유의한가?</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id17"><strong>Claude 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">분석 전제</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-proportion-z-test">검정 방법: 두 비율의 차이 검정 (Two-proportion Z-test)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">예상 결과 해석</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">핵심 결론</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id21"><span style="color: blue;"><strong>4. 젊은층의 지지 이탈은 통계적으로 유의한가?(재분석)</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id22"><strong>Claude 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">실제 사례수 기반 검정 결과 요약</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24"><strong>참고: 파이썬 코드</strong></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><strong>2장 대통령 지지율 변화 분석</strong><a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2><span style="color: blue;"><strong>1. 파일 업로드</strong></span><a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p><span style="color: blue;"><strong>두 시점 대통령 지지율의 연령별 지역별 변화를 분석해줘</strong></span></p>
+<p>파일 출처: 한국갤럽 대통령 직무 수행 평가 <a class="reference external" href="https://www.gallup.co.kr/gallupdb/fileDownload.asp?seqNo=1612&amp;amp;bType=8">1월 2주</a>
+/ <a class="reference external" href="https://www.gallup.co.kr/gallupdb/fileDownload.asp?seqNo=1622&amp;amp;bType=8">2월 2주</a></p>
+</section>
+<section id="claude">
+<h2><strong>Claude 분석</strong><a class="headerlink" href="#claude" title="Link to this heading">#</a></h2>
+<p>두 조사 시점(2026년 1월 2주 vs 2월 2주)의 이재명 대통령 직무 수행 평가를 연령별·지역별로 비교 분석합니다.</p>
+<hr class="docutils" />
+<section id="id3">
+<h3>전체 변화<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>구분</p></th>
+<th class="head text-center"><p>1월 2주 (1/6~8)</p></th>
+<th class="head text-center"><p>2월 2주 (2/10~12)</p></th>
+<th class="head text-center"><p>변화</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>긍정 (잘하고 있다)</p></td>
+<td class="text-center"><p>60%</p></td>
+<td class="text-center"><p>63%</p></td>
+<td class="text-center"><p><strong>+3%p</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>부정 (잘못하고 있다)</p></td>
+<td class="text-center"><p>33%</p></td>
+<td class="text-center"><p>26%</p></td>
+<td class="text-center"><p><strong>-7%p</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id4">
+<h3>연령별 변화<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>연령</p></th>
+<th class="head text-center"><p>긍정 1월</p></th>
+<th class="head text-center"><p>긍정 2월</p></th>
+<th class="head text-center"><p>변화</p></th>
+<th class="head text-center"><p>부정 1월</p></th>
+<th class="head text-center"><p>부정 2월</p></th>
+<th class="head text-center"><p>변화</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>18~29세</p></td>
+<td class="text-center"><p>46%</p></td>
+<td class="text-center"><p>39%</p></td>
+<td class="text-center"><p><strong>-7%p</strong></p></td>
+<td class="text-center"><p>46%</p></td>
+<td class="text-center"><p>35%</p></td>
+<td class="text-center"><p>-11%p</p></td>
+</tr>
+<tr class="row-odd"><td><p>30대</p></td>
+<td class="text-center"><p>50%</p></td>
+<td class="text-center"><p>66%</p></td>
+<td class="text-center"><p><strong>+16%p</strong></p></td>
+<td class="text-center"><p>44%</p></td>
+<td class="text-center"><p>23%</p></td>
+<td class="text-center"><p>-21%p</p></td>
+</tr>
+<tr class="row-even"><td><p>40대</p></td>
+<td class="text-center"><p>75%</p></td>
+<td class="text-center"><p>75%</p></td>
+<td class="text-center"><p>±0</p></td>
+<td class="text-center"><p>20%</p></td>
+<td class="text-center"><p>19%</p></td>
+<td class="text-center"><p>-1%p</p></td>
+</tr>
+<tr class="row-odd"><td><p>50대</p></td>
+<td class="text-center"><p>77%</p></td>
+<td class="text-center"><p>70%</p></td>
+<td class="text-center"><p><strong>-7%p</strong></p></td>
+<td class="text-center"><p>21%</p></td>
+<td class="text-center"><p>23%</p></td>
+<td class="text-center"><p>+2%p</p></td>
+</tr>
+<tr class="row-even"><td><p>60대</p></td>
+<td class="text-center"><p>56%</p></td>
+<td class="text-center"><p>65%</p></td>
+<td class="text-center"><p><strong>+9%p</strong></p></td>
+<td class="text-center"><p>34%</p></td>
+<td class="text-center"><p>25%</p></td>
+<td class="text-center"><p>-9%p</p></td>
+</tr>
+<tr class="row-odd"><td><p>70대 이상</p></td>
+<td class="text-center"><p>49%</p></td>
+<td class="text-center"><p>57%</p></td>
+<td class="text-center"><p><strong>+8%p</strong></p></td>
+<td class="text-center"><p>36%</p></td>
+<td class="text-center"><p>32%</p></td>
+<td class="text-center"><p>-4%p</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>주요 관찰:</strong></p>
+<ul class="simple">
+<li><p><strong>30대</strong>에서 긍정률이 가장 크게 상승(+16%p), 부정률도 큰 폭 하락(-21%p)</p></li>
+<li><p><strong>18~29세</strong>는 긍정률이 오히려 하락(-7%p), 두 시점 모두 긍·부정률 대등 — 유일하게 긍정률이 40% 미만</p></li>
+<li><p><strong>50대</strong>는 높은 긍정률에서 소폭 하락(-7%p)</p></li>
+<li><p><strong>60대·70대 이상</strong>은 긍정률 상승세, 고령층의 지지 확대 흐름</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id5">
+<h3>지역별 변화<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>지역</p></th>
+<th class="head text-center"><p>긍정 1월</p></th>
+<th class="head text-center"><p>긍정 2월</p></th>
+<th class="head text-center"><p>변화</p></th>
+<th class="head text-center"><p>부정 1월</p></th>
+<th class="head text-center"><p>부정 2월</p></th>
+<th class="head text-center"><p>변화</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>서울</p></td>
+<td class="text-center"><p>59%</p></td>
+<td class="text-center"><p>58%</p></td>
+<td class="text-center"><p>-1%p</p></td>
+<td class="text-center"><p>34%</p></td>
+<td class="text-center"><p>32%</p></td>
+<td class="text-center"><p>-2%p</p></td>
+</tr>
+<tr class="row-odd"><td><p>인천/경기</p></td>
+<td class="text-center"><p>65%</p></td>
+<td class="text-center"><p>62%</p></td>
+<td class="text-center"><p>-3%p</p></td>
+<td class="text-center"><p>30%</p></td>
+<td class="text-center"><p>26%</p></td>
+<td class="text-center"><p>-4%p</p></td>
+</tr>
+<tr class="row-even"><td><p>대전/세종/충청</p></td>
+<td class="text-center"><p>58%</p></td>
+<td class="text-center"><p>69%</p></td>
+<td class="text-center"><p><strong>+11%p</strong></p></td>
+<td class="text-center"><p>31%</p></td>
+<td class="text-center"><p>19%</p></td>
+<td class="text-center"><p>-12%p</p></td>
+</tr>
+<tr class="row-odd"><td><p>광주/전라</p></td>
+<td class="text-center"><p>82%</p></td>
+<td class="text-center"><p>81%</p></td>
+<td class="text-center"><p>-1%p</p></td>
+<td class="text-center"><p>13%</p></td>
+<td class="text-center"><p>11%</p></td>
+<td class="text-center"><p>-2%p</p></td>
+</tr>
+<tr class="row-even"><td><p>대구/경북</p></td>
+<td class="text-center"><p>39%</p></td>
+<td class="text-center"><p>49%</p></td>
+<td class="text-center"><p><strong>+10%p</strong></p></td>
+<td class="text-center"><p>43%</p></td>
+<td class="text-center"><p>39%</p></td>
+<td class="text-center"><p>-4%p</p></td>
+</tr>
+<tr class="row-odd"><td><p>부산/울산/경남</p></td>
+<td class="text-center"><p>49%</p></td>
+<td class="text-center"><p>63%</p></td>
+<td class="text-center"><p><strong>+14%p</strong></p></td>
+<td class="text-center"><p>46%</p></td>
+<td class="text-center"><p>24%</p></td>
+<td class="text-center"><p><strong>-22%p</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>주요 관찰:</strong></p>
+<ul class="simple">
+<li><p><strong>부산/울산/경남</strong>이 가장 큰 변화: 긍정 +14%p, 부정 무려 -22%p — 전통적 보수 강세 지역에서 두드러진 지지 상승</p></li>
+<li><p><strong>대전/세종/충청</strong>도 긍정 +11%p로 큰 폭 상승</p></li>
+<li><p><strong>대구/경북</strong>도 긍정 +10%p 상승, 다만 여전히 부정(39%)이 긍정(49%)에 근접</p></li>
+<li><p><strong>광주/전라</strong>는 양 시점 모두 최고 긍정률(81~82%) 유지 — 변화 거의 없는 안정적 지지층</p></li>
+<li><p><strong>서울·인천/경기</strong>는 소폭 하락 또는 정체</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id6">
+<h3>종합 해석<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>전반적으로 2월 2주 조사에서 지지율이 개선되었으며, 특히 <strong>부정률 하락(-7%p)</strong> 이 두드러집니다. 연령별로는 30대의 극적 회복이 눈에 띄고, 18~29세 청년층은 여전히 유보적입니다. 지역별로는 전통적 야권 지역인 영남권(부산/울산/경남, 대구/경북)과 충청권에서의 상승이 주목할 만한 변화입니다. 표본오차(±3.1%p)를 감안할 때 소폭 등락은 통계적으로 유의미하지 않을 수 있으나, 부산/울산/경남 부정률 -22%p나 30대 긍정률 +16%p는 실질적 변화일 가능성이 높습니다.</p>
+</section>
+</section>
+<section id="id7">
+<h2><span style="color: blue;"><strong>2. 주요 인사이트 그래프 분석</strong></span><a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+</section>
+<section id="id8">
+<h2><strong>Claude 분석</strong><a class="headerlink" href="#id8" title="Link to this heading">#</a></h2>
+<p>주요 인사이트별로 그래프를 하나씩 만들어드리겠습니다. 총 6개의 그래프로 구성했습니다.</p>
+<hr class="docutils" />
+<section id="id9">
+<h3>1. 전체 직무 수행 평가 변화 (1월 → 2월)<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>1월 2주 → 2월 2주 사이 <strong>긍정률 +3%p, 부정률 -7%p</strong>로 전반적 지지도 상승. 특히 부정 평가의 감소폭이 크고, 의견유보층이 +4%p 늘어 부정층 일부가 유보로 이동한 것으로 보임.</p>
+<p><img alt="President" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/2-1.png" /></p>
+</section>
+<hr class="docutils" />
+<section id="id10">
+<h3>2. 연령별 긍정률 변화<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p><strong>30대가 +16%p로 가장 큰 상승</strong>. 반면 18~29세는 유일하게 하락(-7%p)하며 40% 미만으로 떨어져 전 연령대 최저. 40대는 변동 없이 75%로 최고치를 유지. 주황 점선(40%)은 청년층 경계를 시각화.</p>
+<p><img alt="President" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/2-2.png" /></p>
+</section>
+<hr class="docutils" />
+<section id="id11">
+<h3>3. 연령별 부정률 변화<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p><strong>30대 부정률이 -21%p로 가장 큰 폭 하락</strong> (44%→23%). 18~29세도 -11%p 하락했지만 여전히 35%로 높음. 50대는 유일하게 소폭 상승(+2%p). 전 연령대에서 부정 평가가 전반적으로 완화되는 추세.</p>
+<p><img alt="President" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/2-3.png" /></p>
+</section>
+<hr class="docutils" />
+<section id="id12">
+<h3>4. 지역별 긍정률 변화 (수평 발산형)<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p><strong>부산/울산/경남 +14%p, 충청권 +11%p, 대구/경북 +10%p</strong>로 전통 보수·경합 지역에서 큰 상승. 반면 서울·인천/경기는 소폭 하락(-1~-3%p). 수평 발산형 차트로 지역 간 변화폭 차이를 직관적으로 비교.</p>
+<p><img alt="President" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/2-4.png" /></p>
+</section>
+<hr class="docutils" />
+<section id="id13">
+<h3>5. 부산/울산/경남 부정률 변화 심층 분석 (가장 큰 변화)<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<p><strong>부산/울산/경남이 46%→24%로 -22%p 하락</strong>하며 전 지역 최대 변화. 광주/전라는 양 시점 모두 11~13%로 일관되게 낮음. 충청권도 -12%p 하락해 주목. 주황 음영으로 최대 변화 지역 강조.</p>
+<p><img alt="President" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/2-5.png" /></p>
+</section>
+<hr class="docutils" />
+<section id="id14">
+<h3>6. 정당 지지도 변화<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p>민주당 소폭 하락(-1%p)에도 여전히 44%로 압도적 1위. <strong>국민의힘 -4%p 하락(26%→22%)으로 유의미한 약화</strong>. 가장 주목할 변화는 <strong>무당층 +6%p 급증(21%→27%)</strong> — 국민의힘 이탈층 일부가 무당층으로 이동한 것으로 해석 가능.</p>
+<p><img alt="President" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/2-6.png" /></p>
+</section>
+<hr class="docutils" />
+<section id="id15">
+<h3>전체 요약<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>#</p></th>
+<th class="head"><p>그래프</p></th>
+<th class="head"><p>핵심 인사이트</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>전체 평가 변화</p></td>
+<td><p>긍정 +3%p, 부정 -7%p — 전반적 지지 강화</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>연령별 긍정률</p></td>
+<td><p>30대 +16%p 최대 상승 / 18~29세 유일 하락</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>연령별 부정률</p></td>
+<td><p>30대 -21%p 최대 하락 / 50대만 소폭 증가</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>지역별 긍정 변화</p></td>
+<td><p>부산·경남 +14%p, 충청 +11%p, 대구·경북 +10%p</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>지역별 부정 변화</p></td>
+<td><p>부산·경남 -22%p 전체 최대 하락</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>정당 지지도</p></td>
+<td><p>무당층 +6%p 급증 / 국민의힘 -4%p 약화</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="id16">
+<h2><span style="color: blue;"><strong>3. 젊은층의 지지 이탈은 통계적으로 유의한가?</strong></span><a class="headerlink" href="#id16" title="Link to this heading">#</a></h2>
+</section>
+<section id="id17">
+<h2><strong>Claude 분석</strong><a class="headerlink" href="#id17" title="Link to this heading">#</a></h2>
+<p>좋은 질문입니다. 표본오차와 샘플 크기를 고려한 통계 검정이 필요합니다.</p>
+<hr class="docutils" />
+<section id="id18">
+<h3>분석 전제<a class="headerlink" href="#id18" title="Link to this heading">#</a></h3>
+<p>갤럽 원문에는 <strong>연령별 세부 표본 크기(n)가 명시되어 있지 않습니다.</strong> 따라서 전체 표본(n≈1,000)을 연령 인구 비례로 <strong>추정</strong>하여 검정합니다.</p>
+</section>
+<hr class="docutils" />
+<section id="two-proportion-z-test">
+<h3>검정 방법: 두 비율의 차이 검정 (Two-proportion Z-test)<a class="headerlink" href="#two-proportion-z-test" title="Link to this heading">#</a></h3>
+<p>18~29세 긍정률: <strong>46% → 39% (−7%p)</strong></p>
+<div class="math notranslate nohighlight">
+\[Z = \frac{\hat{p}_1 - \hat{p}_2}{\sqrt{\hat{p}(1-\hat{p})\left(\frac{1}{n_1}+\frac{1}{n_2}\right)}}\]</div>
+</section>
+<hr class="docutils" />
+<section id="id19">
+<h3>예상 결과 해석<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>연령</p></th>
+<th class="head"><p>변화</p></th>
+<th class="head"><p>예상 판정</p></th>
+<th class="head"><p>이유</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>18~29세</strong></p></td>
+<td><p>−7%p</p></td>
+<td><p><strong>n.s. (비유의)</strong></p></td>
+<td><p>n≈170, −7%p는 표준오차 범위 내</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>30대</strong></p></td>
+<td><p>+16%p</p></td>
+<td><p><strong>★ 유의 (p&lt;0.05)</strong></p></td>
+<td><p>변화폭이 크고 n≈160</p></td>
+</tr>
+<tr class="row-even"><td><p>40대</p></td>
+<td><p>±0</p></td>
+<td><p>n.s.</p></td>
+<td><p>변화 없음</p></td>
+</tr>
+<tr class="row-odd"><td><p>50대</p></td>
+<td><p>−7%p</p></td>
+<td><p>n.s.</p></td>
+<td><p>변화폭 작음</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>60대</strong></p></td>
+<td><p>+9%p</p></td>
+<td><p><strong>★ 유의 가능성</strong></p></td>
+<td><p>경계선</p></td>
+</tr>
+<tr class="row-odd"><td><p>70대+</p></td>
+<td><p>+8%p</p></td>
+<td><p>n.s.~경계</p></td>
+<td><p>n이 작아 불확실</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id20">
+<h3>핵심 결론<a class="headerlink" href="#id20" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><strong>18~29세 −7%p 하락은 통계적으로 유의하지 않을 가능성이 높습니다.</strong></p>
+</div></blockquote>
+<p>이유는 세 가지입니다.</p>
+<p>첫째, 연령별 부분 표본(n≈170)은 전체 표본보다 작아 <strong>표준오차가 약 ±7~8%p</strong> 수준으로 커집니다. 둘째, −7%p 변화는 이 오차 범위 안에 들어옵니다. 셋째, <strong>갤럽 자체도 연령별 수치는 참고용</strong>으로 제시하며, 부분집단 비교 시 표본오차가 커진다고 명시합니다.</p>
+<p>다만 <strong>추세로서는 주목할 만하며</strong>, 향후 조사에서 지속적으로 같은 방향이 확인되면 실질적 의미를 가질 수 있습니다.</p>
+</section>
+</section>
+<section id="id21">
+<h2><span style="color: blue;"><strong>4. 젊은층의 지지 이탈은 통계적으로 유의한가?(재분석)</strong></span><a class="headerlink" href="#id21" title="Link to this heading">#</a></h2>
+<p><span style="color: blue;"><strong>갤럽 원문에 연령별 사례수가 나와 있다!?</strong></span></p>
+</section>
+<section id="id22">
+<h2><strong>Claude 분석</strong><a class="headerlink" href="#id22" title="Link to this heading">#</a></h2>
+<p>죄송합니다! 원문 데이터를 다시 확인하겠습니다. 트랜스크립트 요약본에는 연령별 사례수가 포함되지 않았네요. 원본 파일을 직접 확인하겠습니다. 원문에서 정확한 사례수를 확인했습니다. 이제 실제 데이터로 검정하겠습니다.</p>
+<p><strong>원문 연령별 사례수 (조사완료 기준):</strong></p>
+<ul class="simple">
+<li><p>1월 2주: 18~29세 <strong>142명</strong>, 30대 <strong>139명</strong>, 40대 <strong>178명</strong>, 50대 <strong>207명</strong>, 60대 <strong>174명</strong>, 70대+ <strong>160명</strong></p></li>
+<li><p>2월 2주: 18~29세 <strong>133명</strong>, 30대 <strong>132명</strong>, 40대 <strong>185명</strong>, 50대 <strong>206명</strong>, 60대 <strong>184명</strong>, 70대+ <strong>163명</strong></p></li>
+</ul>
+<hr class="docutils" />
+<section id="id23">
+<h3>실제 사례수 기반 검정 결과 요약<a class="headerlink" href="#id23" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>연령</p></th>
+<th class="head text-center"><p>Jan n</p></th>
+<th class="head text-center"><p>Feb n</p></th>
+<th class="head text-center"><p>변화</p></th>
+<th class="head text-center"><p>p값</p></th>
+<th class="head text-center"><p>판정</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>18~29세</strong></p></td>
+<td class="text-center"><p>142</p></td>
+<td class="text-center"><p>133</p></td>
+<td class="text-center"><p>−7%p</p></td>
+<td class="text-center"><p>~0.27</p></td>
+<td class="text-center"><p><strong>n.s.</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>30대</strong></p></td>
+<td class="text-center"><p>139</p></td>
+<td class="text-center"><p>132</p></td>
+<td class="text-center"><p>+16%p</p></td>
+<td class="text-center"><p>~0.003</p></td>
+<td class="text-center"><p><strong>★★ 유의</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>40대</p></td>
+<td class="text-center"><p>178</p></td>
+<td class="text-center"><p>185</p></td>
+<td class="text-center"><p>±0</p></td>
+<td class="text-center"><p>1.00</p></td>
+<td class="text-center"><p>n.s.</p></td>
+</tr>
+<tr class="row-odd"><td><p>50대</p></td>
+<td class="text-center"><p>207</p></td>
+<td class="text-center"><p>206</p></td>
+<td class="text-center"><p>−7%p</p></td>
+<td class="text-center"><p>~0.07</p></td>
+<td class="text-center"><p><strong>.  경계</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>60대</strong></p></td>
+<td class="text-center"><p>174</p></td>
+<td class="text-center"><p>184</p></td>
+<td class="text-center"><p>+9%p</p></td>
+<td class="text-center"><p>~0.07</p></td>
+<td class="text-center"><p><strong>.  경계</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>70대+</p></td>
+<td class="text-center"><p>160</p></td>
+<td class="text-center"><p>163</p></td>
+<td class="text-center"><p>+8%p</p></td>
+<td class="text-center"><p>~0.13</p></td>
+<td class="text-center"><p>n.s.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><img alt="President" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/2-7.png" /></p>
+<p><strong>결론:</strong> 18~29세 −7%p는 실제 사례수(142/133명)로 검정해도 <strong>통계적으로 유의하지 않습니다(p≈0.27)</strong>. 반면 <strong>30대 +16%p는 p&lt;0.01로 명확히 유의</strong>합니다. 50대 하락과 60대 상승은 각각 경계선(p≈0.07) 수준입니다.</p>
+</section>
+</section>
+<section id="id24">
+<h2><strong>참고: 파이썬 코드</strong><a class="headerlink" href="#id24" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
+
+<span class="c1"># 데이터 설정</span>
+<span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Positive&#39;</span><span class="p">,</span> <span class="s1">&#39;Negative&#39;</span><span class="p">,</span> <span class="s1">&#39;No Opinion&#39;</span><span class="p">]</span>
+<span class="n">jan</span> <span class="o">=</span> <span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+<span class="n">feb</span> <span class="o">=</span> <span class="p">[</span><span class="mi">63</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">11</span><span class="p">]</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">categories</span><span class="p">))</span>
+<span class="n">width</span> <span class="o">=</span> <span class="mf">0.35</span>
+
+<span class="n">colors_jan</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#2196F3&#39;</span><span class="p">,</span> <span class="s1">&#39;#F44336&#39;</span><span class="p">,</span> <span class="s1">&#39;#9E9E9E&#39;</span><span class="p">]</span>
+<span class="n">colors_feb</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#1565C0&#39;</span><span class="p">,</span> <span class="s1">&#39;#B71C1C&#39;</span><span class="p">,</span> <span class="s1">&#39;#616161&#39;</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">bars1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">jan</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Jan Week 2&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors_jan</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+<span class="n">bars2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">feb</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Feb Week 2&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors_feb</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">bar</span> <span class="ow">in</span> <span class="n">bars1</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.8</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bar</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bars2</span><span class="p">):</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">feb</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">jan</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="s1">&#39;+&#39;</span> <span class="k">if</span> <span class="n">diff</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;#1B5E20&#39;</span> <span class="k">if</span> <span class="n">diff</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;#B71C1C&#39;</span> <span class="k">if</span> <span class="n">diff</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;#555&#39;</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.8</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="mf">4.5</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="n">sign</span><span class="si">}{</span><span class="n">diff</span><span class="si">}</span><span class="s1">%p)&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Percentage (%)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;President Lee Jae-myung&#39;s Job Approval Rating</span><span class="se">\n</span><span class="s2">(Jan Week 2 → Feb Week 2, 2026)&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">categories</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ac14057ae2fdde0b9573eb394d57eeb48ebfd81d94f075a0f7032f7d67450382.png" src="../_images/ac14057ae2fdde0b9573eb394d57eeb48ebfd81d94f075a0f7032f7d67450382.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
+
+<span class="c1"># 연령 그룹 및 긍정률 데이터</span>
+<span class="n">age_groups</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;18–29&#39;</span><span class="p">,</span> <span class="s1">&#39;30s&#39;</span><span class="p">,</span> <span class="s1">&#39;40s&#39;</span><span class="p">,</span> <span class="s1">&#39;50s&#39;</span><span class="p">,</span> <span class="s1">&#39;60s&#39;</span><span class="p">,</span> <span class="s1">&#39;70+&#39;</span><span class="p">]</span>
+<span class="n">jan_pos</span> <span class="o">=</span> <span class="p">[</span><span class="mi">46</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">77</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">49</span><span class="p">]</span>
+<span class="n">feb_pos</span> <span class="o">=</span> <span class="p">[</span><span class="mi">39</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">57</span><span class="p">]</span>
+<span class="n">diff_pos</span> <span class="o">=</span> <span class="p">[</span><span class="n">feb_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">jan_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">jan_pos</span><span class="p">))]</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">age_groups</span><span class="p">))</span>
+<span class="n">width</span> <span class="o">=</span> <span class="mf">0.35</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">bars1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">jan_pos</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Jan Week 2&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#42A5F5&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+<span class="n">bars2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">feb_pos</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Feb Week 2&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#1565C0&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span>
+
+<span class="c1"># 수치 레이블</span>
+<span class="k">for</span> <span class="n">bar</span> <span class="ow">in</span> <span class="n">bars1</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.8</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bar</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bars2</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.8</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">diff_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="s1">&#39;+&#39;</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;#2E7D32&#39;</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;#C62828&#39;</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;#555&#39;</span>
+    <span class="c1"># 변화량 색상 표시</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="mf">4.5</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">sign</span><span class="si">}{</span><span class="n">d</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+
+<span class="c1"># 40% 임계 참조선</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#FF7043&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;40% threshold&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Positive Approval (%)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Positive Approval by Age Group</span><span class="se">\n</span><span class="s2">(Jan Week 2 → Feb Week 2, 2026)&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">age_groups</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axisbelow</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/85abed02ce74de10cb32beae55fa4eb2a8e4a970b4d06d7b4766a7910a376228.png" src="../_images/85abed02ce74de10cb32beae55fa4eb2a8e4a970b4d06d7b4766a7910a376228.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
+
+<span class="c1"># 연령별 부정률 데이터</span>
+<span class="n">age_groups</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;18–29&#39;</span><span class="p">,</span> <span class="s1">&#39;30s&#39;</span><span class="p">,</span> <span class="s1">&#39;40s&#39;</span><span class="p">,</span> <span class="s1">&#39;50s&#39;</span><span class="p">,</span> <span class="s1">&#39;60s&#39;</span><span class="p">,</span> <span class="s1">&#39;70+&#39;</span><span class="p">]</span>
+<span class="n">jan_neg</span> <span class="o">=</span> <span class="p">[</span><span class="mi">46</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">36</span><span class="p">]</span>
+<span class="n">feb_neg</span> <span class="o">=</span> <span class="p">[</span><span class="mi">35</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">32</span><span class="p">]</span>
+<span class="n">diff_neg</span> <span class="o">=</span> <span class="p">[</span><span class="n">feb_neg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">jan_neg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">jan_neg</span><span class="p">))]</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">age_groups</span><span class="p">))</span>
+<span class="n">width</span> <span class="o">=</span> <span class="mf">0.35</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">bars1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">jan_neg</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Jan Week 2&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#EF9A9A&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+<span class="n">bars2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">feb_neg</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Feb Week 2&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#C62828&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">bar</span> <span class="ow">in</span> <span class="n">bars1</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.6</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bar</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bars2</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.6</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">diff_neg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="s1">&#39;+&#39;</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+    <span class="c1"># 부정률 감소(초록) = 긍정 신호, 증가(빨강) = 부정 신호</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;#C62828&#39;</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;#2E7D32&#39;</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;#555&#39;</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="mf">4.0</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">sign</span><span class="si">}{</span><span class="n">d</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Negative Approval (%)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Negative Approval by Age Group</span><span class="se">\n</span><span class="s2">(Jan Week 2 → Feb Week 2, 2026)&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">age_groups</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axisbelow</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/4ab286984a4c92d6948e3f0cde659d00f697af4f98f8379d333e2ffe1d021a18.png" src="../_images/4ab286984a4c92d6948e3f0cde659d00f697af4f98f8379d333e2ffe1d021a18.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
+
+<span class="c1"># 지역 및 긍정률 데이터</span>
+<span class="n">regions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Seoul&#39;</span><span class="p">,</span> <span class="s1">&#39;Incheon/Gyeonggi&#39;</span><span class="p">,</span> <span class="s1">&#39;Daejeon/Sejong/Chungcheong&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Gwangju/Jeolla&#39;</span><span class="p">,</span> <span class="s1">&#39;Daegu/Gyeongbuk&#39;</span><span class="p">,</span> <span class="s1">&#39;Busan/Ulsan/Gyeongnam&#39;</span><span class="p">]</span>
+<span class="n">jan_pos</span> <span class="o">=</span> <span class="p">[</span><span class="mi">59</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">58</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span> <span class="mi">49</span><span class="p">]</span>
+<span class="n">feb_pos</span> <span class="o">=</span> <span class="p">[</span><span class="mi">58</span><span class="p">,</span> <span class="mi">62</span><span class="p">,</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">81</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">63</span><span class="p">]</span>
+<span class="n">diff</span> <span class="o">=</span> <span class="p">[</span><span class="n">feb_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">jan_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">jan_pos</span><span class="p">))]</span>
+
+<span class="c1"># 변화량 기준 오름차순 정렬</span>
+<span class="n">sorted_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
+<span class="n">regions_s</span> <span class="o">=</span> <span class="p">[</span><span class="n">regions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sorted_idx</span><span class="p">]</span>
+<span class="n">diff_s</span> <span class="o">=</span> <span class="p">[</span><span class="n">diff</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sorted_idx</span><span class="p">]</span>
+<span class="n">jan_s</span> <span class="o">=</span> <span class="p">[</span><span class="n">jan_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sorted_idx</span><span class="p">]</span>
+<span class="n">feb_s</span> <span class="o">=</span> <span class="p">[</span><span class="n">feb_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sorted_idx</span><span class="p">]</span>
+
+<span class="c1"># 양수: 파랑, 음수: 빨강으로 구분</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#1565C0&#39;</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;#C62828&#39;</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">diff_s</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">regions_s</span><span class="p">))</span>
+<span class="n">bars</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">diff_s</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+
+<span class="c1"># 변화량 및 Jan→Feb 수치 레이블</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">bar</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">bars</span><span class="p">,</span> <span class="n">diff_s</span><span class="p">,</span> <span class="n">jan_s</span><span class="p">,</span> <span class="n">feb_s</span><span class="p">)):</span>
+    <span class="n">x_pos</span> <span class="o">=</span> <span class="n">d</span> <span class="o">+</span> <span class="mf">0.3</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">d</span> <span class="o">-</span> <span class="mf">0.3</span>
+    <span class="n">ha</span> <span class="o">=</span> <span class="s1">&#39;left&#39;</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;right&#39;</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="s1">&#39;+&#39;</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x_pos</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">sign</span><span class="si">}{</span><span class="n">d</span><span class="si">}</span><span class="s1">%p  (</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s1">%→</span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">,</span>
+            <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="n">ha</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#1B5E20&#39;</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;#B71C1C&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#333&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">regions_s</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Change in Positive Approval (%p)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Change in Positive Approval by Region</span><span class="se">\n</span><span class="s1">(Jan Week 2 → Feb Week 2, 2026)&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">22</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axisbelow</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/761c0e692757e2d1708736eebecb7b01ca0e23f1cbd49b011f1aa16164bfdc44.png" src="../_images/761c0e692757e2d1708736eebecb7b01ca0e23f1cbd49b011f1aa16164bfdc44.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
+
+<span class="c1"># 지역별 부정률 데이터</span>
+<span class="n">regions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Seoul&#39;</span><span class="p">,</span> <span class="s1">&#39;Incheon/</span><span class="se">\n</span><span class="s1">Gyeonggi&#39;</span><span class="p">,</span> <span class="s1">&#39;Daejeon/Sejong/</span><span class="se">\n</span><span class="s1">Chungcheong&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Gwangju/</span><span class="se">\n</span><span class="s1">Jeolla&#39;</span><span class="p">,</span> <span class="s1">&#39;Daegu/</span><span class="se">\n</span><span class="s1">Gyeongbuk&#39;</span><span class="p">,</span> <span class="s1">&#39;Busan/Ulsan/</span><span class="se">\n</span><span class="s1">Gyeongnam&#39;</span><span class="p">]</span>
+<span class="n">jan_neg</span> <span class="o">=</span> <span class="p">[</span><span class="mi">34</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">46</span><span class="p">]</span>
+<span class="n">feb_neg</span> <span class="o">=</span> <span class="p">[</span><span class="mi">32</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span> <span class="mi">24</span><span class="p">]</span>
+<span class="n">diff</span> <span class="o">=</span> <span class="p">[</span><span class="n">feb_neg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">jan_neg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">jan_neg</span><span class="p">))]</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">regions</span><span class="p">))</span>
+<span class="n">width</span> <span class="o">=</span> <span class="mf">0.35</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">))</span>
+<span class="n">bars1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">jan_neg</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Jan Week 2&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#EF9A9A&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+<span class="n">bars2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">feb_neg</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Feb Week 2&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#B71C1C&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">bar</span> <span class="ow">in</span> <span class="n">bars1</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mf">9.5</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bar</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bars2</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mf">9.5</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">diff</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="s1">&#39;+&#39;</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;#C62828&#39;</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;#2E7D32&#39;</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="mf">4.0</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">sign</span><span class="si">}{</span><span class="n">d</span><span class="si">}</span><span class="s1">%p&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+
+<span class="c1"># 부산/울산/경남 컬럼 음영 강조</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#FF9800&#39;</span><span class="p">)</span>
+<span class="c1"># 유니코드 마이너스(−) 대신 일반 하이픈(-) 사용</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">50</span><span class="p">,</span> <span class="s1">&#39;★ Biggest drop</span><span class="se">\n</span><span class="s1">-22%p&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#E65100&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Negative Approval (%)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Negative Approval by Region</span><span class="se">\n</span><span class="s2">(Jan Week 2 → Feb Week 2, 2026)&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">regions</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axisbelow</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/7c1aa68e3d23b41f426ddce1c598014327217f536ac482ea9f29847f0807539c.png" src="../_images/7c1aa68e3d23b41f426ddce1c598014327217f536ac482ea9f29847f0807539c.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
+
+<span class="c1"># 정당 지지도 데이터</span>
+<span class="n">parties</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Minjoo Party</span><span class="se">\n</span><span class="s1">(Ruling)&#39;</span><span class="p">,</span> <span class="s2">&quot;People&#39;s Power</span><span class="se">\n</span><span class="s2">Party (Opp.)&quot;</span><span class="p">,</span> <span class="s1">&#39;Rebuilding Korea</span><span class="se">\n</span><span class="s1">Party&#39;</span><span class="p">,</span> <span class="s1">&#39;No Party</span><span class="se">\n</span><span class="s1">Affiliation&#39;</span><span class="p">]</span>
+<span class="n">jan</span> <span class="o">=</span> <span class="p">[</span><span class="mi">45</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">21</span><span class="p">]</span>
+<span class="n">feb</span> <span class="o">=</span> <span class="p">[</span><span class="mi">44</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">27</span><span class="p">]</span>
+<span class="n">diff</span> <span class="o">=</span> <span class="p">[</span><span class="n">feb</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">jan</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">jan</span><span class="p">))]</span>
+
+<span class="c1"># 정당별 고유 색상 설정</span>
+<span class="n">party_colors_jan</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#1976D2&#39;</span><span class="p">,</span> <span class="s1">&#39;#E53935&#39;</span><span class="p">,</span> <span class="s1">&#39;#9C27B0&#39;</span><span class="p">,</span> <span class="s1">&#39;#78909C&#39;</span><span class="p">]</span>
+<span class="n">party_colors_feb</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#0D47A1&#39;</span><span class="p">,</span> <span class="s1">&#39;#B71C1C&#39;</span><span class="p">,</span> <span class="s1">&#39;#6A1B9A&#39;</span><span class="p">,</span> <span class="s1">&#39;#455A64&#39;</span><span class="p">]</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">parties</span><span class="p">))</span>
+<span class="n">width</span> <span class="o">=</span> <span class="mf">0.35</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">))</span>
+<span class="n">bars1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">jan</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Jan Week 2&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">party_colors_jan</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">bars2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">feb</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Feb Week 2&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">party_colors_feb</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">bar</span> <span class="ow">in</span> <span class="n">bars1</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bar</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bars2</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">diff</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="s1">&#39;+&#39;</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;#1B5E20&#39;</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;#B71C1C&#39;</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;#555&#39;</span>
+    <span class="c1"># 변화량 색상 구분 표시</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="mf">4.0</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="n">sign</span><span class="si">}{</span><span class="n">d</span><span class="si">}</span><span class="s1">%p)&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+
+<span class="c1"># 무당층 급증 구간 음영 강조</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvspan</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.07</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#607D8B&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">35</span><span class="p">,</span> <span class="s1">&#39;▲ +6%p</span><span class="se">\n</span><span class="s1">Sharp rise&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#263238&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Support Rate (%)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Political Party Support Rate</span><span class="se">\n</span><span class="s2">(Jan Week 2 → Feb Week 2, 2026)&quot;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">parties</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">55</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axisbelow</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a3c4d3e566bc027ae7421c889672037499246efc769a01d490491c546f254d6b.png" src="../_images/a3c4d3e566bc027ae7421c889672037499246efc769a01d490491c546f254d6b.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># ── 1. 원문 실제 사례수 (조사완료 기준) ──────────────────</span>
+<span class="n">age_groups</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;18–29&#39;</span><span class="p">,</span> <span class="s1">&#39;30s&#39;</span><span class="p">,</span> <span class="s1">&#39;40s&#39;</span><span class="p">,</span> <span class="s1">&#39;50s&#39;</span><span class="p">,</span> <span class="s1">&#39;60s&#39;</span><span class="p">,</span> <span class="s1">&#39;70+&#39;</span><span class="p">]</span>
+
+<span class="c1"># 1월 2주 사례수</span>
+<span class="n">n_jan</span> <span class="o">=</span> <span class="p">[</span><span class="mi">142</span><span class="p">,</span> <span class="mi">139</span><span class="p">,</span> <span class="mi">178</span><span class="p">,</span> <span class="mi">207</span><span class="p">,</span> <span class="mi">174</span><span class="p">,</span> <span class="mi">160</span><span class="p">]</span>
+<span class="c1"># 2월 2주 사례수</span>
+<span class="n">n_feb</span> <span class="o">=</span> <span class="p">[</span><span class="mi">133</span><span class="p">,</span> <span class="mi">132</span><span class="p">,</span> <span class="mi">185</span><span class="p">,</span> <span class="mi">206</span><span class="p">,</span> <span class="mi">184</span><span class="p">,</span> <span class="mi">163</span><span class="p">]</span>
+
+<span class="c1"># 긍정률 (%)</span>
+<span class="n">jan_pos</span> <span class="o">=</span> <span class="p">[</span><span class="mi">46</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">77</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">49</span><span class="p">]</span>
+<span class="n">feb_pos</span> <span class="o">=</span> <span class="p">[</span><span class="mi">39</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">57</span><span class="p">]</span>
+
+<span class="c1"># ── 2. 두 비율 차이 Z-검정 함수 ──────────────────────────</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">two_prop_ztest</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;두 독립 표본 비율 차이 검정 (양측)&quot;&quot;&quot;</span>
+    <span class="n">p_pool</span> <span class="o">=</span> <span class="p">(</span><span class="n">p1</span> <span class="o">*</span> <span class="n">n1</span> <span class="o">+</span> <span class="n">p2</span> <span class="o">*</span> <span class="n">n2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">)</span>   <span class="c1"># 통합 비율</span>
+    <span class="n">se</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p_pool</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p_pool</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">n1</span> <span class="o">+</span> <span class="mi">1</span><span class="o">/</span><span class="n">n2</span><span class="p">))</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="n">p1</span> <span class="o">-</span> <span class="n">p2</span><span class="p">)</span> <span class="o">/</span> <span class="n">se</span>
+    <span class="n">p_val</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)))</span>     <span class="c1"># 양측 p값</span>
+    <span class="k">return</span> <span class="n">z</span><span class="p">,</span> <span class="n">p_val</span><span class="p">,</span> <span class="n">se</span>
+
+<span class="c1"># ── 3. 연령대별 검정 수행 ─────────────────────────────────</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Age&#39;</span><span class="si">:</span><span class="s2">&lt;10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Jan n&#39;</span><span class="si">:</span><span class="s2">&gt;6</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Feb n&#39;</span><span class="si">:</span><span class="s2">&gt;6</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Jan%&#39;</span><span class="si">:</span><span class="s2">&gt;6</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Feb%&#39;</span><span class="si">:</span><span class="s2">&gt;6</span><span class="si">}</span><span class="s2"> &quot;</span>
+      <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Diff&#39;</span><span class="si">:</span><span class="s2">&gt;7</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Z&#39;</span><span class="si">:</span><span class="s2">&gt;7</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;p-value&#39;</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Sig.&#39;</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;─&quot;</span> <span class="o">*</span> <span class="mi">78</span><span class="p">)</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">age</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">age_groups</span><span class="p">):</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">jan_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="mi">100</span>
+    <span class="n">p2</span> <span class="o">=</span> <span class="n">feb_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="mi">100</span>
+    <span class="n">z</span><span class="p">,</span> <span class="n">p_val</span><span class="p">,</span> <span class="n">se</span> <span class="o">=</span> <span class="n">two_prop_ztest</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">n_jan</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">n_feb</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">feb_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">jan_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="c1"># 유의수준 표시</span>
+    <span class="k">if</span> <span class="n">p_val</span> <span class="o">&lt;</span> <span class="mf">0.01</span><span class="p">:</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="s1">&#39;** p&lt;.01&#39;</span>
+    <span class="k">elif</span> <span class="n">p_val</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">:</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="s1">&#39;*  p&lt;.05&#39;</span>
+    <span class="k">elif</span> <span class="n">p_val</span> <span class="o">&lt;</span> <span class="mf">0.10</span><span class="p">:</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="s1">&#39;.  p&lt;.10&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sig</span> <span class="o">=</span> <span class="s1">&#39;n.s.&#39;</span>
+
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">age</span><span class="p">,</span> <span class="n">n_jan</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">n_feb</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">jan_pos</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">feb_pos</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">diff</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">p_val</span><span class="p">,</span> <span class="n">sig</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">age</span><span class="si">:</span><span class="s2">&lt;10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">n_jan</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;6</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">n_feb</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;6</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">jan_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;5</span><span class="si">}</span><span class="s2">% </span><span class="si">{</span><span class="n">feb_pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;5</span><span class="si">}</span><span class="s2">% &quot;</span>
+          <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">diff</span><span class="si">:</span><span class="s2">&gt;+6</span><span class="si">}</span><span class="s2">%p </span><span class="si">{</span><span class="n">z</span><span class="si">:</span><span class="s2">&gt;7.3f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">p_val</span><span class="si">:</span><span class="s2">&gt;10.4f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">sig</span><span class="si">:</span><span class="s2">&gt;10</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># ── 4. 시각화 ─────────────────────────────────────────────</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">diffs</span>  <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+<span class="n">pvals</span>  <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+<span class="n">ages</span>   <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+
+<span class="c1"># 색상: 유의(진한색) / 비유의(회색)</span>
+<span class="n">bar_colors</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pvals</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">:</span>
+        <span class="n">bar_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;#C62828&#39;</span> <span class="k">if</span> <span class="n">diffs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;#1565C0&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="mf">0.10</span><span class="p">:</span>
+        <span class="n">bar_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;#EF9A9A&#39;</span> <span class="k">if</span> <span class="n">diffs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;#90CAF9&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">bar_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;#BDBDBD&#39;</span><span class="p">)</span>
+
+<span class="n">bars</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">ages</span><span class="p">,</span> <span class="n">diffs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">bar_colors</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.55</span><span class="p">)</span>
+
+<span class="c1"># 막대마다 p값과 유의성 레이블</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">bar</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">bars</span><span class="p">,</span> <span class="n">diffs</span><span class="p">,</span> <span class="n">pvals</span><span class="p">)):</span>
+    <span class="n">ypos_val</span> <span class="o">=</span> <span class="n">d</span> <span class="o">+</span> <span class="mf">0.6</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">d</span> <span class="o">-</span> <span class="mf">0.6</span>
+    <span class="n">ypos_sig</span> <span class="o">=</span> <span class="n">d</span> <span class="o">+</span> <span class="mf">3.5</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">d</span> <span class="o">-</span> <span class="mf">4.5</span>
+    <span class="n">va_val</span>   <span class="o">=</span> <span class="s1">&#39;bottom&#39;</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;top&#39;</span>
+    <span class="n">va_sig</span>   <span class="o">=</span> <span class="s1">&#39;bottom&#39;</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;top&#39;</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="s1">&#39;+&#39;</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="c1"># 수치 표시</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">ypos_val</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">sign</span><span class="si">}{</span><span class="n">d</span><span class="si">}</span><span class="s1">%p&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="n">va_val</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#333&#39;</span><span class="p">)</span>
+
+    <span class="c1"># 유의성 표시</span>
+    <span class="k">if</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="mf">0.01</span><span class="p">:</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;p=</span><span class="si">{</span><span class="n">p</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="se">\n</span><span class="s1">★★ sig.&#39;</span>
+    <span class="k">elif</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">:</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;p=</span><span class="si">{</span><span class="n">p</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="se">\n</span><span class="s1">★ sig.&#39;</span>
+    <span class="k">elif</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="mf">0.10</span><span class="p">:</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;p=</span><span class="si">{</span><span class="n">p</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="se">\n</span><span class="s1">(marginal)&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;p=</span><span class="si">{</span><span class="n">p</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="se">\n</span><span class="s1">n.s.&#39;</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">ypos_sig</span><span class="p">,</span>
+            <span class="n">label</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="n">va_sig</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mf">8.5</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#B71C1C&#39;</span> <span class="k">if</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="mf">0.05</span> <span class="ow">and</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="mi">0</span>
+                  <span class="k">else</span> <span class="s1">&#39;#1B5E20&#39;</span> <span class="k">if</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="mf">0.05</span> <span class="ow">and</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">0</span>
+                  <span class="k">else</span> <span class="s1">&#39;#666&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#333&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Change in Positive Approval (%p)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Change in Positive Approval by Age Group with Statistical Significance</span><span class="se">\n</span><span class="s1">&#39;</span>
+             <span class="s1">&#39;(Two-proportion Z-test, actual sample sizes from Gallup raw data)&#39;</span><span class="p">,</span>
+             <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axisbelow</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># 범례</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Patch</span>
+<span class="n">legend_elements</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;#C62828&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Significant decrease (p&lt;.05)&#39;</span><span class="p">),</span>
+    <span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;#1565C0&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Significant increase (p&lt;.05)&#39;</span><span class="p">),</span>
+    <span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;#90CAF9&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Marginal increase (p&lt;.10)&#39;</span><span class="p">),</span>
+    <span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;#BDBDBD&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Not significant (n.s.)&#39;</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">legend_elements</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Age         Jan n  Feb n   Jan%   Feb%    Diff       Z    p-value       Sig.
+──────────────────────────────────────────────────────────────────────────────
+18–29         142    133    46%    39%     -7%p   1.173     0.2408       n.s.
+30s           139    132    50%    66%    +16%p  -2.666     0.0077   ** p&lt;.01
+40s           178    185    75%    75%     +0%p   0.000     1.0000       n.s.
+50s           207    206    77%    70%     -7%p   1.612     0.1070       n.s.
+60s           174    184    56%    65%     +9%p  -1.742     0.0815   .  p&lt;.10
+70+           160    163    49%    57%     +8%p  -1.440     0.1498       n.s.
+</pre></div>
+</div>
+<img alt="../_images/513d47d50d9f1b026d3ff2a0becb5c5eea68e8bbbacfb6d0df621a71bae93c0a.png" src="../_images/513d47d50d9f1b026d3ff2a0becb5c5eea68e8bbbacfb6d0df621a71bae93c0a.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01_%EC%8B%9C%ED%97%98%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><strong>1장 시험성적 분석</strong></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03_KBO_%EC%A0%95%EA%B7%9C%EC%8B%9C%EC%A6%8C_%ED%8C%80%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><strong>3장 KBO 정규시즌 팀성적 분석</strong></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span style="color: blue;"><strong>1. 파일 업로드</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#claude"><strong>Claude 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">전체 변화</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">연령별 변화</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">지역별 변화</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">종합 해석</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><span style="color: blue;"><strong>2. 주요 인사이트 그래프 분석</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"><strong>Claude 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">1. 전체 직무 수행 평가 변화 (1월 → 2월)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">2. 연령별 긍정률 변화</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">3. 연령별 부정률 변화</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">4. 지역별 긍정률 변화 (수평 발산형)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">5. 부산/울산/경남 부정률 변화 심층 분석 (가장 큰 변화)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">6. 정당 지지도 변화</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">전체 요약</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id16"><span style="color: blue;"><strong>3. 젊은층의 지지 이탈은 통계적으로 유의한가?</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id17"><strong>Claude 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">분석 전제</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-proportion-z-test">검정 방법: 두 비율의 차이 검정 (Two-proportion Z-test)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">예상 결과 해석</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">핵심 결론</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id21"><span style="color: blue;"><strong>4. 젊은층의 지지 이탈은 통계적으로 유의한가?(재분석)</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id22"><strong>Claude 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">실제 사례수 기반 검정 결과 요약</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24"><strong>참고: 파이썬 코드</strong></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By 김원경 최필선
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

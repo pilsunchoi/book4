@@ -1,0 +1,1380 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>15장 Ridge 및 Lasso 회귀 &#8212; 데이터 분석 이제 AI에게 맡겨라</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/15_Ridge_및_Lasso_회귀';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="16장 로지스틱 회귀" href="16_%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1_%ED%9A%8C%EA%B7%80.html" />
+    <link rel="prev" title="14장 신생아 특례대출과 출산율" href="14_%EC%8B%A0%EC%83%9D%EC%95%84_%ED%8A%B9%EB%A1%80%EB%8C%80%EC%B6%9C%EA%B3%BC_%EC%B6%9C%EC%82%B0%EC%9C%A8.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00_%EC%84%9C%EB%AC%B8.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="00_%EC%84%9C%EB%AC%B8.html">
+                    서문
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_%EC%8B%9C%ED%97%98%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>1장 시험성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_%EB%8C%80%ED%86%B5%EB%A0%B9_%EC%A7%80%EC%A7%80%EC%9C%A8_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>2장 대통령 지지율 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_KBO_%EC%A0%95%EA%B7%9C%EC%8B%9C%EC%A6%8C_%ED%8C%80%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>3장 KBO 정규시즌 팀성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_PPP_%EA%B7%B8%EB%9E%98%ED%94%84_%EB%B6%84%EC%84%9D.html"><strong>4장 PPP 그래프 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_%EC%84%B8%EA%B3%84%EC%9D%80%ED%96%89_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EC%B6%94%EC%B6%9C.html"><strong>5장 세계은행 데이터 추출</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_%EC%A3%BC%EA%B0%80_%EC%98%88%EC%B8%A1_%EC%8B%9C%EC%8A%A4%ED%85%9C_%EA%B5%AC%EC%B6%95.html"><strong>6장 주가 예측 시스템 구축</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_%EB%8C%93%EA%B8%80_%ED%86%B5%EA%B3%84_%EB%B6%84%EC%84%9D.html"><strong>7장 댓글 통계 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_%EC%84%9C%EC%9A%B8_%EC%95%84%ED%8C%8C%ED%8A%B8_%EB%A7%A4%EB%AC%BC_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>8장 서울 아파트 매물 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_%EC%84%A4%EB%AC%B8%EC%A1%B0%EC%82%AC_%EB%B6%84%EC%84%9D.html"><strong>9장 설문조사 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_%ED%83%90%EC%83%89%EC%A0%81_%EC%9A%94%EC%9D%B8%EB%B6%84%EC%84%9D.html"><strong>10장 탐색적 요인분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_%EB%B3%B4%EC%8A%A4%ED%84%B4_%EC%A3%BC%ED%83%9D_%EA%B0%80%EA%B2%A9_%EB%B6%84%EC%84%9D.html"><strong>11장 보스턴 주택 가격 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_%EC%A2%85%EB%B6%80%EC%84%B8%EC%99%80_%EC%9B%94%EC%84%B8%EC%9D%98_%EA%B4%80%EA%B3%84.html"><strong>12장 종부세와 월세의 관계</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_%EB%8C%80%ED%98%95%EB%A7%88%ED%8A%B8_%EC%87%A0%EB%9D%BD_%EC%9B%90%EC%9D%B8_%EC%8B%A4%EC%A6%9D%EB%B6%84%EC%84%9D.html"><strong>13장 대형마트 쇠락 원인 실증분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_%EC%8B%A0%EC%83%9D%EC%95%84_%ED%8A%B9%EB%A1%80%EB%8C%80%EC%B6%9C%EA%B3%BC_%EC%B6%9C%EC%82%B0%EC%9C%A8.html"><strong>14장 신생아 특례대출과 출산율</strong></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>15장 Ridge 및 Lasso 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1_%ED%9A%8C%EA%B7%80.html"><strong>16장 로지스틱 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95_%ED%8A%B8%EB%A6%AC_%EB%AA%A8%ED%98%95.html"><strong>17장 의사결정 트리 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_%ED%8A%B8%EB%A6%AC_%EA%B8%B0%EB%B0%98_%EB%AA%A8%ED%98%95.html"><strong>18장 트리 기반 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="19_%EB%94%A5%EB%9F%AC%EB%8B%9D_%EA%B3%B5%EB%B6%80%ED%95%98%EA%B8%B0.html"><strong>19장 딥러닝 공부하기</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_%ED%8C%A8%EB%84%90_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>20장 패널 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="21_%EA%B3%A8%EB%B0%80%EB%8F%84_%EA%B2%80%EC%82%AC_%EA%B2%B0%EA%B3%BC_%ED%95%B4%EC%84%9D.html"><strong>21장 골밀도 검사 결과 해석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_%EC%9A%B4%EB%8F%99%ED%95%99_Kinematics.html"><strong>22장 운동학 (Kinematics)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_%EC%B6%95%EA%B5%AC_%EA%B2%BD%EA%B8%B0_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>23장 축구 경기 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_%ED%8F%AD%EA%B2%A9_%ED%8C%8C%EA%B4%B4%EB%A0%A5_%EB%B6%84%EC%84%9D.html"><strong>24장 폭격 파괴력 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_%EC%84%B8%EA%B3%84_%ED%99%94%EC%9E%A5%ED%92%88_%EA%B5%90%EC%97%AD_%ED%8A%B8%EB%A0%8C%EB%93%9C.html"><strong>25장 세계 화장품 교역 트렌드</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_Texas_Special_Education.html"><strong>26장 텍사스주 특수교육 현황</strong></a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4/issues/new?title=Issue%20on%20page%20%2Fnotebooks/15_Ridge_및_Lasso_회귀.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/15_Ridge_및_Lasso_회귀.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>15장 Ridge 및 Lasso 회귀</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><span style="color: blue;"><strong>1. 데이터 업로드</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gemini"><strong>Gemini 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1. 데이터셋 개요</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ridge"><span style="color: blue;"><strong>2. Ridge 회귀</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1. Ridge 회귀의 이해</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2. 추정 절차</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">3. Ridge 회귀 추정 결과</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">4. 결과 설명</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"><span style="color: blue;"><strong>3. 과적합 방지 위해 계수 크기를 제한?</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><strong>Gemini 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">1. 계수가 크다는 것의 의미: 높은 민감도</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">2. 계수 제한의 기하학적 직관: 곡선을 직선으로</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bias-variance-tradeoff">3. 정규화와 편향-분산 트레이드오프 (Bias-Variance Tradeoff)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">4. 수학적 표현</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id13"><span style="color: blue;"><strong>4. 교차검증에 의한 하이퍼파라미터 튜닝</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14"><strong>Gemini 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fold-cross-validation">하이퍼파라미터 튜닝: 5겹 교차 검증(5-fold Cross-Validation) 절차</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lambda">1단계: 후보 <span class="math notranslate nohighlight">\(\lambda\)</span> 값의 범위 설정</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">2단계: 데이터셋 분할 (5개의 폴드 생성)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">3단계: 반복 학습 및 검증 (반복문 수행)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">4단계: 평균 성능 계산</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">5단계: 최적의 <span class="math notranslate nohighlight">\(\lambda\)</span> 결정 및 최종 모델 구축</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lasso"><span style="color: blue;"><strong>5. LASSO</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id19"><strong>Gemini 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">1. Lasso(라쏘) 회귀의 이해</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">2. 추정 절차</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">3. Lasso 회귀 분석 결과</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">4. 결과 해석 및 Ridge와의 차이점</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24"><strong>참고: 파이썬 코드</strong></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="ridge-lasso">
+<h1><strong>15장 Ridge 및 Lasso 회귀</strong><a class="headerlink" href="#ridge-lasso" title="Link to this heading">#</a></h1>
+<section id="id1">
+<h2><span style="color: blue;"><strong>1. 데이터 업로드</strong></span><a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p><img alt="BostonHousing" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/15-1.png" /></p>
+</section>
+<section id="gemini">
+<h2><strong>Gemini 설명</strong><a class="headerlink" href="#gemini" title="Link to this heading">#</a></h2>
+<section id="id2">
+<h3>1. 데이터셋 개요<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>업로드된 <code class="docutils literal notranslate"><span class="pre">BostonHousing.csv</span></code> 파일은 보스턴 인근의 주택 가격 및 관련 사회경제적 지표를 담고 있는 데이터셋이다. 이 데이터는 통계 분석 및 머신러닝 모델링에서 널리 사용되는 데이터셋으로, 총 506개의 행(관측치)과 14개의 열(변수)로 구성되어 있다.</p>
+<p>각 변수에 대한 설명은 다음과 같다.</p>
+<ol class="arabic simple">
+<li><p><strong>crim</strong>: 자치시(town)별 1인당 범죄율</p></li>
+<li><p><strong>zn</strong>: 25,000 평방피트를 초과하는 거주 지역의 비율</p></li>
+<li><p><strong>indus</strong>: 자치시별 비소매 상업 지역이 차지하는 면적 비율</p></li>
+<li><p><strong>chas</strong>: 찰스강(Charles River)에 대한 더미 변수 (강의 경계에 위치하면 1, 아니면 0)</p></li>
+<li><p><strong>nox</strong>: 일산화질소 농도 (1,000만 분의 1 단위)</p></li>
+<li><p><strong>rm</strong>: 주택당 평균 방의 개수</p></li>
+<li><p><strong>age</strong>: 1940년 이전에 건축된 소유 주택의 비율</p></li>
+<li><p><strong>dis</strong>: 보스턴의 5개 고용 센터까지의 가중 거리</p></li>
+<li><p><strong>rad</strong>: 방사형 고속도로까지의 접근성 지수</p></li>
+<li><p><strong>tax</strong>:  당 재산세율</p></li>
+<li><p><strong>ptratio</strong>: 자치시별 학생/교사 비율</p></li>
+<li><p><strong>b</strong>:  (여기서 는 자치시별 흑인 비율을 의미함)</p></li>
+<li><p><strong>lstat</strong>: 하위 계층 인구의 비율 ()</p></li>
+<li><p><strong>medv</strong>: 본인 소유 주택 가격의 중앙값 (단위: )</p></li>
+</ol>
+<p>이 데이터셋은 주로 주택 가격인 <code class="docutils literal notranslate"><span class="pre">medv</span></code>를 종속 변수(target)로 설정하고, 나머지 13개의 변수를 독립 변수(feature)로 사용하여 가격을 예측하거나 변수 간의 상관관계를 분석하는 데 활용된다.</p>
+</section>
+</section>
+<section id="ridge">
+<h2><span style="color: blue;"><strong>2. Ridge 회귀</strong></span><a class="headerlink" href="#ridge" title="Link to this heading">#</a></h2>
+</section>
+<section id="id3">
+<h2><strong>Gemini 분석</strong><a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<section id="id4">
+<h3>1. Ridge 회귀의 이해<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>Ridge 회귀는 선형 회귀 모형의 과적합(overfitting)을 방지하기 위해 계수의 크기를 제한하는 정규화(regularization) 기법이다. 일반적인 최소제곱법(OLS)은 잔차 제곱합을 최소화하는 과정에서 계수 값이 지나치게 커질 수 있는데, Ridge 회귀는 목적 함수에 계수의 제곱합(<span class="math notranslate nohighlight">\(\ell_2\)</span> 페널티)을 추가하여 이를 제어한다.</p>
+<p>Ridge 회귀의 목적 함수는 다음과 같다.</p>
+<div class="math notranslate nohighlight">
+\[\min_{\beta} \left\{ \sum_{i=1}^{n} (y_i - \beta_0 - \sum_{j=1}^{p} \beta_j x_{ij})^2 + \lambda \sum_{j=1}^{p} \beta_j^2 \right\}\]</div>
+<p>이 식의 첫 번째 항은 모델의 예측값과 실제값 사이의 오차를 나타내는 잔차 제곱합(residual sum of squares, RSS)이다. 두 번째 항은 계수의 제곱합에 하이퍼파라미터인 <span class="math notranslate nohighlight">\(\lambda\)</span>(또는 alpha)를 곱한 페널티 항이다.</p>
+<p><span class="math notranslate nohighlight">\(\lambda\)</span>는 정규화 강도를 조절하는 역할을 하며, 이 값이 클수록 계수 추정치를 0에 가깝게 수축시켜 모델을 더 단순하게 만든다. 결과적으로 Ridge 회귀는 오차를 줄이려는 노력과 계수의 크기를 작게 유지하려는 노력 사이의 균형을 찾아 모델의 일반화 성능을 높인다.</p>
+<p>이 과정에서 모델의 분산을 줄이는 대신 약간의 <strong>정규화 편향(regularization bias)</strong> 이 발생할 수 있으나, 전체적인 예측 정확도(MSE)를 개선하는 효과가 있다. 특히 변수 간 상관관계가 높은 다중공선성 문제가 있을 때 유용하다.</p>
+</section>
+<section id="id5">
+<h3>2. 추정 절차<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>분석은 다음의 4단계로 진행한다.</p>
+<ol class="arabic simple">
+<li><p><strong>데이터 표준화</strong>: 변수들의 단위가 다르면 페널티가 불공정하게 적용되므로, 모든 독립 변수의 평균을 0, 표준편차를 1로 변환한다.</p></li>
+<li><p><strong>하이퍼파라미터 튜닝</strong>: 모델의 복잡도를 결정하는 <span class="math notranslate nohighlight">\(\lambda\)</span> (또는 alpha) 값을 찾기 위해 교차 검증(cross-validation)을 수행한다. 본 분석에서는 5-겹 교차 검증을 통해 가장 낮은 오차를 보이는 최적의 <span class="math notranslate nohighlight">\(\lambda \approx 2.477\)</span>을 선택하였다.</p></li>
+<li><p><strong>모델 학습</strong>: 선택된 <span class="math notranslate nohighlight">\(\lambda\)</span>를 사용하여 전체 데이터에 대해 회귀 계수를 추정한다.</p></li>
+<li><p><strong>통계량 산출</strong>: 추정된 계수의 신뢰성을 평가하기 위해 표준오차(standard error), t-값, p-값을 계산한다.</p></li>
+</ol>
+</section>
+<section id="id6">
+<h3>3. Ridge 회귀 추정 결과<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>다음은 보스턴 주택 가격 데이터를 Ridge 회귀로 분석한 결과이다. (결정계수 <span class="math notranslate nohighlight">\(R^2 \approx 0.668\)</span>)</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Feature</p></th>
+<th class="head text-right"><p>Coefficient</p></th>
+<th class="head text-right"><p>Std.Error</p></th>
+<th class="head text-right"><p>t-value</p></th>
+<th class="head text-right"><p>p-value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>crim</strong> (범죄율)</p></td>
+<td class="text-right"><p>-0.6589</p></td>
+<td class="text-right"><p>0.2089</p></td>
+<td class="text-right"><p>-3.1534</p></td>
+<td class="text-right"><p>0.0017</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>zn</strong> (거주지 비율)</p></td>
+<td class="text-right"><p>0.5906</p></td>
+<td class="text-right"><p>0.2121</p></td>
+<td class="text-right"><p>2.7840</p></td>
+<td class="text-right"><p>0.0056</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>indus</strong> (상업지역 비율)</p></td>
+<td class="text-right"><p>-0.3943</p></td>
+<td class="text-right"><p>0.2291</p></td>
+<td class="text-right"><p>-1.7208</p></td>
+<td class="text-right"><p>0.0859</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>chas</strong> (찰스강 인접)</p></td>
+<td class="text-right"><p>0.7411</p></td>
+<td class="text-right"><p>0.1858</p></td>
+<td class="text-right"><p>3.9890</p></td>
+<td class="text-right"><p>0.0001</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>nox</strong> (일산화질소)</p></td>
+<td class="text-right"><p>-0.9567</p></td>
+<td class="text-right"><p>0.2299</p></td>
+<td class="text-right"><p>-4.1622</p></td>
+<td class="text-right"><p>0.0000</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>rm</strong> (방의 개수)</p></td>
+<td class="text-right"><p>2.7882</p></td>
+<td class="text-right"><p>0.2019</p></td>
+<td class="text-right"><p>13.8081</p></td>
+<td class="text-right"><p>0.0000</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>age</strong> (노후 주택)</p></td>
+<td class="text-right"><p>-0.1685</p></td>
+<td class="text-right"><p>0.2245</p></td>
+<td class="text-right"><p>-0.7504</p></td>
+<td class="text-right"><p>0.4534</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>dis</strong> (고용센터 거리)</p></td>
+<td class="text-right"><p>-1.7412</p></td>
+<td class="text-right"><p>0.2270</p></td>
+<td class="text-right"><p>-7.6692</p></td>
+<td class="text-right"><p>0.0000</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>rad</strong> (고속도로 접근성)</p></td>
+<td class="text-right"><p>0.7420</p></td>
+<td class="text-right"><p>0.2086</p></td>
+<td class="text-right"><p>3.5565</p></td>
+<td class="text-right"><p>0.0004</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>tax</strong> (재산세율)</p></td>
+<td class="text-right"><p>-0.6262</p></td>
+<td class="text-right"><p>0.2064</p></td>
+<td class="text-right"><p>-3.0339</p></td>
+<td class="text-right"><p>0.0025</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>ptratio</strong> (교사 비율)</p></td>
+<td class="text-right"><p>-1.6775</p></td>
+<td class="text-right"><p>0.2020</p></td>
+<td class="text-right"><p>-8.3043</p></td>
+<td class="text-right"><p>0.0000</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>b</strong> (흑인 비율 지수)</p></td>
+<td class="text-right"><p>0.7840</p></td>
+<td class="text-right"><p>0.1983</p></td>
+<td class="text-right"><p>3.9527</p></td>
+<td class="text-right"><p>0.0001</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>lstat</strong> (하위 계층 비율)</p></td>
+<td class="text-right"><p>-2.9976</p></td>
+<td class="text-right"><p>0.2229</p></td>
+<td class="text-right"><p>-13.4476</p></td>
+<td class="text-right"><p>0.0000</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id7">
+<h3>4. 결과 설명<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>회귀 계수(Coefficient)</strong>: 해당 변수가 주택 가격에 미치는 영향의 방향과 크기를 나타낸다. 예를 들어 <code class="docutils literal notranslate"><span class="pre">rm</span></code>(방의 개수)의 계수는 2.7882로, 방이 많을수록 주택 가격이 상승함을 의미한다. 반면 <code class="docutils literal notranslate"><span class="pre">lstat</span></code>은 -2.9976으로 주택 가격에 가장 큰 음(-)의 영향을 미친다.</p></li>
+<li><p><strong>표준오차(Std.Error)</strong>: 계수 추정치의 정밀도를 의미한다. 값이 작을수록 추정치가 안정적이다.</p></li>
+<li><p><strong>t-값(t-value)</strong>: 계수를 표준오차로 나눈 값으로, 절댓값이 클수록 해당 변수의 영향력이 통계적으로 뚜렷함을 의미한다.</p></li>
+<li><p><strong>p-값(p-value)</strong>: 해당 변수가 주택 가격에 미치는 영향이 우연일 확률이다. 일반적으로 <strong>0.05 미만</strong>이면 통계적으로 유의미하다고 판단한다. 본 모델에서는 <code class="docutils literal notranslate"><span class="pre">age</span></code>와 <code class="docutils literal notranslate"><span class="pre">indus</span></code>를 제외한 대부분의 변수가 주택 가격을 결정하는 유의미한 요인으로 분석되었다.</p></li>
+</ul>
+</section>
+</section>
+<section id="id8">
+<h2><span style="color: blue;"><strong>3. 과적합 방지 위해 계수 크기를 제한?</strong></span><a class="headerlink" href="#id8" title="Link to this heading">#</a></h2>
+</section>
+<section id="id9">
+<h2><strong>Gemini 설명</strong><a class="headerlink" href="#id9" title="Link to this heading">#</a></h2>
+<p>과적합(overfitting)을 방지하기 위해 계수의 크기를 제한하는 것은 모델이 학습 데이터의 <strong>‘노이즈(noise)’</strong> 에 과도하게 반응하지 않도록 <strong>‘모델의 유연성(flexibility)’</strong> 을 억제하는 것을 의미한다.</p>
+<section id="id10">
+<h3>1. 계수가 크다는 것의 의미: 높은 민감도<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p>회귀 모델에서 계수 <span class="math notranslate nohighlight">\(\beta\)</span>는 독립 변수 <span class="math notranslate nohighlight">\(x\)</span>가 1단위 변할 때 종속 변수 <span class="math notranslate nohighlight">\(y\)</span>가 변하는 정도를 나타낸다.</p>
+<ul class="simple">
+<li><p><strong>계수가 매우 크다면?</strong>: <span class="math notranslate nohighlight">\(x\)</span>가 아주 조금만 변해도 <span class="math notranslate nohighlight">\(y\)</span>가 급격하게 변한다. 만약 학습 데이터에 포함된 특정 관측치가 측정 오류나 우연에 의한 노이즈를 갖고 있다면, 모델은 그 노이즈를 맞추기 위해 계수를 비정상적으로 키우게 된다.</p></li>
+<li><p><strong>결과</strong>: 모델이 데이터의 일반적인 패턴이 아니라 개별 데이터 포인트의 ‘변덕’을 따라가게 되어, 새로운 데이터(test data)가 들어왔을 때 예측력이 급격히 떨어진다.</p></li>
+</ul>
+</section>
+<section id="id11">
+<h3>2. 계수 제한의 기하학적 직관: 곡선을 직선으로<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>데이터 포인트들을 통과하는 함수를 그릴 때,</p>
+<ul class="simple">
+<li><p><strong>제한이 없을 때</strong>: 모델은 모든 점을 완벽하게 통과하기 위해 구불구불한 복잡한 곡선을 그린다. 이 구불구불한 정도가 바로 계수의 크기와 연결된다.</p></li>
+<li><p><strong>계수를 제한할 때</strong>: Ridge 회귀와 같이 계수의 제곱합(<span class="math notranslate nohighlight">\(\ell_2\)</span> norm)에 페널티를 주면, 모델은 계수를 최대한 작게 유지하려 노력한다. 이는 구불구불한 곡선을 최대한 완만하게, 혹은 직선에 가깝게 펴는 효과를 준다.</p></li>
+<li><p><strong>의미</strong>: “데이터의 세세한 굴곡(노이즈)은 무시하고, 전반적인 흐름(신호)만 따라가겠다”는 선언과 같다.</p></li>
+</ul>
+</section>
+<section id="bias-variance-tradeoff">
+<h3>3. 정규화와 편향-분산 트레이드오프 (Bias-Variance Tradeoff)<a class="headerlink" href="#bias-variance-tradeoff" title="Link to this heading">#</a></h3>
+<p>계수를 제한하는 행위는 통계학적으로 <strong>분산(variance)을 줄이고 편향(bias)을 약간 늘리는</strong> 전략이다.</p>
+<ol class="arabic simple">
+<li><p><strong>분산 감소</strong>: 모델이 데이터의 작은 변화에 덜 민감해지므로, 어떤 학습 데이터를 넣더라도 비슷한 추정치를 얻을 수 있다. 즉, 모델이 안정적이 된다.</p></li>
+<li><p><strong>편향 증가</strong>: 계수를 강제로 줄였기 때문에, 모델이 학습 데이터의 정답을 완벽하게 맞추지 못하게 된다. 이를 <strong>정규화 편향(regularization bias)</strong> 이라고 한다.</p></li>
+</ol>
+<p>결국, 계수를 제한하는 이유는 <strong>“약간의 정확도 손실(편향 증가)을 감수하더라도, 실전에서의 예측 안정성(분산 감소)을 획기적으로 높이기 위함”</strong> 이다.</p>
+</section>
+<section id="id12">
+<h3>4. 수학적 표현<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>Ridge 회귀의 목적 함수를 보면 계수 제한의 의미가 더 명확해진다.</p>
+<div class="math notranslate nohighlight">
+\[Cost = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 + \lambda \sum_{j=1}^{p} \beta_j^2\]</div>
+<p>모델은 이 두 항의 합을 최소화해야 한다. <span class="math notranslate nohighlight">\(\lambda\)</span>가 커질수록 모델은 오차를 조금 더 허용하더라도 계수(<span class="math notranslate nohighlight">\(\beta\)</span>)를 작게 유지하는 데 집중하게 된다.</p>
+<hr class="docutils" />
+<p><strong>요약하자면, 계수 제한은 모델이 데이터의 사소한 특징에 일희일비하지 않고 묵직하게 일반적인 규칙을 배우도록 만드는 장치이다.</strong></p>
+<p>혹시 위에서 언급한 <code class="docutils literal notranslate"><span class="pre">lstat</span></code>이나 <code class="docutils literal notranslate"><span class="pre">rm</span></code> 변수처럼 실제 데이터 분석 결과에서 계수 제한이 어떻게 모델 성능을 높였는지, Lasso(라쏘)와 같은 다른 방식과의 차이점이 궁금한가?</p>
+</section>
+</section>
+<section id="id13">
+<h2><span style="color: blue;"><strong>4. 교차검증에 의한 하이퍼파라미터 튜닝</strong></span><a class="headerlink" href="#id13" title="Link to this heading">#</a></h2>
+</section>
+<section id="id14">
+<h2><strong>Gemini 설명</strong><a class="headerlink" href="#id14" title="Link to this heading">#</a></h2>
+<section id="fold-cross-validation">
+<h3>하이퍼파라미터 튜닝: 5겹 교차 검증(5-fold Cross-Validation) 절차<a class="headerlink" href="#fold-cross-validation" title="Link to this heading">#</a></h3>
+<p>Ridge 회귀에서 가장 중요한 과제 중 하나는 정규화의 강도를 조절하는 하이퍼파라미터인 <span class="math notranslate nohighlight">\(\lambda\)</span>(또는 alpha) 값을 결정하는 것이다. <span class="math notranslate nohighlight">\(\lambda\)</span>가 너무 작으면 과적합(overfitting)이 발생하고, 너무 크면 모델이 단순해져 과소적합(underfitting)이 발생한다. 이를 해결하기 위해 사용하는 5겹 교차 검증의 단계적 절차는 다음과 같다.</p>
+</section>
+<hr class="docutils" />
+<section id="lambda">
+<h3>1단계: 후보 <span class="math notranslate nohighlight">\(\lambda\)</span> 값의 범위 설정<a class="headerlink" href="#lambda" title="Link to this heading">#</a></h3>
+<p>우선 탐색할 <span class="math notranslate nohighlight">\(\lambda\)</span>의 후보군을 설정한다. 보통 <code class="docutils literal notranslate"><span class="pre">0.001</span></code>, <code class="docutils literal notranslate"><span class="pre">0.01</span></code>, <code class="docutils literal notranslate"><span class="pre">0.1</span></code>, <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">10</span></code>, <code class="docutils literal notranslate"><span class="pre">100</span></code>과 같이 로그 스케일(log scale)로 넓은 범위를 지정하여 어떤 크기 정도에서 모델의 성능이 좋은지 확인한다.</p>
+</section>
+<section id="id15">
+<h3>2단계: 데이터셋 분할 (5개의 폴드 생성)<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<p>전체 학습 데이터를 비슷한 크기를 가진 5개의 그룹(Fold)으로 나눈다. 이를 <span class="math notranslate nohighlight">\(F_1, F_2, F_3, F_4, F_5\)</span>라고 부른다.</p>
+</section>
+<section id="id16">
+<h3>3단계: 반복 학습 및 검증 (반복문 수행)<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<p>설정한 각각의 <span class="math notranslate nohighlight">\(\lambda\)</span> 후보에 대해 다음 과정을 5번 반복한다.</p>
+<ul class="simple">
+<li><p><strong>1회차</strong>: <span class="math notranslate nohighlight">\(F_2, F_3, F_4, F_5\)</span>로 모델을 학습시키고, 남겨둔 <span class="math notranslate nohighlight">\(F_1\)</span>으로 예측 성능(예: MSE)을 평가한다.</p></li>
+<li><p><strong>2회차</strong>: <span class="math notranslate nohighlight">\(F_1, F_3, F_4, F_5\)</span>로 모델을 학습시키고, 남겨둔 <span class="math notranslate nohighlight">\(F_2\)</span>로 성능을 평가한다.</p></li>
+<li><p><strong>…</strong></p></li>
+<li><p><strong>5회차</strong>: <span class="math notranslate nohighlight">\(F_1, F_2, F_3, F_4\)</span>로 모델을 학습시키고, 남겨둔 <span class="math notranslate nohighlight">\(F_5\)</span>로 성능을 평가한다.</p></li>
+</ul>
+<p>이 과정을 거치면 하나의 <span class="math notranslate nohighlight">\(\lambda\)</span> 값에 대해 총 5개의 성능 지표 결과가 도출된다.</p>
+</section>
+<section id="id17">
+<h3>4단계: 평균 성능 계산<a class="headerlink" href="#id17" title="Link to this heading">#</a></h3>
+<p>각 <span class="math notranslate nohighlight">\(\lambda\)</span> 후보별로 도출된 5개의 성능 지표를 산술 평균한다.</p>
+<div class="math notranslate nohighlight">
+\[\text{Average Error}(\lambda) = \frac{1}{5} \sum_{i=1}^{5} \text{Error}_i\]</div>
+<p>이 평균값은 특정 <span class="math notranslate nohighlight">\(\lambda\)</span>를 사용했을 때 모델이 새로운 데이터에 대해 보여줄 “일반적인 성능”을 나타낸다. 데이터를 나누어 검증함으로써 특정 데이터 구간에만 모델이 최적화되는 편향을 방지할 수 있다.</p>
+</section>
+<section id="id18">
+<h3>5단계: 최적의 <span class="math notranslate nohighlight">\(\lambda\)</span> 결정 및 최종 모델 구축<a class="headerlink" href="#id18" title="Link to this heading">#</a></h3>
+<p>모든 후보 <span class="math notranslate nohighlight">\(\lambda\)</span> 중에서 평균 에러가 가장 적은 값을 <strong>최적의 하이퍼파라미터</strong>로 선택한다. 마지막으로 이 최적의 <span class="math notranslate nohighlight">\(\lambda\)</span>를 사용하여 전체 학습 데이터(5개 폴드 모두 포함)를 다시 학습시켜 최종 회귀 계수를 추정한다.</p>
+<hr class="docutils" />
+<p><strong>요약하자면, 5겹 교차 검증은 데이터를 5번 돌려막으며 학습과 검증을 반복함으로써, 어떤 데이터가 들어와도 안정적인 성능을 내는 최적의 ‘규제 강도(<span class="math notranslate nohighlight">\(\lambda\)</span>)’를 찾아내는 과정이다.</strong></p>
+</section>
+</section>
+<section id="lasso">
+<h2><span style="color: blue;"><strong>5. LASSO</strong></span><a class="headerlink" href="#lasso" title="Link to this heading">#</a></h2>
+</section>
+<section id="id19">
+<h2><strong>Gemini 설명</strong><a class="headerlink" href="#id19" title="Link to this heading">#</a></h2>
+<section id="id20">
+<h3>1. Lasso(라쏘) 회귀의 이해<a class="headerlink" href="#id20" title="Link to this heading">#</a></h3>
+<p>Lasso(Least Absolute Shrinkage and Selection Operator) 회귀는 Ridge 회귀와 마찬가지로 모델의 과적합을 방지하기 위해 정규화(regularization)를 사용하는 선형 모델이다. 하지만 Ridge 회귀가 계수의 제곱합(<span class="math notranslate nohighlight">\(\ell_2\)</span> 페널티)을 사용하는 것과 달리, Lasso는 계수의 절댓값 합인 <strong><span class="math notranslate nohighlight">\(\ell_1\)</span> 페널티</strong>를 사용한다.</p>
+<p>Lasso 회귀의 목적 함수는 다음과 같다.</p>
+<div class="math notranslate nohighlight">
+\[\min_{\beta} \left\{ \sum_{i=1}^{n} (y_i - \beta_0 - \sum_{j=1}^{p} \beta_j x_{ij})^2 + \lambda \sum_{j=1}^{p} |\beta_j| \right\}\]</div>
+<p>Lasso 회귀의 가장 큰 특징은 <strong>변수 선택(feature selection)</strong> 기능이다. <span class="math notranslate nohighlight">\(\lambda\)</span> 값이 충분히 크면 영향력이 적은 변수의 계수를 정확히 0으로 수축시켜 모델에서 제외한다. 이를 통해 모델을 더 단순하고 해석하기 쉽게 만들며, 중요하지 않은 변수로 인한 <strong>정규화 편향</strong>을 감수하더라도 모델의 분산을 크게 낮추는 효과를 얻는다.</p>
+</section>
+<section id="id21">
+<h3>2. 추정 절차<a class="headerlink" href="#id21" title="Link to this heading">#</a></h3>
+<p>Lasso 모델의 추정은 다음의 단계를 거쳐 이루어진다.</p>
+<ol class="arabic simple">
+<li><p><strong>변수 표준화</strong>: <span class="math notranslate nohighlight">\(\ell_1\)</span> 페널티 역시 계수의 절대적인 크기에 의존하므로, 모든 독립 변수를 평균 0, 표준편차 1로 표준화하여 공평한 페널티가 부여되도록 한다.</p></li>
+<li><p><strong>하이퍼파라미터(<span class="math notranslate nohighlight">\(\lambda\)</span>) 튜닝</strong>: 최적의 규제 강도를 찾기 위해 5겹 교차 검증(5-fold cross-validation)을 수행한다. 다양한 <span class="math notranslate nohighlight">\(\lambda\)</span> 후보군에 대해 평균적인 예측 오차를 계산하고, 오차가 가장 작은 최적의 <span class="math notranslate nohighlight">\(\lambda\)</span>를 선택한다.</p></li>
+<li><p><strong>변수 선택 및 계수 추정</strong>: 최적의 <span class="math notranslate nohighlight">\(\lambda\)</span> 하에서 모델을 학습시킨다. 이때 주택 가격 결정에 기여도가 낮은 변수들은 계수가 0이 되어 탈락하고, 중요한 변수들만 모델에 남게 된다.</p></li>
+<li><p><strong>통계적 유의성 평가</strong>: 모델에 살아남은(계수가 0이 아닌) 변수들을 대상으로 표준오차, t-값, p-값을 산출하여 각 요인의 통계적 유의성을 검정한다.</p></li>
+</ol>
+</section>
+<section id="id22">
+<h3>3. Lasso 회귀 분석 결과<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
+<p>보스턴 주택 가격 데이터를 Lasso 회귀로 분석한 결과는 다음과 같다. (최적 <span class="math notranslate nohighlight">\(\lambda \approx 0.152\)</span>)</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Feature</p></th>
+<th class="head text-right"><p>Coefficient</p></th>
+<th class="head text-right"><p>Std.Error</p></th>
+<th class="head text-right"><p>t-value</p></th>
+<th class="head text-right"><p>p-value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>crim</strong> (범죄율)</p></td>
+<td class="text-right"><p>-0.4788</p></td>
+<td class="text-right"><p>0.2887</p></td>
+<td class="text-right"><p>-1.6584</p></td>
+<td class="text-right"><p>0.0979</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>zn</strong> (거주지 비율)</p></td>
+<td class="text-right"><p>0.5156</p></td>
+<td class="text-right"><p>0.3246</p></td>
+<td class="text-right"><p>1.5883</p></td>
+<td class="text-right"><p>0.1129</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>indus</strong> (상업지역 비율)</p></td>
+<td class="text-right"><p>-0.0678</p></td>
+<td class="text-right"><p>0.4309</p></td>
+<td class="text-right"><p>-0.1573</p></td>
+<td class="text-right"><p>0.8750</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>chas</strong> (찰스강 인접)</p></td>
+<td class="text-right"><p>0.6445</p></td>
+<td class="text-right"><p>0.2232</p></td>
+<td class="text-right"><p>2.8871</p></td>
+<td class="text-right"><p>0.0041</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>nox</strong> (일산화질소)</p></td>
+<td class="text-right"><p>-1.3293</p></td>
+<td class="text-right"><p>0.4359</p></td>
+<td class="text-right"><p>-3.0494</p></td>
+<td class="text-right"><p>0.0024</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>rm</strong> (방의 개수)</p></td>
+<td class="text-right"><p>2.9041</p></td>
+<td class="text-right"><p>0.2934</p></td>
+<td class="text-right"><p>9.8969</p></td>
+<td class="text-right"><p>0.0000</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>age</strong> (노후 주택)</p></td>
+<td class="text-right"><p><strong>0.0000</strong></p></td>
+<td class="text-right"><p>-</p></td>
+<td class="text-right"><p>-</p></td>
+<td class="text-right"><p>-</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>dis</strong> (고용센터 거리)</p></td>
+<td class="text-right"><p>-2.0631</p></td>
+<td class="text-right"><p>0.4104</p></td>
+<td class="text-right"><p>-5.0275</p></td>
+<td class="text-right"><p>0.0000</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>rad</strong> (고속도로 접근성)</p></td>
+<td class="text-right"><p>0.4386</p></td>
+<td class="text-right"><p>0.5884</p></td>
+<td class="text-right"><p>0.7455</p></td>
+<td class="text-right"><p>0.4563</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>tax</strong> (재산세율)</p></td>
+<td class="text-right"><p>-0.2116</p></td>
+<td class="text-right"><p>0.6471</p></td>
+<td class="text-right"><p>-0.3271</p></td>
+<td class="text-right"><p>0.7437</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>ptratio</strong> (교사 비율)</p></td>
+<td class="text-right"><p>-1.8522</p></td>
+<td class="text-right"><p>0.2884</p></td>
+<td class="text-right"><p>-6.4224</p></td>
+<td class="text-right"><p>0.0000</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>b</strong> (흑인 비율 지수)</p></td>
+<td class="text-right"><p>0.7166</p></td>
+<td class="text-right"><p>0.2499</p></td>
+<td class="text-right"><p>2.8671</p></td>
+<td class="text-right"><p>0.0043</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>lstat</strong> (하위 계층 비율)</p></td>
+<td class="text-right"><p>-3.7203</p></td>
+<td class="text-right"><p>0.3477</p></td>
+<td class="text-right"><p>-10.6991</p></td>
+<td class="text-right"><p>0.0000</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id23">
+<h3>4. 결과 해석 및 Ridge와의 차이점<a class="headerlink" href="#id23" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>변수 선택</strong>: Lasso 회귀의 특징에 따라 <strong>노후 주택 비율(<code class="docutils literal notranslate"><span class="pre">age</span></code>)</strong> 변수의 계수가 정확히 0이 되었다. 이는 주택 가격을 예측할 때 다른 변수들이 포함되어 있다면 <code class="docutils literal notranslate"><span class="pre">age</span></code> 변수는 추가적인 설명력을 제공하지 못한다는 의미이다.</p></li>
+<li><p><strong>주요 결정 요인</strong>: <code class="docutils literal notranslate"><span class="pre">lstat</span></code>(하위 계층 비율), <code class="docutils literal notranslate"><span class="pre">rm</span></code>(방의 개수), <code class="docutils literal notranslate"><span class="pre">dis</span></code>(고용 센터 거리) 순으로 주택 가격에 큰 영향을 미치는 것으로 나타났다. 이는 앞선 Ridge 분석과 유사한 결과이나, Lasso는 상대적으로 중요도가 낮은 변수의 영향력을 더 강하게 억제하는 경향을 보인다.</p></li>
+<li><p><strong>통계적 유의성</strong>: <code class="docutils literal notranslate"><span class="pre">rm</span></code>, <code class="docutils literal notranslate"><span class="pre">lstat</span></code>, <code class="docutils literal notranslate"><span class="pre">dis</span></code>, <code class="docutils literal notranslate"><span class="pre">ptratio</span></code> 등은 p-값이 매우 작아 통계적으로 매우 유의미한 주택 가격 결정 요인임을 다시 한번 확인하였다.</p></li>
+</ul>
+</section>
+</section>
+<section id="id24">
+<h2><strong>참고: 파이썬 코드</strong><a class="headerlink" href="#id24" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://raw.githubusercontent.com/selva86/datasets/master/BostonHousing.csv&quot;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>crim</th>
+      <th>zn</th>
+      <th>indus</th>
+      <th>chas</th>
+      <th>nox</th>
+      <th>rm</th>
+      <th>age</th>
+      <th>dis</th>
+      <th>rad</th>
+      <th>tax</th>
+      <th>ptratio</th>
+      <th>b</th>
+      <th>lstat</th>
+      <th>medv</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.00632</td>
+      <td>18.0</td>
+      <td>2.31</td>
+      <td>0</td>
+      <td>0.538</td>
+      <td>6.575</td>
+      <td>65.2</td>
+      <td>4.0900</td>
+      <td>1</td>
+      <td>296</td>
+      <td>15.3</td>
+      <td>396.90</td>
+      <td>4.98</td>
+      <td>24.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.02731</td>
+      <td>0.0</td>
+      <td>7.07</td>
+      <td>0</td>
+      <td>0.469</td>
+      <td>6.421</td>
+      <td>78.9</td>
+      <td>4.9671</td>
+      <td>2</td>
+      <td>242</td>
+      <td>17.8</td>
+      <td>396.90</td>
+      <td>9.14</td>
+      <td>21.6</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.02729</td>
+      <td>0.0</td>
+      <td>7.07</td>
+      <td>0</td>
+      <td>0.469</td>
+      <td>7.185</td>
+      <td>61.1</td>
+      <td>4.9671</td>
+      <td>2</td>
+      <td>242</td>
+      <td>17.8</td>
+      <td>392.83</td>
+      <td>4.03</td>
+      <td>34.7</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.03237</td>
+      <td>0.0</td>
+      <td>2.18</td>
+      <td>0</td>
+      <td>0.458</td>
+      <td>6.998</td>
+      <td>45.8</td>
+      <td>6.0622</td>
+      <td>3</td>
+      <td>222</td>
+      <td>18.7</td>
+      <td>394.63</td>
+      <td>2.94</td>
+      <td>33.4</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.06905</td>
+      <td>0.0</td>
+      <td>2.18</td>
+      <td>0</td>
+      <td>0.458</td>
+      <td>7.147</td>
+      <td>54.2</td>
+      <td>6.0622</td>
+      <td>3</td>
+      <td>222</td>
+      <td>18.7</td>
+      <td>396.90</td>
+      <td>5.33</td>
+      <td>36.2</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>501</th>
+      <td>0.06263</td>
+      <td>0.0</td>
+      <td>11.93</td>
+      <td>0</td>
+      <td>0.573</td>
+      <td>6.593</td>
+      <td>69.1</td>
+      <td>2.4786</td>
+      <td>1</td>
+      <td>273</td>
+      <td>21.0</td>
+      <td>391.99</td>
+      <td>9.67</td>
+      <td>22.4</td>
+    </tr>
+    <tr>
+      <th>502</th>
+      <td>0.04527</td>
+      <td>0.0</td>
+      <td>11.93</td>
+      <td>0</td>
+      <td>0.573</td>
+      <td>6.120</td>
+      <td>76.7</td>
+      <td>2.2875</td>
+      <td>1</td>
+      <td>273</td>
+      <td>21.0</td>
+      <td>396.90</td>
+      <td>9.08</td>
+      <td>20.6</td>
+    </tr>
+    <tr>
+      <th>503</th>
+      <td>0.06076</td>
+      <td>0.0</td>
+      <td>11.93</td>
+      <td>0</td>
+      <td>0.573</td>
+      <td>6.976</td>
+      <td>91.0</td>
+      <td>2.1675</td>
+      <td>1</td>
+      <td>273</td>
+      <td>21.0</td>
+      <td>396.90</td>
+      <td>5.64</td>
+      <td>23.9</td>
+    </tr>
+    <tr>
+      <th>504</th>
+      <td>0.10959</td>
+      <td>0.0</td>
+      <td>11.93</td>
+      <td>0</td>
+      <td>0.573</td>
+      <td>6.794</td>
+      <td>89.3</td>
+      <td>2.3889</td>
+      <td>1</td>
+      <td>273</td>
+      <td>21.0</td>
+      <td>393.45</td>
+      <td>6.48</td>
+      <td>22.0</td>
+    </tr>
+    <tr>
+      <th>505</th>
+      <td>0.04741</td>
+      <td>0.0</td>
+      <td>11.93</td>
+      <td>0</td>
+      <td>0.573</td>
+      <td>6.030</td>
+      <td>80.8</td>
+      <td>2.5050</td>
+      <td>1</td>
+      <td>273</td>
+      <td>21.0</td>
+      <td>396.90</td>
+      <td>7.88</td>
+      <td>11.9</td>
+    </tr>
+  </tbody>
+</table>
+<p>506 rows × 14 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span><span class="p">,</span> <span class="n">GridSearchCV</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ridge</span><span class="p">,</span> <span class="n">Lasso</span><span class="p">,</span> <span class="n">LassoCV</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mean_squared_error</span><span class="p">,</span> <span class="n">r2_score</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+
+<span class="c1"># 1. 데이터 전처리</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;medv&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;medv&#39;</span><span class="p">]</span>
+
+<span class="c1"># 독립 변수 표준화 (Ridge/Lasso에서 필수)</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">X_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">X_scaled</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 2. Ridge 회귀 분석</span>
+<span class="c1"># 하이퍼파라미터(lambda) 튜닝: 5겹 교차 검증 수행</span>
+<span class="n">alphas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">ridge_grid</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">Ridge</span><span class="p">(),</span> <span class="n">param_grid</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="n">alphas</span><span class="p">},</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">ridge_grid</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_scaled</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">best_alpha_ridge</span> <span class="o">=</span> <span class="n">ridge_grid</span><span class="o">.</span><span class="n">best_params_</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">]</span>
+
+<span class="c1"># 최적 모델 학습</span>
+<span class="n">ridge_model</span> <span class="o">=</span> <span class="n">ridge_grid</span><span class="o">.</span><span class="n">best_estimator_</span>
+<span class="n">ridge_coefs</span> <span class="o">=</span> <span class="n">ridge_model</span><span class="o">.</span><span class="n">coef_</span>
+
+<span class="c1"># Ridge 통계량 계산 (SE, t-value, p-value)</span>
+<span class="n">XtX</span> <span class="o">=</span> <span class="n">X_scaled</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X_scaled</span>
+<span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">inv_matrix_ridge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">XtX</span> <span class="o">+</span> <span class="n">best_alpha_ridge</span> <span class="o">*</span> <span class="n">I</span><span class="p">)</span>
+<span class="n">y_pred_ridge</span> <span class="o">=</span> <span class="n">ridge_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_scaled</span><span class="p">)</span>
+<span class="n">rss_ridge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">y_pred_ridge</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># 유효 자유도 계산</span>
+<span class="n">H_lambda</span> <span class="o">=</span> <span class="n">X_scaled</span> <span class="o">@</span> <span class="n">inv_matrix_ridge</span> <span class="o">@</span> <span class="n">X_scaled</span><span class="o">.</span><span class="n">T</span>
+<span class="n">df_eff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">H_lambda</span><span class="p">)</span>
+<span class="n">sigma_sq_ridge</span> <span class="o">=</span> <span class="n">rss_ridge</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">df_eff</span><span class="p">)</span>
+<span class="n">cov_beta_ridge</span> <span class="o">=</span> <span class="n">sigma_sq_ridge</span> <span class="o">*</span> <span class="p">(</span><span class="n">inv_matrix_ridge</span> <span class="o">@</span> <span class="n">XtX</span> <span class="o">@</span> <span class="n">inv_matrix_ridge</span><span class="p">)</span>
+<span class="n">se_ridge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">cov_beta_ridge</span><span class="p">))</span>
+<span class="n">t_stats_ridge</span> <span class="o">=</span> <span class="n">ridge_coefs</span> <span class="o">/</span> <span class="n">se_ridge</span>
+<span class="n">p_values_ridge</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">n</span> <span class="o">-</span> <span class="n">df_eff</span><span class="p">))</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">t_stats_ridge</span><span class="p">]</span>
+
+<span class="c1"># Ridge 결과 출력용 DataFrame</span>
+<span class="n">ridge_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;Feature&#39;</span><span class="p">:</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
+    <span class="s1">&#39;Coefficient&#39;</span><span class="p">:</span> <span class="n">ridge_coefs</span><span class="p">,</span>
+    <span class="s1">&#39;Std.Error&#39;</span><span class="p">:</span> <span class="n">se_ridge</span><span class="p">,</span>
+    <span class="s1">&#39;t-value&#39;</span><span class="p">:</span> <span class="n">t_stats_ridge</span><span class="p">,</span>
+    <span class="s1">&#39;p-value&#39;</span><span class="p">:</span> <span class="n">p_values_ridge</span>
+<span class="p">})</span>
+
+<span class="c1"># 결과 확인</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Ridge Results ---</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ridge_results</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Ridge Results ---
+
+    Feature  Coefficient  Std.Error    t-value       p-value
+0      crim    -0.658888   0.208949  -3.153349  1.711692e-03
+1        zn     0.590585   0.212133   2.784032  5.573418e-03
+2     indus    -0.394252   0.229112  -1.720786  8.591208e-02
+3      chas     0.741062   0.185778   3.988963  7.634419e-05
+4       nox    -0.956698   0.229852  -4.162232  3.714386e-05
+5        rm     2.788182   0.201924  13.808051  0.000000e+00
+6       age    -0.168492   0.224532  -0.750414  4.533606e-01
+7       dis    -1.741171   0.227034  -7.669207  9.192647e-14
+8       rad     0.741972   0.208624   3.556507  4.117852e-04
+9       tax    -0.626234   0.206412  -3.033903  2.540466e-03
+10  ptratio    -1.677520   0.202006  -8.304289  8.881784e-16
+11        b     0.783994   0.198344   3.952701  8.847919e-05
+12    lstat    -2.997640   0.222913 -13.447589  0.000000e+00
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 3. Lasso 회귀 분석</span>
+
+<span class="c1"># 하이퍼파라미터(lambda) 튜닝: LassoCV 활용</span>
+<span class="n">lasso_cv</span> <span class="o">=</span> <span class="n">LassoCV</span><span class="p">(</span><span class="n">alphas</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">lasso_cv</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_scaled</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">best_alpha_lasso</span> <span class="o">=</span> <span class="n">lasso_cv</span><span class="o">.</span><span class="n">alpha_</span>
+
+<span class="c1"># 최적 모델 학습</span>
+<span class="n">lasso_model</span> <span class="o">=</span> <span class="n">Lasso</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="n">best_alpha_lasso</span><span class="p">)</span>
+<span class="n">lasso_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_scaled</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">lasso_coefs</span> <span class="o">=</span> <span class="n">lasso_model</span><span class="o">.</span><span class="n">coef_</span>
+
+<span class="c1"># Lasso 통계량 계산 (계수가 0이 아닌 변수들에 대해 Post-Lasso 근사)</span>
+<span class="n">non_zero_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lasso_coefs</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">X_selected</span> <span class="o">=</span> <span class="n">X_scaled</span><span class="p">[:,</span> <span class="n">non_zero_idx</span><span class="p">]</span>
+<span class="n">n</span><span class="p">,</span> <span class="n">p_sel</span> <span class="o">=</span> <span class="n">X_selected</span><span class="o">.</span><span class="n">shape</span>
+<span class="n">X_sel_inc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">X_selected</span><span class="p">])</span> <span class="c1"># 절편 포함</span>
+<span class="n">y_pred_lasso</span> <span class="o">=</span> <span class="n">lasso_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_scaled</span><span class="p">)</span>
+<span class="n">df_resid_lasso</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="n">p_sel</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="n">sigma_sq_lasso</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">y_pred_lasso</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">df_resid_lasso</span>
+<span class="n">inv_xtx_lasso</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">X_sel_inc</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X_sel_inc</span><span class="p">)</span>
+<span class="n">se_features_lasso</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">inv_xtx_lasso</span><span class="p">)</span> <span class="o">*</span> <span class="n">sigma_sq_lasso</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+
+<span class="c1"># Lasso 결과 정리</span>
+<span class="n">lasso_results_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">se_ptr</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+    <span class="n">coef</span> <span class="o">=</span> <span class="n">lasso_coefs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">coef</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">se</span> <span class="o">=</span> <span class="n">se_features_lasso</span><span class="p">[</span><span class="n">se_ptr</span><span class="p">]</span>
+        <span class="n">t_val</span> <span class="o">=</span> <span class="n">coef</span> <span class="o">/</span> <span class="n">se</span>
+        <span class="n">p_val</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t_val</span><span class="p">),</span> <span class="n">df_resid_lasso</span><span class="p">))</span>
+        <span class="n">se_ptr</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">se</span><span class="p">,</span> <span class="n">t_val</span><span class="p">,</span> <span class="n">p_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">lasso_results_list</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;Feature&#39;</span><span class="p">:</span> <span class="n">col</span><span class="p">,</span> <span class="s1">&#39;Coefficient&#39;</span><span class="p">:</span> <span class="n">coef</span><span class="p">,</span> <span class="s1">&#39;Std.Error&#39;</span><span class="p">:</span> <span class="n">se</span><span class="p">,</span> <span class="s1">&#39;t-value&#39;</span><span class="p">:</span> <span class="n">t_val</span><span class="p">,</span> <span class="s1">&#39;p-value&#39;</span><span class="p">:</span> <span class="n">p_val</span><span class="p">})</span>
+<span class="n">lasso_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">lasso_results_list</span><span class="p">)</span>
+
+<span class="c1"># 결과 확인</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Lasso Results ---</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lasso_results</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Lasso Results ---
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Feature  Coefficient  Std.Error    t-value       p-value
+0      crim    -0.478835   0.288733  -1.658402  9.787251e-02
+1        zn     0.515575   0.324615   1.588265  1.128675e-01
+2     indus    -0.067799   0.430903  -0.157341  8.750403e-01
+3      chas     0.644485   0.223227   2.887125  4.058533e-03
+4       nox    -1.329270   0.435908  -3.049431  2.416068e-03
+5        rm     2.904127   0.293439   9.896867  0.000000e+00
+6       age    -0.000000        NaN        NaN           NaN
+7       dis    -2.063143   0.410370  -5.027517  6.966291e-07
+8       rad     0.438610   0.588351   0.745491  4.563303e-01
+9       tax    -0.211638   0.647052  -0.327080  7.437458e-01
+10  ptratio    -1.852243   0.288404  -6.422399  3.161176e-10
+11        b     0.716619   0.249949   2.867057  4.320419e-03
+12    lstat    -3.720273   0.347719 -10.699068  0.000000e+00
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="14_%EC%8B%A0%EC%83%9D%EC%95%84_%ED%8A%B9%EB%A1%80%EB%8C%80%EC%B6%9C%EA%B3%BC_%EC%B6%9C%EC%82%B0%EC%9C%A8.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><strong>14장 신생아 특례대출과 출산율</strong></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="16_%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1_%ED%9A%8C%EA%B7%80.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><strong>16장 로지스틱 회귀</strong></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><span style="color: blue;"><strong>1. 데이터 업로드</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gemini"><strong>Gemini 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1. 데이터셋 개요</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ridge"><span style="color: blue;"><strong>2. Ridge 회귀</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">1. Ridge 회귀의 이해</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">2. 추정 절차</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">3. Ridge 회귀 추정 결과</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">4. 결과 설명</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"><span style="color: blue;"><strong>3. 과적합 방지 위해 계수 크기를 제한?</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><strong>Gemini 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">1. 계수가 크다는 것의 의미: 높은 민감도</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">2. 계수 제한의 기하학적 직관: 곡선을 직선으로</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bias-variance-tradeoff">3. 정규화와 편향-분산 트레이드오프 (Bias-Variance Tradeoff)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">4. 수학적 표현</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id13"><span style="color: blue;"><strong>4. 교차검증에 의한 하이퍼파라미터 튜닝</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14"><strong>Gemini 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fold-cross-validation">하이퍼파라미터 튜닝: 5겹 교차 검증(5-fold Cross-Validation) 절차</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lambda">1단계: 후보 <span class="math notranslate nohighlight">\(\lambda\)</span> 값의 범위 설정</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">2단계: 데이터셋 분할 (5개의 폴드 생성)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">3단계: 반복 학습 및 검증 (반복문 수행)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">4단계: 평균 성능 계산</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">5단계: 최적의 <span class="math notranslate nohighlight">\(\lambda\)</span> 결정 및 최종 모델 구축</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lasso"><span style="color: blue;"><strong>5. LASSO</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id19"><strong>Gemini 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">1. Lasso(라쏘) 회귀의 이해</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">2. 추정 절차</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">3. Lasso 회귀 분석 결과</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">4. 결과 해석 및 Ridge와의 차이점</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24"><strong>참고: 파이썬 코드</strong></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By 김원경 최필선
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

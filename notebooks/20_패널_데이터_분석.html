@@ -1,0 +1,1821 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>20장 패널 데이터 분석 &#8212; 데이터 분석 이제 AI에게 맡겨라</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/20_패널_데이터_분석';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="21장 골밀도 검사 결과 해석" href="21_%EA%B3%A8%EB%B0%80%EB%8F%84_%EA%B2%80%EC%82%AC_%EA%B2%B0%EA%B3%BC_%ED%95%B4%EC%84%9D.html" />
+    <link rel="prev" title="19장 딥러닝 공부하기" href="19_%EB%94%A5%EB%9F%AC%EB%8B%9D_%EA%B3%B5%EB%B6%80%ED%95%98%EA%B8%B0.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00_%EC%84%9C%EB%AC%B8.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="00_%EC%84%9C%EB%AC%B8.html">
+                    서문
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_%EC%8B%9C%ED%97%98%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>1장 시험성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_%EB%8C%80%ED%86%B5%EB%A0%B9_%EC%A7%80%EC%A7%80%EC%9C%A8_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>2장 대통령 지지율 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_KBO_%EC%A0%95%EA%B7%9C%EC%8B%9C%EC%A6%8C_%ED%8C%80%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>3장 KBO 정규시즌 팀성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_PPP_%EA%B7%B8%EB%9E%98%ED%94%84_%EB%B6%84%EC%84%9D.html"><strong>4장 PPP 그래프 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_%EC%84%B8%EA%B3%84%EC%9D%80%ED%96%89_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EC%B6%94%EC%B6%9C.html"><strong>5장 세계은행 데이터 추출</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_%EC%A3%BC%EA%B0%80_%EC%98%88%EC%B8%A1_%EC%8B%9C%EC%8A%A4%ED%85%9C_%EA%B5%AC%EC%B6%95.html"><strong>6장 주가 예측 시스템 구축</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_%EB%8C%93%EA%B8%80_%ED%86%B5%EA%B3%84_%EB%B6%84%EC%84%9D.html"><strong>7장 댓글 통계 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_%EC%84%9C%EC%9A%B8_%EC%95%84%ED%8C%8C%ED%8A%B8_%EB%A7%A4%EB%AC%BC_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>8장 서울 아파트 매물 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_%EC%84%A4%EB%AC%B8%EC%A1%B0%EC%82%AC_%EB%B6%84%EC%84%9D.html"><strong>9장 설문조사 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_%ED%83%90%EC%83%89%EC%A0%81_%EC%9A%94%EC%9D%B8%EB%B6%84%EC%84%9D.html"><strong>10장 탐색적 요인분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_%EB%B3%B4%EC%8A%A4%ED%84%B4_%EC%A3%BC%ED%83%9D_%EA%B0%80%EA%B2%A9_%EB%B6%84%EC%84%9D.html"><strong>11장 보스턴 주택 가격 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_%EC%A2%85%EB%B6%80%EC%84%B8%EC%99%80_%EC%9B%94%EC%84%B8%EC%9D%98_%EA%B4%80%EA%B3%84.html"><strong>12장 종부세와 월세의 관계</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_%EB%8C%80%ED%98%95%EB%A7%88%ED%8A%B8_%EC%87%A0%EB%9D%BD_%EC%9B%90%EC%9D%B8_%EC%8B%A4%EC%A6%9D%EB%B6%84%EC%84%9D.html"><strong>13장 대형마트 쇠락 원인 실증분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_%EC%8B%A0%EC%83%9D%EC%95%84_%ED%8A%B9%EB%A1%80%EB%8C%80%EC%B6%9C%EA%B3%BC_%EC%B6%9C%EC%82%B0%EC%9C%A8.html"><strong>14장 신생아 특례대출과 출산율</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_Ridge_%EB%B0%8F_Lasso_%ED%9A%8C%EA%B7%80.html"><strong>15장 Ridge 및 Lasso 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1_%ED%9A%8C%EA%B7%80.html"><strong>16장 로지스틱 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95_%ED%8A%B8%EB%A6%AC_%EB%AA%A8%ED%98%95.html"><strong>17장 의사결정 트리 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_%ED%8A%B8%EB%A6%AC_%EA%B8%B0%EB%B0%98_%EB%AA%A8%ED%98%95.html"><strong>18장 트리 기반 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="19_%EB%94%A5%EB%9F%AC%EB%8B%9D_%EA%B3%B5%EB%B6%80%ED%95%98%EA%B8%B0.html"><strong>19장 딥러닝 공부하기</strong></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>20장 패널 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="21_%EA%B3%A8%EB%B0%80%EB%8F%84_%EA%B2%80%EC%82%AC_%EA%B2%B0%EA%B3%BC_%ED%95%B4%EC%84%9D.html"><strong>21장 골밀도 검사 결과 해석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_%EC%9A%B4%EB%8F%99%ED%95%99_Kinematics.html"><strong>22장 운동학 (Kinematics)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_%EC%B6%95%EA%B5%AC_%EA%B2%BD%EA%B8%B0_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>23장 축구 경기 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_%ED%8F%AD%EA%B2%A9_%ED%8C%8C%EA%B4%B4%EB%A0%A5_%EB%B6%84%EC%84%9D.html"><strong>24장 폭격 파괴력 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_%EC%84%B8%EA%B3%84_%ED%99%94%EC%9E%A5%ED%92%88_%EA%B5%90%EC%97%AD_%ED%8A%B8%EB%A0%8C%EB%93%9C.html"><strong>25장 세계 화장품 교역 트렌드</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_Texas_Special_Education.html"><strong>26장 텍사스주 특수교육 현황</strong></a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4/issues/new?title=Issue%20on%20page%20%2Fnotebooks/20_패널_데이터_분석.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/20_패널_데이터_분석.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>20장 패널 데이터 분석</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span style="color: blue;"><strong>1. 데이터 입력</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chatgpt"><strong>ChatGPT 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1. 데이터 구조</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2. 주요 변수 설명</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">(1) 종속변수 (임금 관련)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">(2) 인적자본 변수</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">(3) 근속 및 노동시장 상태</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">(4) 인구통계 변수</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">3. 분석에서의 의미</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">(1) 임금 결정 모형</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">(2) 패널 모형 활용 가능</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">4. 데이터 활용 목적 (핵심)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id13"><span style="color: blue;"><strong>2. 변수 요약통계</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14"><strong>ChatGPT 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">데이터 구조 요약</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">변수 요약통계</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id17"><span style="color: blue;"><strong>3. 임금 결정 요인 분석</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18"><strong>ChatGPT 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">1. 모형 설정</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">2. 추정 결과</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pooled-ols-clustered-se-by-entity">(1) Pooled OLS (clustered SE by entity)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed-effects-entity-fe-clustered-se-by-entity">(2) Fixed Effects (entity FE, clustered SE by entity)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#random-effects-clustered-se-by-entity">(3) Random Effects (clustered SE by entity)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">3. 모형 비교용 요약</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hausman-fe-vs-re">4. Hausman 검정 (FE vs RE)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">5. 한 줄 정리</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id23"><span style="color: blue;"><strong>4. 패널 데이터 모형의 직관적 이해</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24"><strong>ChatGPT 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ols-pooled-ols">1. 통합 OLS (Pooled OLS)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed-effects-fe">2. 고정효과 모형 (Fixed Effects, FE)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#random-effects-re">3. 확률효과 모형 (Random Effects, RE)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fe-vs-re">4. FE vs RE의 직관적 차이</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hausman">5. Hausman 검정</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">6. 한 번에 정리 (직관)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id26"><strong>참고: 파이썬 코드</strong></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><strong>20장 패널 데이터 분석</strong><a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2><span style="color: blue;"><strong>1. 데이터 입력</strong></span><a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p><img alt="Panel1" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/20-1.png" /></p>
+<p>출처: <a class="reference external" href="http://qed.econ.queensu.ca/jae/1998-v13.2/vella-verbeek/">Journal of Applied Econometrics Data Archive (Vella and Verbeek, 1998)</a></p>
+</section>
+<section id="chatgpt">
+<h2><strong>ChatGPT 분석</strong><a class="headerlink" href="#chatgpt" title="Link to this heading">#</a></h2>
+<p>다음은 업로드된 <code class="docutils literal notranslate"><span class="pre">wage_panel.csv</span></code> 데이터의 구조와 변수에 대한 개요이다. 이 데이터는 개인을 여러 시점에 걸쳐 추적한 <strong>패널 데이터(panel data)</strong> 형태로, 임금 결정 요인을 분석할 때 자주 사용된다.</p>
+<hr class="docutils" />
+<section id="id3">
+<h3>1. 데이터 구조<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>이 데이터는 <strong>개인(person)</strong> 을 **여러 연도(year)**에 걸쳐 반복 관측한 <strong>균형 패널(balanced panel)</strong> 이다.</p>
+<ul class="simple">
+<li><p>관측 단위: 개인–연도 (person-year)</p></li>
+<li><p>패널 식별자:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">nr</span></code>: 개인 ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">year</span></code>: 관측 연도</p></li>
+</ul>
+</li>
+<li><p>특징:</p>
+<ul>
+<li><p>동일한 개인이 여러 시점에서 반복 등장</p></li>
+<li><p>개인 고유 특성(능력, 성향 등)과 시간 변화 요인을 동시에 분석 가능</p></li>
+</ul>
+</li>
+</ul>
+<p>패널 데이터 형태:
+$<span class="math notranslate nohighlight">\(
+i = 1, \dots, N \quad (개인), \quad
+t = 1, \dots, T \quad (연도)
+\)</span>$</p>
+</section>
+<hr class="docutils" />
+<section id="id4">
+<h3>2. 주요 변수 설명<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<section id="id5">
+<h4>(1) 종속변수 (임금 관련)<a class="headerlink" href="#id5" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lwage</span></code>: 로그 임금</p>
+<ul>
+<li><p>시간당 임금의 로그값</p></li>
+<li><p>해석: 계수는 대략 <strong>퍼센트 변화</strong> 의미</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id6">
+<h4>(2) 인적자본 변수<a class="headerlink" href="#id6" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">educ</span></code>: 교육 연수 (years of schooling)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">exper</span></code>: 총 노동경험 연수</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">expersq</span></code>: 경험의 제곱</p>
+<ul>
+<li><p>경험 효과의 <strong>비선형성</strong>(수익 체감) 반영</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id7">
+<h4>(3) 근속 및 노동시장 상태<a class="headerlink" href="#id7" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tenure</span></code>: 현재 직장에서의 근속연수</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tenursq</span></code>: 근속연수 제곱</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">union</span></code>: 노조 가입 여부 (1 = 가입)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hours</span></code>: 연간 근로시간</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id8">
+<h4>(4) 인구통계 변수<a class="headerlink" href="#id8" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">black</span></code>: 흑인 여부 (1 = 흑인)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hisp</span></code>: 히스패닉 여부 (1 = 히스패닉)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">married</span></code>: 결혼 여부 (1 = 기혼)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">south</span></code>: 남부 지역 거주 여부 (1 = 남부)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">urban</span></code>: 도시 거주 여부 (1 = 도시)</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id9">
+<h3>3. 분석에서의 의미<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>이 데이터는 다음과 같은 계량경제 분석에 적합하다.</p>
+<section id="id10">
+<h4>(1) 임금 결정 모형<a class="headerlink" href="#id10" title="Link to this heading">#</a></h4>
+<div class="math notranslate nohighlight">
+\[
+\log(wage_{it}) = \beta_0 + \beta_1 educ_i + \beta_2 exper_{it} + \beta_3 tenure_{it} + \alpha_i + u_{it}
+\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha_i\)</span>: 개인 고유 효과 (능력, 성실성 등 관측 불가 요인)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id11">
+<h4>(2) 패널 모형 활용 가능<a class="headerlink" href="#id11" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Pooled OLS</p></li>
+<li><p>Fixed Effects (FE)</p></li>
+<li><p>Random Effects (RE)</p></li>
+<li><p>Hausman 검정</p></li>
+</ul>
+<p>특히,</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">educ</span></code>처럼 <strong>시간에 따라 변하지 않는 변수</strong>는 FE에서 제거됨</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">exper</span></code>, <code class="docutils literal notranslate"><span class="pre">tenure</span></code>처럼 <strong>시간에 따라 변하는 변수</strong>는 FE에서 식별됨</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id12">
+<h3>4. 데이터 활용 목적 (핵심)<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>이 데이터는 다음 질문에 답하기 위해 사용된다.</p>
+<ul class="simple">
+<li><p>교육은 임금을 얼마나 증가시키는가?</p></li>
+<li><p>경험과 근속의 임금 효과는 어떻게 다른가?</p></li>
+<li><p>개인 고유 능력을 통제하면 결과가 어떻게 달라지는가?</p></li>
+<li><p>FE와 RE 중 어떤 모형이 더 적절한가?</p></li>
+</ul>
+<hr class="docutils" />
+<p>필요하면 다음도 이어서 정리해 줄 수 있다.</p>
+<ul class="simple">
+<li><p>변수 요약통계</p></li>
+<li><p>패널 구조 확인 코드</p></li>
+<li><p>FE/RE 추정 결과 해석</p></li>
+<li><p>Hausman 검정 결과 설명</p></li>
+</ul>
+</section>
+</section>
+<section id="id13">
+<h2><span style="color: blue;"><strong>2. 변수 요약통계</strong></span><a class="headerlink" href="#id13" title="Link to this heading">#</a></h2>
+</section>
+<section id="id14">
+<h2><strong>ChatGPT 분석</strong><a class="headerlink" href="#id14" title="Link to this heading">#</a></h2>
+<section id="id15">
+<h3>데이터 구조 요약<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>관측치 N = 4360</p></li>
+<li><p>개인 수(entities) = 545</p></li>
+<li><p>연도 수(time periods) = 8</p></li>
+<li><p>패널 인덱스: (<code class="docutils literal notranslate"><span class="pre">nr</span></code>, <code class="docutils literal notranslate"><span class="pre">year</span></code>)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id16">
+<h3>변수 요약통계<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<p>(식별자 <code class="docutils literal notranslate"><span class="pre">nr</span></code>, <code class="docutils literal notranslate"><span class="pre">year</span></code> 제외)</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p></p></th>
+<th class="head text-right"><p>count</p></th>
+<th class="head text-right"><p>mean</p></th>
+<th class="head text-right"><p>std</p></th>
+<th class="head text-right"><p>min</p></th>
+<th class="head text-right"><p>25%</p></th>
+<th class="head text-right"><p>50%</p></th>
+<th class="head text-right"><p>75%</p></th>
+<th class="head text-right"><p>max</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>black</p></td>
+<td class="text-right"><p>4360.0</p></td>
+<td class="text-right"><p>0.116</p></td>
+<td class="text-right"><p>0.320</p></td>
+<td class="text-right"><p>0.0</p></td>
+<td class="text-right"><p>0.0</p></td>
+<td class="text-right"><p>0.0</p></td>
+<td class="text-right"><p>0.00</p></td>
+<td class="text-right"><p>1.0</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>exper</p></td>
+<td class="text-right"><p>4360.0</p></td>
+<td class="text-right"><p>6.515</p></td>
+<td class="text-right"><p>2.826</p></td>
+<td class="text-right"><p>0.0</p></td>
+<td class="text-right"><p>4.0</p></td>
+<td class="text-right"><p>6.0</p></td>
+<td class="text-right"><p>9.00</p></td>
+<td class="text-right"><p>18.0</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>hisp</p></td>
+<td class="text-right"><p>4360.0</p></td>
+<td class="text-right"><p>0.156</p></td>
+<td class="text-right"><p>0.363</p></td>
+<td class="text-right"><p>0.0</p></td>
+<td class="text-right"><p>0.0</p></td>
+<td class="text-right"><p>0.0</p></td>
+<td class="text-right"><p>0.00</p></td>
+<td class="text-right"><p>1.0</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>hours</p></td>
+<td class="text-right"><p>4360.0</p></td>
+<td class="text-right"><p>2191.257</p></td>
+<td class="text-right"><p>566.352</p></td>
+<td class="text-right"><p>120.0</p></td>
+<td class="text-right"><p>2040.0</p></td>
+<td class="text-right"><p>2080.0</p></td>
+<td class="text-right"><p>2414.25</p></td>
+<td class="text-right"><p>4992.0</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>married</p></td>
+<td class="text-right"><p>4360.0</p></td>
+<td class="text-right"><p>0.439</p></td>
+<td class="text-right"><p>0.496</p></td>
+<td class="text-right"><p>0.0</p></td>
+<td class="text-right"><p>0.0</p></td>
+<td class="text-right"><p>0.0</p></td>
+<td class="text-right"><p>1.00</p></td>
+<td class="text-right"><p>1.0</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>educ</p></td>
+<td class="text-right"><p>4360.0</p></td>
+<td class="text-right"><p>12.589</p></td>
+<td class="text-right"><p>2.620</p></td>
+<td class="text-right"><p>0.0</p></td>
+<td class="text-right"><p>12.0</p></td>
+<td class="text-right"><p>12.0</p></td>
+<td class="text-right"><p>15.00</p></td>
+<td class="text-right"><p>18.0</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>union</p></td>
+<td class="text-right"><p>4360.0</p></td>
+<td class="text-right"><p>0.218</p></td>
+<td class="text-right"><p>0.413</p></td>
+<td class="text-right"><p>0.0</p></td>
+<td class="text-right"><p>0.0</p></td>
+<td class="text-right"><p>0.0</p></td>
+<td class="text-right"><p>0.00</p></td>
+<td class="text-right"><p>1.0</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>lwage</p></td>
+<td class="text-right"><p>4360.0</p></td>
+<td class="text-right"><p>1.566</p></td>
+<td class="text-right"><p>0.394</p></td>
+<td class="text-right"><p>-1.0</p></td>
+<td class="text-right"><p>1.3</p></td>
+<td class="text-right"><p>1.6</p></td>
+<td class="text-right"><p>1.83</p></td>
+<td class="text-right"><p>3.0</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>expersq</p></td>
+<td class="text-right"><p>4360.0</p></td>
+<td class="text-right"><p>50.384</p></td>
+<td class="text-right"><p>37.430</p></td>
+<td class="text-right"><p>0.0</p></td>
+<td class="text-right"><p>16.0</p></td>
+<td class="text-right"><p>36.0</p></td>
+<td class="text-right"><p>81.00</p></td>
+<td class="text-right"><p>324.0</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>occupation</p></td>
+<td class="text-right"><p>4360.0</p></td>
+<td class="text-right"><p>6.663</p></td>
+<td class="text-right"><p>3.083</p></td>
+<td class="text-right"><p>1.0</p></td>
+<td class="text-right"><p>5.0</p></td>
+<td class="text-right"><p>6.0</p></td>
+<td class="text-right"><p>8.00</p></td>
+<td class="text-right"><p>9.0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>해석 포인트</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lwage</span></code>는 로그 임금이므로 회귀계수는 대략 퍼센트 변화로 해석 가능</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">exper</span></code>, <code class="docutils literal notranslate"><span class="pre">expersq</span></code>를 같이 쓰면 경험의 한계효과가 감소(오목)하는지 확인 가능</p></li>
+</ul>
+</section>
+</section>
+<section id="id17">
+<h2><span style="color: blue;"><strong>3. 임금 결정 요인 분석</strong></span><a class="headerlink" href="#id17" title="Link to this heading">#</a></h2>
+</section>
+<section id="id18">
+<h2><strong>ChatGPT 분석</strong><a class="headerlink" href="#id18" title="Link to this heading">#</a></h2>
+<p><strong><code class="docutils literal notranslate"><span class="pre">linearmodels</span></code> 패널 분석 결과</strong></p>
+<ul class="simple">
+<li><p>사용 패키지: <code class="docutils literal notranslate"><span class="pre">linearmodels</span></code></p></li>
+<li><p>표준오차: 개체(entity=<code class="docutils literal notranslate"><span class="pre">nr</span></code>) 기준 군집(클러스터) 표준오차</p></li>
+</ul>
+<hr class="docutils" />
+<section id="id19">
+<h3>1. 모형 설정<a class="headerlink" href="#id19" title="Link to this heading">#</a></h3>
+<p>종속변수: <code class="docutils literal notranslate"><span class="pre">lwage</span></code></p>
+<p>설명변수(공통): <code class="docutils literal notranslate"><span class="pre">educ</span></code>, <code class="docutils literal notranslate"><span class="pre">exper</span></code>, <code class="docutils literal notranslate"><span class="pre">expersq</span></code>, <code class="docutils literal notranslate"><span class="pre">union</span></code>, <code class="docutils literal notranslate"><span class="pre">married</span></code>, <code class="docutils literal notranslate"><span class="pre">black</span></code>, <code class="docutils literal notranslate"><span class="pre">hisp</span></code> + 상수항</p>
+<ul class="simple">
+<li><p>Pooled OLS: 패널 구조를 무시하고 합쳐서 OLS</p></li>
+<li><p>Fixed Effects (FE): 개인 고정효과(개인 불변 요인) 통제</p></li>
+<li><p>Random Effects (RE): 개인 효과를 확률항으로 두고 GLS 형태로 추정</p></li>
+</ul>
+<p>FE에서는 개인 내에서 변하지 않는 변수는 식별되지 않음</p>
+<ul class="simple">
+<li><p>이 데이터에서 <code class="docutils literal notranslate"><span class="pre">educ</span></code>, <code class="docutils literal notranslate"><span class="pre">black</span></code>, <code class="docutils literal notranslate"><span class="pre">hisp</span></code>는 (개인 기준) 시간에 따라 변하지 않아 FE에서 자동으로 제거됨</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id20">
+<h3>2. 추정 결과<a class="headerlink" href="#id20" title="Link to this heading">#</a></h3>
+<section id="pooled-ols-clustered-se-by-entity">
+<h4>(1) Pooled OLS (clustered SE by entity)<a class="headerlink" href="#pooled-ols-clustered-se-by-entity" title="Link to this heading">#</a></h4>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p></p></th>
+<th class="head text-right"><p>coef</p></th>
+<th class="head text-right"><p>std_err</p></th>
+<th class="head text-right"><p>t</p></th>
+<th class="head text-right"><p>p</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>const</p></td>
+<td class="text-right"><p>-0.0347</p></td>
+<td class="text-right"><p>0.1200</p></td>
+<td class="text-right"><p>-0.289</p></td>
+<td class="text-right"><p>0.7724</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>educ</p></td>
+<td class="text-right"><p>0.0994</p></td>
+<td class="text-right"><p>0.0092</p></td>
+<td class="text-right"><p>10.802</p></td>
+<td class="text-right"><p>0.0000</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>exper</p></td>
+<td class="text-right"><p>0.0892</p></td>
+<td class="text-right"><p>0.0124</p></td>
+<td class="text-right"><p>7.173</p></td>
+<td class="text-right"><p>0.0000</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>expersq</p></td>
+<td class="text-right"><p>-0.0028</p></td>
+<td class="text-right"><p>0.0009</p></td>
+<td class="text-right"><p>-3.275</p></td>
+<td class="text-right"><p>0.0011</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>union</p></td>
+<td class="text-right"><p>0.1801</p></td>
+<td class="text-right"><p>0.0276</p></td>
+<td class="text-right"><p>6.534</p></td>
+<td class="text-right"><p>0.0000</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>married</p></td>
+<td class="text-right"><p>0.1077</p></td>
+<td class="text-right"><p>0.0261</p></td>
+<td class="text-right"><p>4.131</p></td>
+<td class="text-right"><p>0.0000</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>black</p></td>
+<td class="text-right"><p>-0.1438</p></td>
+<td class="text-right"><p>0.0501</p></td>
+<td class="text-right"><p>-2.873</p></td>
+<td class="text-right"><p>0.0041</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>hisp</p></td>
+<td class="text-right"><p>0.0157</p></td>
+<td class="text-right"><p>0.0392</p></td>
+<td class="text-right"><p>0.401</p></td>
+<td class="text-right"><p>0.6886</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>해석 요약</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">educ</span></code>는 양(+)이고 유의: 교육 1년 증가와 로그임금 증가가 관련</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">exper</span></code>는 양(+), <code class="docutils literal notranslate"><span class="pre">expersq</span></code>는 음(-): 경험 효과는 증가하되 증가폭이 줄어드는 형태</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">union</span></code>, <code class="docutils literal notranslate"><span class="pre">married</span></code>는 양(+)이고 유의</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">black</span></code>는 음(-)이고 유의, <code class="docutils literal notranslate"><span class="pre">hisp</span></code>는 유의하지 않음(이 사양에서는)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="fixed-effects-entity-fe-clustered-se-by-entity">
+<h4>(2) Fixed Effects (entity FE, clustered SE by entity)<a class="headerlink" href="#fixed-effects-entity-fe-clustered-se-by-entity" title="Link to this heading">#</a></h4>
+<p>FE에서 제거된 변수: <code class="docutils literal notranslate"><span class="pre">educ</span></code>, <code class="docutils literal notranslate"><span class="pre">black</span></code>, <code class="docutils literal notranslate"><span class="pre">hisp</span></code></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p></p></th>
+<th class="head text-right"><p>coef</p></th>
+<th class="head text-right"><p>std_err</p></th>
+<th class="head text-right"><p>t</p></th>
+<th class="head text-right"><p>p</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>const</p></td>
+<td class="text-right"><p>1.0649</p></td>
+<td class="text-right"><p>0.0366</p></td>
+<td class="text-right"><p>29.095</p></td>
+<td class="text-right"><p>0.0000</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>exper</p></td>
+<td class="text-right"><p>0.1168</p></td>
+<td class="text-right"><p>0.0107</p></td>
+<td class="text-right"><p>10.916</p></td>
+<td class="text-right"><p>0.0000</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>expersq</p></td>
+<td class="text-right"><p>-0.0043</p></td>
+<td class="text-right"><p>0.0007</p></td>
+<td class="text-right"><p>-6.274</p></td>
+<td class="text-right"><p>0.0000</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>union</p></td>
+<td class="text-right"><p>0.0821</p></td>
+<td class="text-right"><p>0.0228</p></td>
+<td class="text-right"><p>3.599</p></td>
+<td class="text-right"><p>0.0003</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>married</p></td>
+<td class="text-right"><p>0.0453</p></td>
+<td class="text-right"><p>0.0210</p></td>
+<td class="text-right"><p>2.159</p></td>
+<td class="text-right"><p>0.0309</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>해석 요약</strong></p>
+<ul class="simple">
+<li><p>개인 불변 특성을 통제하고도 <code class="docutils literal notranslate"><span class="pre">exper</span></code>(+), <code class="docutils literal notranslate"><span class="pre">expersq</span></code>(-) 패턴이 더 강해짐</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">union</span></code> 효과는 pooled에 비해 작아짐: pooled에서 개인 특성과 섞여 과대추정되었을 가능성</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">married</span></code> 효과도 pooled보다 작아짐: 결혼 여부와 개인 불변 특성이 상관되어 있었을 가능성</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="random-effects-clustered-se-by-entity">
+<h4>(3) Random Effects (clustered SE by entity)<a class="headerlink" href="#random-effects-clustered-se-by-entity" title="Link to this heading">#</a></h4>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p></p></th>
+<th class="head text-right"><p>coef</p></th>
+<th class="head text-right"><p>std_err</p></th>
+<th class="head text-right"><p>t</p></th>
+<th class="head text-right"><p>p</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>const</p></td>
+<td class="text-right"><p>-0.1075</p></td>
+<td class="text-right"><p>0.1151</p></td>
+<td class="text-right"><p>-0.934</p></td>
+<td class="text-right"><p>0.3504</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>educ</p></td>
+<td class="text-right"><p>0.1012</p></td>
+<td class="text-right"><p>0.0089</p></td>
+<td class="text-right"><p>11.395</p></td>
+<td class="text-right"><p>0.0000</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>exper</p></td>
+<td class="text-right"><p>0.1121</p></td>
+<td class="text-right"><p>0.0105</p></td>
+<td class="text-right"><p>10.638</p></td>
+<td class="text-right"><p>0.0000</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>expersq</p></td>
+<td class="text-right"><p>-0.0041</p></td>
+<td class="text-right"><p>0.0007</p></td>
+<td class="text-right"><p>-6.035</p></td>
+<td class="text-right"><p>0.0000</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>union</p></td>
+<td class="text-right"><p>0.1074</p></td>
+<td class="text-right"><p>0.0209</p></td>
+<td class="text-right"><p>5.142</p></td>
+<td class="text-right"><p>0.0000</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>married</p></td>
+<td class="text-right"><p>0.0628</p></td>
+<td class="text-right"><p>0.0190</p></td>
+<td class="text-right"><p>3.309</p></td>
+<td class="text-right"><p>0.0009</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>black</p></td>
+<td class="text-right"><p>-0.1441</p></td>
+<td class="text-right"><p>0.0503</p></td>
+<td class="text-right"><p>-2.865</p></td>
+<td class="text-right"><p>0.0042</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>hisp</p></td>
+<td class="text-right"><p>0.0202</p></td>
+<td class="text-right"><p>0.0399</p></td>
+<td class="text-right"><p>0.505</p></td>
+<td class="text-right"><p>0.6136</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>해석 요약</strong></p>
+<ul class="simple">
+<li><p>RE는 <code class="docutils literal notranslate"><span class="pre">educ</span></code> 같은 시간불변 변수를 포함해서 추정 가능</p></li>
+<li><p>계수 크기는 대체로 FE와 pooled의 중간쯤에 위치</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id21">
+<h3>3. 모형 비교용 요약<a class="headerlink" href="#id21" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p></p></th>
+<th class="head text-right"><p>Pooled OLS</p></th>
+<th class="head text-right"><p>Fixed Effects</p></th>
+<th class="head text-right"><p>Random Effects</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>N</p></td>
+<td class="text-right"><p>4360</p></td>
+<td class="text-right"><p>4360</p></td>
+<td class="text-right"><p>4360</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Entities</p></td>
+<td class="text-right"><p>545</p></td>
+<td class="text-right"><p>545</p></td>
+<td class="text-right"><p>545</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Time periods</p></td>
+<td class="text-right"><p>8</p></td>
+<td class="text-right"><p>8</p></td>
+<td class="text-right"><p>8</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>R2</p></td>
+<td class="text-right"><p>0.1866</p></td>
+<td class="text-right"><p>NA</p></td>
+<td class="text-right"><p>0.1782</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>R2_within</p></td>
+<td class="text-right"><p>NA</p></td>
+<td class="text-right"><p>0.1780</p></td>
+<td class="text-right"><p>NA</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>R2_overall</p></td>
+<td class="text-right"><p>NA</p></td>
+<td class="text-right"><p>0.0565</p></td>
+<td class="text-right"><p>NA</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="hausman-fe-vs-re">
+<h3>4. Hausman 검정 (FE vs RE)<a class="headerlink" href="#hausman-fe-vs-re" title="Link to this heading">#</a></h3>
+<p><strong>검정 아이디어</strong></p>
+<ul class="simple">
+<li><p>귀무가설 <span class="math notranslate nohighlight">\(H_0\)</span>: 개체효과와 설명변수가 독립이라서 RE가 일치추정량(consistent)</p></li>
+<li><p>대립가설 <span class="math notranslate nohighlight">\(H_1\)</span>: 독립이 아니어서 RE는 불일치, FE가 더 안전</p></li>
+</ul>
+<p>여기서는 FE와 RE의 공통 계수(<code class="docutils literal notranslate"><span class="pre">exper</span></code>, <code class="docutils literal notranslate"><span class="pre">expersq</span></code>, <code class="docutils literal notranslate"><span class="pre">union</span></code>, <code class="docutils literal notranslate"><span class="pre">married</span></code>)를 대상으로 계산</p>
+<p><strong>결과</strong></p>
+<p><strong>(clustered 공분산 기준)</strong></p>
+<ul class="simple">
+<li><p>통계량(chi-square) = 16.1453</p></li>
+<li><p>자유도 df = 4</p></li>
+<li><p>p-value = 0.00283023</p></li>
+</ul>
+<p><strong>(non-robust 공분산 기준)</strong></p>
+<ul class="simple">
+<li><p>통계량(chi-square) = 31.5736</p></li>
+<li><p>자유도 df = 4</p></li>
+<li><p>p-value = 2.33805e-06</p></li>
+</ul>
+<p><strong>결론</strong></p>
+<ul class="simple">
+<li><p>p-value가 매우 작으므로 <span class="math notranslate nohighlight">\(H_0\)</span>를 기각</p></li>
+<li><p>이 사양에서는 RE의 독립 가정이 깨졌다고 보는 쪽이 자연스럽고, 실무적으로는 FE를 우선 선택하는 것이 합리적이다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id22">
+<h3>5. 한 줄 정리<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>pooled는 개인 불변 특성을 통제하지 못해서 <code class="docutils literal notranslate"><span class="pre">union</span></code>, <code class="docutils literal notranslate"><span class="pre">married</span></code> 같은 계수를 크게 잡을 수 있다</p></li>
+<li><p>FE로 가면 개인 고유 요인을 제거한 순수한 within 효과를 보게 되고, Hausman도 FE 쪽을 지지한다</p></li>
+</ul>
+</section>
+</section>
+<section id="id23">
+<h2><span style="color: blue;"><strong>4. 패널 데이터 모형의 직관적 이해</strong></span><a class="headerlink" href="#id23" title="Link to this heading">#</a></h2>
+</section>
+<section id="id24">
+<h2><strong>ChatGPT 설명</strong><a class="headerlink" href="#id24" title="Link to this heading">#</a></h2>
+<p>패널 데이터는 같은 개인(또는 기업, 지역 등)을 여러 시점에 걸쳐 반복 관측한 자료다. 핵심 문제는 이것이다.</p>
+<blockquote>
+<div><p>각 개인은 보이지 않는 고유 특성(능력, 성실성, 성향 등)을 가지고 있는데, 이것이 설명변수와 상관될 수 있다. 이 “숨은 개인 차이”를 어떻게 처리하느냐에 따라 모형이 달라진다.</p>
+</div></blockquote>
+<p>아래를 하나의 예로 생각하자.</p>
+<ul class="simple">
+<li><p>목표: 임금에 영향을 주는 요인 분석</p></li>
+<li><p>설명변수: 교육, 경험, 노조 여부 등</p></li>
+<li><p>문제: 어떤 사람은 원래 능력이 높다. 이 능력은 관측되지 않지만 임금에도 영향을 주고, 교육 수준과도 관련 있을 수 있다.</p></li>
+</ul>
+<p>이 보이지 않는 개인 특성을 <span class="math notranslate nohighlight">\(\alpha_i\)</span>라고 두자. 전체 구조는 이렇게 생각하면 된다.</p>
+<div class="math notranslate nohighlight">
+\[
+y_{it} = \beta X_{it} + \alpha_i + u_{it}
+\]</div>
+<p>여기서</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(i\)</span>: 개인</p></li>
+<li><p><span class="math notranslate nohighlight">\(t\)</span>: 시간</p></li>
+<li><p><span class="math notranslate nohighlight">\(\alpha_i\)</span>: 개인 고유 특성(시간에 따라 변하지 않음)</p></li>
+</ul>
+<p>이 <span class="math notranslate nohighlight">\(\alpha_i\)</span>를 어떻게 다루느냐가 핵심이다.</p>
+<hr class="docutils" />
+<section id="ols-pooled-ols">
+<h3>1. 통합 OLS (Pooled OLS)<a class="headerlink" href="#ols-pooled-ols" title="Link to this heading">#</a></h3>
+<p><strong>아이디어</strong></p>
+<p>모든 데이터를 그냥 하나로 합쳐서 일반 OLS를 돌린다.</p>
+<p>즉,</p>
+<ul class="simple">
+<li><p>개인 구분 무시</p></li>
+<li><p>시간 구분 무시</p></li>
+<li><p>그냥 관측치가 많아진 단순 회귀</p></li>
+</ul>
+<p><strong>직관</strong></p>
+<p>“모든 사람이 똑같은 출발선에 있다”고 가정하는 것과 같다.</p>
+<p><strong>문제</strong></p>
+<p>만약 개인 능력 같은 <span class="math notranslate nohighlight">\(\alpha_i\)</span>가</p>
+<ul class="simple">
+<li><p>임금에 영향 있고</p></li>
+<li><p>교육 같은 변수와도 관련 있다면</p></li>
+</ul>
+<p>→ 설명변수와 오차가 상관됨
+→ OLS 편향 발생</p>
+<p><strong>예</strong></p>
+<p>능력 높은 사람일수록 교육도 많이 받고 임금도 높다.
+OLS는 교육 효과를 과대평가할 수 있다.</p>
+<p><strong>언제 사용?</strong></p>
+<ul class="simple">
+<li><p>개인 차이가 중요하지 않을 때</p></li>
+<li><p>또는 개인 효과가 설명변수와 독립이라고 믿을 때</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="fixed-effects-fe">
+<h3>2. 고정효과 모형 (Fixed Effects, FE)<a class="headerlink" href="#fixed-effects-fe" title="Link to this heading">#</a></h3>
+<p><strong>아이디어</strong></p>
+<p>각 개인마다 고유한 기준선을 따로 둔다.</p>
+<p>즉,</p>
+<ul class="simple">
+<li><p>사람마다 평균 수준은 다르다고 인정</p></li>
+<li><p>하지만 그 차이는 시간에 따라 변하지 않는다고 가정</p></li>
+</ul>
+<p><strong>직관</strong></p>
+<p>“사람 간 비교는 하지 말고, 같은 사람 안에서의 변화만 보자”</p>
+<p><strong>예</strong></p>
+<p>A의 임금 변화 vs A의 경험 변화
+B의 임금 변화 vs B의 경험 변화</p>
+<p>→ 개인 능력 같은 고정된 특성은 자동으로 제거된다.</p>
+<p>수학적으로는 개인 평균을 빼는 방식:</p>
+<div class="math notranslate nohighlight">
+\[
+(y_{it} - \bar{y}_i) = \beta (X_{it} - \bar{X}_i) + (u_{it} - \bar{u}_i)
+\]</div>
+<p>여기서 <span class="math notranslate nohighlight">\(\alpha_i\)</span>는 사라진다.</p>
+<p><strong>장점</strong></p>
+<ul class="simple">
+<li><p>관측되지 않는 개인 특성이 설명변수와 상관되어도 문제 없음</p></li>
+<li><p>인과 해석에 더 안전</p></li>
+</ul>
+<p><strong>단점</strong></p>
+<ul class="simple">
+<li><p>시간에 따라 변하지 않는 변수는 추정 불가
+(예: 성별, 인종, 교육이 변하지 않으면 효과 추정 안 됨)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="random-effects-re">
+<h3>3. 확률효과 모형 (Random Effects, RE)<a class="headerlink" href="#random-effects-re" title="Link to this heading">#</a></h3>
+<p><strong>아이디어</strong></p>
+<p>개인 효과를 제거하지 않고, 하나의 “확률 변수”로 취급한다.</p>
+<div class="math notranslate nohighlight">
+\[
+\alpha_i \sim \text{random}
+\]</div>
+<p><strong>핵심 가정</strong></p>
+<div class="math notranslate nohighlight">
+\[
+\alpha_i \text{ 와 } X_{it} \text{ 는 독립}
+\]</div>
+<p><strong>직관</strong></p>
+<p>“사람 간 차이는 있지만, 그 차이는 설명변수와 관련 없는 순수한 랜덤 잡음이다”</p>
+<p>이 가정이 맞으면</p>
+<ul class="simple">
+<li><p>개인 간 정보 + 개인 내 정보
+둘 다 사용 가능
+→ FE보다 효율적 (표준오차 더 작음)</p></li>
+</ul>
+<p><strong>장점</strong></p>
+<ul class="simple">
+<li><p>시간불변 변수도 추정 가능 (예: 성별, 교육)</p></li>
+<li><p>효율적</p></li>
+</ul>
+<p><strong>단점</strong></p>
+<ul class="simple">
+<li><p>만약 <span class="math notranslate nohighlight">\(\alpha_i\)</span>가 설명변수와 상관되면
+→ 심각한 편향 발생</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="fe-vs-re">
+<h3>4. FE vs RE의 직관적 차이<a class="headerlink" href="#fe-vs-re" title="Link to this heading">#</a></h3>
+<p><strong>FE의 생각</strong></p>
+<p>“사람마다 숨은 특성이 있고, 그것이 설명변수와 관련 있을 수 있다. 안전하게 제거하자.”</p>
+<p><strong>RE의 생각</strong></p>
+<p>“사람마다 차이는 있지만, 그건 설명변수와 상관없는 랜덤이다. 제거할 필요 없다.”</p>
+<p><strong>핵심 질문</strong></p>
+<p>개인 효과 <span class="math notranslate nohighlight">\(\alpha_i\)</span>가 설명변수와 상관되어 있는가?</p>
+</section>
+<hr class="docutils" />
+<section id="hausman">
+<h3>5. Hausman 검정<a class="headerlink" href="#hausman" title="Link to this heading">#</a></h3>
+<p>이 질문을 통계적으로 검사하는 방법이다.</p>
+<p><strong>아이디어</strong></p>
+<ul class="simple">
+<li><p>FE는 항상 일치추정량 (가정이 약함)</p></li>
+<li><p>RE는 가정이 맞으면 더 효율적</p></li>
+<li><p>가정이 틀리면 RE는 편향됨</p></li>
+</ul>
+<p>따라서</p>
+<p>RE가 맞다면
+→ FE와 RE 결과가 비슷해야 한다</p>
+<p><strong>검정 논리</strong></p>
+<p>귀무가설 <span class="math notranslate nohighlight">\(H_0\)</span>:
+RE가 타당하다
+(개인효과와 설명변수가 독립)</p>
+<p>대립가설 <span class="math notranslate nohighlight">\(H_1\)</span>:
+RE가 잘못되었다
+(FE를 써야 한다)</p>
+<p><strong>결과 해석</strong></p>
+<ul class="simple">
+<li><p>p-value 작음 → FE와 RE가 크게 다름 → RE 가정 깨짐 → FE 선택</p></li>
+<li><p>p-value 큼 → 차이 없음 → RE 사용 가능</p></li>
+</ul>
+<p><strong>직관</strong></p>
+<p>“RE를 써도 되는 상황인가?”를 묻는 검정</p>
+</section>
+<hr class="docutils" />
+<section id="id25">
+<h3>6. 한 번에 정리 (직관)<a class="headerlink" href="#id25" title="Link to this heading">#</a></h3>
+<p><strong>Pooled OLS</strong>
+→ 사람 차이 무시</p>
+<p><strong>Fixed Effects</strong>
+→ 사람마다 고유 특성 있음, 그리고 그것이 X와 관련 있을 수 있음 → 제거</p>
+<p><strong>Random Effects</strong>
+→ 사람 차이는 있지만 X와 무관한 랜덤 효과 → 효율적으로 사용</p>
+<p><strong>Hausman</strong>
+→ RE의 독립 가정이 맞는지 검사
+→ 틀리면 FE 사용</p>
+<hr class="docutils" />
+<p>실무 감각으로 정리하면</p>
+<ul class="simple">
+<li><p>패널 데이터에서 인과 해석이 목적이면 → FE부터 생각</p></li>
+<li><p>시간불변 변수 효과가 필요하면 → RE 고려</p></li>
+<li><p>그리고 Hausman으로 최종 판단</p></li>
+</ul>
+<p>원하면</p>
+<p>“왜 FE에서 계수가 작아지는 경우가 많은지”도 직관적으로 이어서 설명해 줄 수 있다.</p>
+</section>
+</section>
+<section id="id26">
+<h2><strong>참고: 파이썬 코드</strong><a class="headerlink" href="#id26" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =========================================</span>
+<span class="c1"># 공통 준비: 데이터 로드 + 패널 인덱스 설정</span>
+<span class="c1"># =========================================</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">linearmodels.panel</span><span class="w"> </span><span class="kn">import</span> <span class="n">PooledOLS</span><span class="p">,</span> <span class="n">PanelOLS</span><span class="p">,</span> <span class="n">RandomEffects</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">linearmodels.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">wage_panel</span>
+
+<span class="c1"># 1) 데이터 로드</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">wage_panel</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># 2) 패널 인덱스 설정: (개인ID=nr, 연도=year)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s2">&quot;nr&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+
+<span class="c1"># 3) (선택) 숫자형 컬럼만 따로 보고 싶으면 아래처럼</span>
+<span class="c1"># num_cols = df.select_dtypes(include=[np.number]).columns</span>
+<span class="c1"># df[num_cols].head()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =========================================</span>
+<span class="c1"># (1) 변수 요약통계</span>
+<span class="c1"># =========================================</span>
+
+<span class="c1"># 식별자(nr, year)는 이미 인덱스라 컬럼에 없다.</span>
+<span class="c1"># 회귀에 쓸 만한 숫자형 변수들(결측치 포함 가능)을 기준으로 요약통계를 만든다.</span>
+<span class="c1"># (원하면 특정 변수만 골라서 summary_cols를 구성해도 된다.)</span>
+
+<span class="n">summary_cols</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>  <span class="c1"># 모든 컬럼 요약</span>
+<span class="c1"># summary_cols = [&quot;lwage&quot;, &quot;educ&quot;, &quot;exper&quot;, &quot;expersq&quot;, &quot;union&quot;, &quot;married&quot;, &quot;black&quot;, &quot;hisp&quot;, &quot;hours&quot;]  # 예시</span>
+
+<span class="n">summary</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">summary_cols</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># count, mean, std, min, 25%, 50%, 75%, max</span>
+
+<span class="c1"># 출력</span>
+<span class="n">summary</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>min</th>
+      <th>25%</th>
+      <th>50%</th>
+      <th>75%</th>
+      <th>max</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>black</th>
+      <td>4360.0</td>
+      <td>0.115596</td>
+      <td>0.319777</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>1.00000</td>
+    </tr>
+    <tr>
+      <th>exper</th>
+      <td>4360.0</td>
+      <td>6.514679</td>
+      <td>2.825873</td>
+      <td>0.000000</td>
+      <td>4.000000</td>
+      <td>6.000000</td>
+      <td>9.000000</td>
+      <td>18.00000</td>
+    </tr>
+    <tr>
+      <th>hisp</th>
+      <td>4360.0</td>
+      <td>0.155963</td>
+      <td>0.362862</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>1.00000</td>
+    </tr>
+    <tr>
+      <th>hours</th>
+      <td>4360.0</td>
+      <td>2191.257339</td>
+      <td>566.352301</td>
+      <td>120.000000</td>
+      <td>2040.000000</td>
+      <td>2080.000000</td>
+      <td>2414.250000</td>
+      <td>4992.00000</td>
+    </tr>
+    <tr>
+      <th>married</th>
+      <td>4360.0</td>
+      <td>0.438991</td>
+      <td>0.496321</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>1.00000</td>
+    </tr>
+    <tr>
+      <th>educ</th>
+      <td>4360.0</td>
+      <td>11.766972</td>
+      <td>1.746181</td>
+      <td>3.000000</td>
+      <td>11.000000</td>
+      <td>12.000000</td>
+      <td>12.000000</td>
+      <td>16.00000</td>
+    </tr>
+    <tr>
+      <th>union</th>
+      <td>4360.0</td>
+      <td>0.244037</td>
+      <td>0.429564</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>1.00000</td>
+    </tr>
+    <tr>
+      <th>lwage</th>
+      <td>4360.0</td>
+      <td>1.649147</td>
+      <td>0.532609</td>
+      <td>-3.579079</td>
+      <td>1.350717</td>
+      <td>1.671143</td>
+      <td>1.991086</td>
+      <td>4.05186</td>
+    </tr>
+    <tr>
+      <th>expersq</th>
+      <td>4360.0</td>
+      <td>50.424771</td>
+      <td>40.781991</td>
+      <td>0.000000</td>
+      <td>16.000000</td>
+      <td>36.000000</td>
+      <td>81.000000</td>
+      <td>324.00000</td>
+    </tr>
+    <tr>
+      <th>occupation</th>
+      <td>4360.0</td>
+      <td>4.988532</td>
+      <td>2.319978</td>
+      <td>1.000000</td>
+      <td>4.000000</td>
+      <td>5.000000</td>
+      <td>6.000000</td>
+      <td>9.00000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =========================================</span>
+<span class="c1"># (2) Pooled OLS / Fixed Effects / Random Effects 추정 (수정본)</span>
+<span class="c1"># =========================================</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">linearmodels.panel</span><span class="w"> </span><span class="kn">import</span> <span class="n">PooledOLS</span><span class="p">,</span> <span class="n">PanelOLS</span><span class="p">,</span> <span class="n">RandomEffects</span>
+
+<span class="c1"># 종속변수/설명변수 지정</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;lwage&quot;</span><span class="p">]</span>
+
+<span class="n">X_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;educ&quot;</span><span class="p">,</span> <span class="s2">&quot;exper&quot;</span><span class="p">,</span> <span class="s2">&quot;expersq&quot;</span><span class="p">,</span> <span class="s2">&quot;union&quot;</span><span class="p">,</span> <span class="s2">&quot;married&quot;</span><span class="p">,</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="s2">&quot;hisp&quot;</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">X_cols</span><span class="p">]</span>
+
+<span class="c1"># 상수항 추가 (Pooled/RE는 보통 상수 포함)</span>
+<span class="n">X_const</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># -------------------------</span>
+<span class="c1"># 2-1) Pooled OLS</span>
+<span class="c1"># -------------------------</span>
+<span class="n">pooled_mod</span> <span class="o">=</span> <span class="n">PooledOLS</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X_const</span><span class="p">)</span>
+<span class="n">pooled_res</span> <span class="o">=</span> <span class="n">pooled_mod</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">cov_type</span><span class="o">=</span><span class="s2">&quot;clustered&quot;</span><span class="p">,</span> <span class="n">cluster_entity</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># 개인 기준 군집표준오차</span>
+
+<span class="c1"># -------------------------</span>
+<span class="c1"># 2-2) Fixed Effects (개인 고정효과) - 방법 A (추천): 흡수 변수 자동 제거</span>
+<span class="c1"># -------------------------</span>
+<span class="c1"># drop_absorbed=True를 주면 educ/black/hisp 같은 시간불변 변수가 자동으로 빠지고 추정된다.</span>
+<span class="n">fe_mod</span> <span class="o">=</span> <span class="n">PanelOLS</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">entity_effects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">drop_absorbed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">fe_res</span> <span class="o">=</span> <span class="n">fe_mod</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">cov_type</span><span class="o">=</span><span class="s2">&quot;clustered&quot;</span><span class="p">,</span> <span class="n">cluster_entity</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># -------------------------</span>
+<span class="c1"># 2-3) Random Effects</span>
+<span class="c1"># -------------------------</span>
+<span class="n">re_mod</span> <span class="o">=</span> <span class="n">RandomEffects</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X_const</span><span class="p">)</span>
+<span class="n">re_res</span> <span class="o">=</span> <span class="n">re_mod</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">cov_type</span><span class="o">=</span><span class="s2">&quot;clustered&quot;</span><span class="p">,</span> <span class="n">cluster_entity</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># -------------------------</span>
+<span class="c1"># 결과를 표 형태로 정리</span>
+<span class="c1"># -------------------------</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tidy_table</span><span class="p">(</span><span class="n">res</span><span class="p">):</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+        <span class="s2">&quot;coef&quot;</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">params</span><span class="p">,</span>
+        <span class="s2">&quot;std_err&quot;</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">std_errors</span><span class="p">,</span>
+        <span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">tstats</span><span class="p">,</span>
+        <span class="s2">&quot;p&quot;</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">pvalues</span>
+    <span class="p">})</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+<span class="n">tbl_pooled</span> <span class="o">=</span> <span class="n">tidy_table</span><span class="p">(</span><span class="n">pooled_res</span><span class="p">)</span>
+<span class="n">tbl_fe</span> <span class="o">=</span> <span class="n">tidy_table</span><span class="p">(</span><span class="n">fe_res</span><span class="p">)</span>
+<span class="n">tbl_re</span> <span class="o">=</span> <span class="n">tidy_table</span><span class="p">(</span><span class="n">re_res</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"># Pooled OLS</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tbl_pooled</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">())</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"># Fixed Effects (drop_absorbed=True)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tbl_fe</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">())</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"># Random Effects</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tbl_re</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">())</span>
+
+<span class="c1"># FE에서 실제로 남은 변수(추정된 계수) 확인</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">FE에 남은 계수들:&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">fe_res</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">index</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\pilsu\AppData\Local\Temp\ipykernel_36844\1754337777.py:30: AbsorbingEffectWarning: 
+Variables have been fully absorbed and have removed from the regression:
+
+educ, black, hisp
+
+  fe_res = fe_mod.fit(cov_type=&quot;clustered&quot;, cluster_entity=True)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span># Pooled OLS
+
+|         |        coef |     std_err |         t |           p |
+|:--------|------------:|------------:|----------:|------------:|
+| const   | -0.0347056  | 0.120007    | -0.289196 | 0.772445    |
+| educ    |  0.0993878  | 0.00920092  | 10.8019   | 0           |
+| exper   |  0.0891791  | 0.012433    |  7.17276  | 8.59757e-13 |
+| expersq | -0.00284866 | 0.000869894 | -3.27472  | 0.00106596  |
+| union   |  0.180073   | 0.0275582   |  6.53428  | 7.12703e-11 |
+| married |  0.107666   | 0.0260601   |  4.13143  | 3.6728e-05  |
+| black   | -0.143842   | 0.0500713   | -2.87274  | 0.00408901  |
+| hisp    |  0.015698   | 0.0391666   |  0.400801 | 0.688587    |
+
+# Fixed Effects (drop_absorbed=True)
+
+|         |        coef |     std_err |        t |           p |
+|:--------|------------:|------------:|---------:|------------:|
+| exper   |  0.116847   | 0.0107031   | 10.917   | 0           |
+| expersq | -0.00430089 | 0.000685462 | -6.27444 | 3.9016e-10  |
+| union   |  0.0820871  | 0.0228057   |  3.59942 | 0.000322987 |
+| married |  0.0453033  | 0.0209849   |  2.15886 | 0.0309234   |
+
+# Random Effects
+
+|         |        coef |     std_err |         t |           p |
+|:--------|------------:|------------:|----------:|------------:|
+| const   | -0.107455   | 0.115069    | -0.93383  | 0.350443    |
+| educ    |  0.101224   | 0.00888312  | 11.3951   | 0           |
+| exper   |  0.112116   | 0.0105389   | 10.6383   | 0           |
+| expersq | -0.00406868 | 0.000674162 | -6.03517  | 1.72005e-09 |
+| union   |  0.107396   | 0.0208842   |  5.14243  | 2.83117e-07 |
+| married |  0.0628065  | 0.0189815   |  3.30883  | 0.000944476 |
+| black   | -0.144131   | 0.0503019   | -2.86531  | 0.004186    |
+| hisp    |  0.0201501  | 0.0398977   |  0.505046 | 0.613552    |
+
+FE에 남은 계수들: [&#39;exper&#39;, &#39;expersq&#39;, &#39;union&#39;, &#39;married&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># =========================================</span>
+<span class="c1"># (3) Hausman 검정 (FE vs RE)</span>
+<span class="c1"># =========================================</span>
+<span class="c1"># 개념:</span>
+<span class="c1"># - H0: 개체효과와 설명변수가 독립 -&gt; RE가 일치추정량(consisent)</span>
+<span class="c1"># - H1: 독립 아님 -&gt; RE는 불일치, FE를 선호</span>
+<span class="c1">#</span>
+<span class="c1"># 계산(표준적 형태):</span>
+<span class="c1">#   diff = b_FE - b_RE</span>
+<span class="c1">#   V = Var(b_FE) - Var(b_RE)</span>
+<span class="c1">#   H = diff&#39; * V^{-1} * diff  ~ chi2(k)</span>
+<span class="c1">#</span>
+<span class="c1"># 주의:</span>
+<span class="c1"># - 군집(robust) 공분산을 쓰면 V가 비가역/비양정이 될 수 있음.</span>
+<span class="c1"># - 그 경우(역행렬 실패)에는 비강건(non-robust) 공분산으로 다시 계산하는 방식을 자주 쓴다.</span>
+<span class="c1"># =========================================</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy.linalg</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">la</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">hausman_test</span><span class="p">(</span><span class="n">fe_res</span><span class="p">,</span> <span class="n">re_res</span><span class="p">,</span> <span class="n">common_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="c1"># 1) 공통으로 존재하는 계수 이름 정리</span>
+    <span class="n">b_fe</span> <span class="o">=</span> <span class="n">fe_res</span><span class="o">.</span><span class="n">params</span>
+    <span class="n">b_re</span> <span class="o">=</span> <span class="n">re_res</span><span class="o">.</span><span class="n">params</span>
+
+    <span class="k">if</span> <span class="n">common_only</span><span class="p">:</span>
+        <span class="n">common</span> <span class="o">=</span> <span class="n">b_fe</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">b_re</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># common_only=False면 일치하지 않는 변수 때문에 보통 바로 깨진다.</span>
+        <span class="n">common</span> <span class="o">=</span> <span class="n">b_fe</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">b_re</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+    <span class="c1"># 2) 공통 계수만 추출</span>
+    <span class="n">b_fe_c</span> <span class="o">=</span> <span class="n">b_fe</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">common</span><span class="p">]</span>
+    <span class="n">b_re_c</span> <span class="o">=</span> <span class="n">b_re</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">common</span><span class="p">]</span>
+
+    <span class="c1"># 3) 공분산행렬에서도 공통 부분만 추출</span>
+    <span class="n">V_fe</span> <span class="o">=</span> <span class="n">fe_res</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">common</span><span class="p">,</span> <span class="n">common</span><span class="p">]</span>
+    <span class="n">V_re</span> <span class="o">=</span> <span class="n">re_res</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">common</span><span class="p">,</span> <span class="n">common</span><span class="p">]</span>
+
+    <span class="c1"># 4) Hausman 통계량 계산</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="p">(</span><span class="n">b_fe_c</span> <span class="o">-</span> <span class="n">b_re_c</span><span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="p">(</span><span class="n">V_fe</span> <span class="o">-</span> <span class="n">V_re</span><span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+
+    <span class="c1"># 역행렬(또는 의사역행렬) 사용</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">V_inv</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">la</span><span class="o">.</span><span class="n">LinAlgError</span><span class="p">:</span>
+        <span class="n">V_inv</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+
+    <span class="n">stat</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">V_inv</span> <span class="o">@</span> <span class="n">diff</span><span class="p">)</span>
+    <span class="n">df_h</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">common</span><span class="p">)</span>
+    <span class="n">pval</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">stats</span><span class="o">.</span><span class="n">chi2</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">stat</span><span class="p">,</span> <span class="n">df_h</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;stat&quot;</span><span class="p">:</span> <span class="n">stat</span><span class="p">,</span>
+        <span class="s2">&quot;df&quot;</span><span class="p">:</span> <span class="n">df_h</span><span class="p">,</span>
+        <span class="s2">&quot;pvalue&quot;</span><span class="p">:</span> <span class="n">pval</span><span class="p">,</span>
+        <span class="s2">&quot;common_params&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">common</span><span class="p">)</span>
+    <span class="p">}</span>
+
+<span class="c1"># 1) 우선 군집표준오차 기반 결과로 Hausman 계산 시도</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">hausman_test</span><span class="p">(</span><span class="n">fe_res</span><span class="p">,</span> <span class="n">re_res</span><span class="p">,</span> <span class="n">common_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hausman test (clustered cov) 결과&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+
+<span class="c1"># 2) (선택) 만약 clustered cov로 결과가 불안정하다고 판단되면,</span>
+<span class="c1">#    비강건 공분산(기본)으로 다시 적합해서 Hausman을 계산할 수도 있다.</span>
+<span class="c1">#    아래는 그 예시.</span>
+
+<span class="n">fe_res_nr</span> <span class="o">=</span> <span class="n">fe_mod</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>  <span class="c1"># 기본(비강건) 공분산</span>
+<span class="n">re_res_nr</span> <span class="o">=</span> <span class="n">re_mod</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>  <span class="c1"># 기본(비강건) 공분산</span>
+
+<span class="n">h_nr</span> <span class="o">=</span> <span class="n">hausman_test</span><span class="p">(</span><span class="n">fe_res_nr</span><span class="p">,</span> <span class="n">re_res_nr</span><span class="p">,</span> <span class="n">common_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Hausman test (non-robust cov) 결과&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">h_nr</span><span class="p">)</span>
+
+<span class="c1"># 3) 마크다운 표로 예쁘게 출력하고 싶으면:</span>
+<span class="n">hausman_tbl</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;chi2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">h</span><span class="p">[</span><span class="s2">&quot;stat&quot;</span><span class="p">]],</span> <span class="s2">&quot;df&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">h</span><span class="p">[</span><span class="s2">&quot;df&quot;</span><span class="p">]],</span> <span class="s2">&quot;pvalue&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">h</span><span class="p">[</span><span class="s2">&quot;pvalue&quot;</span><span class="p">]]}</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"># Hausman (clustered)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hausman_tbl</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+
+<span class="n">hausman_tbl_nr</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;chi2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">h_nr</span><span class="p">[</span><span class="s2">&quot;stat&quot;</span><span class="p">]],</span> <span class="s2">&quot;df&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">h_nr</span><span class="p">[</span><span class="s2">&quot;df&quot;</span><span class="p">]],</span> <span class="s2">&quot;pvalue&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">h_nr</span><span class="p">[</span><span class="s2">&quot;pvalue&quot;</span><span class="p">]]}</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"># Hausman (non-robust)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hausman_tbl_nr</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hausman test (clustered cov) 결과
+{&#39;stat&#39;: 16.145323927833108, &#39;df&#39;: 4, &#39;pvalue&#39;: 0.0028302329625596867, &#39;common_params&#39;: [&#39;exper&#39;, &#39;expersq&#39;, &#39;union&#39;, &#39;married&#39;]}
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hausman test (non-robust cov) 결과
+{&#39;stat&#39;: 31.573567767145832, &#39;df&#39;: 4, &#39;pvalue&#39;: 2.3380531072314525e-06, &#39;common_params&#39;: [&#39;exper&#39;, &#39;expersq&#39;, &#39;union&#39;, &#39;married&#39;]}
+
+# Hausman (clustered)
+
+|    chi2 |   df |     pvalue |
+|--------:|-----:|-----------:|
+| 16.1453 |    4 | 0.00283023 |
+
+# Hausman (non-robust)
+
+|    chi2 |   df |      pvalue |
+|--------:|-----:|------------:|
+| 31.5736 |    4 | 2.33805e-06 |
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="19_%EB%94%A5%EB%9F%AC%EB%8B%9D_%EA%B3%B5%EB%B6%80%ED%95%98%EA%B8%B0.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><strong>19장 딥러닝 공부하기</strong></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="21_%EA%B3%A8%EB%B0%80%EB%8F%84_%EA%B2%80%EC%82%AC_%EA%B2%B0%EA%B3%BC_%ED%95%B4%EC%84%9D.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><strong>21장 골밀도 검사 결과 해석</strong></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span style="color: blue;"><strong>1. 데이터 입력</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chatgpt"><strong>ChatGPT 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1. 데이터 구조</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2. 주요 변수 설명</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">(1) 종속변수 (임금 관련)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">(2) 인적자본 변수</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">(3) 근속 및 노동시장 상태</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">(4) 인구통계 변수</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">3. 분석에서의 의미</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">(1) 임금 결정 모형</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">(2) 패널 모형 활용 가능</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">4. 데이터 활용 목적 (핵심)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id13"><span style="color: blue;"><strong>2. 변수 요약통계</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14"><strong>ChatGPT 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">데이터 구조 요약</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">변수 요약통계</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id17"><span style="color: blue;"><strong>3. 임금 결정 요인 분석</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id18"><strong>ChatGPT 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">1. 모형 설정</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">2. 추정 결과</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pooled-ols-clustered-se-by-entity">(1) Pooled OLS (clustered SE by entity)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed-effects-entity-fe-clustered-se-by-entity">(2) Fixed Effects (entity FE, clustered SE by entity)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#random-effects-clustered-se-by-entity">(3) Random Effects (clustered SE by entity)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">3. 모형 비교용 요약</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hausman-fe-vs-re">4. Hausman 검정 (FE vs RE)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">5. 한 줄 정리</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id23"><span style="color: blue;"><strong>4. 패널 데이터 모형의 직관적 이해</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24"><strong>ChatGPT 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ols-pooled-ols">1. 통합 OLS (Pooled OLS)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed-effects-fe">2. 고정효과 모형 (Fixed Effects, FE)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#random-effects-re">3. 확률효과 모형 (Random Effects, RE)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fe-vs-re">4. FE vs RE의 직관적 차이</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hausman">5. Hausman 검정</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">6. 한 번에 정리 (직관)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id26"><strong>참고: 파이썬 코드</strong></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By 김원경 최필선
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

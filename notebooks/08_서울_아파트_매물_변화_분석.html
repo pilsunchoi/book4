@@ -1,0 +1,984 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>8장 서울 아파트 매물 변화 분석 &#8212; 데이터 분석 이제 AI에게 맡겨라</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/08_서울_아파트_매물_변화_분석';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="9장 설문조사 분석" href="09_%EC%84%A4%EB%AC%B8%EC%A1%B0%EC%82%AC_%EB%B6%84%EC%84%9D.html" />
+    <link rel="prev" title="7장 댓글 통계 분석" href="07_%EB%8C%93%EA%B8%80_%ED%86%B5%EA%B3%84_%EB%B6%84%EC%84%9D.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00_%EC%84%9C%EB%AC%B8.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="00_%EC%84%9C%EB%AC%B8.html">
+                    서문
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_%EC%8B%9C%ED%97%98%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>1장 시험성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_%EB%8C%80%ED%86%B5%EB%A0%B9_%EC%A7%80%EC%A7%80%EC%9C%A8_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>2장 대통령 지지율 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_KBO_%EC%A0%95%EA%B7%9C%EC%8B%9C%EC%A6%8C_%ED%8C%80%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>3장 KBO 정규시즌 팀성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_PPP_%EA%B7%B8%EB%9E%98%ED%94%84_%EB%B6%84%EC%84%9D.html"><strong>4장 PPP 그래프 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_%EC%84%B8%EA%B3%84%EC%9D%80%ED%96%89_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EC%B6%94%EC%B6%9C.html"><strong>5장 세계은행 데이터 추출</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_%EC%A3%BC%EA%B0%80_%EC%98%88%EC%B8%A1_%EC%8B%9C%EC%8A%A4%ED%85%9C_%EA%B5%AC%EC%B6%95.html"><strong>6장 주가 예측 시스템 구축</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_%EB%8C%93%EA%B8%80_%ED%86%B5%EA%B3%84_%EB%B6%84%EC%84%9D.html"><strong>7장 댓글 통계 분석</strong></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>8장 서울 아파트 매물 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_%EC%84%A4%EB%AC%B8%EC%A1%B0%EC%82%AC_%EB%B6%84%EC%84%9D.html"><strong>9장 설문조사 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_%ED%83%90%EC%83%89%EC%A0%81_%EC%9A%94%EC%9D%B8%EB%B6%84%EC%84%9D.html"><strong>10장 탐색적 요인분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_%EB%B3%B4%EC%8A%A4%ED%84%B4_%EC%A3%BC%ED%83%9D_%EA%B0%80%EA%B2%A9_%EB%B6%84%EC%84%9D.html"><strong>11장 보스턴 주택 가격 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_%EC%A2%85%EB%B6%80%EC%84%B8%EC%99%80_%EC%9B%94%EC%84%B8%EC%9D%98_%EA%B4%80%EA%B3%84.html"><strong>12장 종부세와 월세의 관계</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_%EB%8C%80%ED%98%95%EB%A7%88%ED%8A%B8_%EC%87%A0%EB%9D%BD_%EC%9B%90%EC%9D%B8_%EC%8B%A4%EC%A6%9D%EB%B6%84%EC%84%9D.html"><strong>13장 대형마트 쇠락 원인 실증분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_%EC%8B%A0%EC%83%9D%EC%95%84_%ED%8A%B9%EB%A1%80%EB%8C%80%EC%B6%9C%EA%B3%BC_%EC%B6%9C%EC%82%B0%EC%9C%A8.html"><strong>14장 신생아 특례대출과 출산율</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_Ridge_%EB%B0%8F_Lasso_%ED%9A%8C%EA%B7%80.html"><strong>15장 Ridge 및 Lasso 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1_%ED%9A%8C%EA%B7%80.html"><strong>16장 로지스틱 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95_%ED%8A%B8%EB%A6%AC_%EB%AA%A8%ED%98%95.html"><strong>17장 의사결정 트리 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_%ED%8A%B8%EB%A6%AC_%EA%B8%B0%EB%B0%98_%EB%AA%A8%ED%98%95.html"><strong>18장 트리 기반 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="19_%EB%94%A5%EB%9F%AC%EB%8B%9D_%EA%B3%B5%EB%B6%80%ED%95%98%EA%B8%B0.html"><strong>19장 딥러닝 공부하기</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_%ED%8C%A8%EB%84%90_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>20장 패널 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="21_%EA%B3%A8%EB%B0%80%EB%8F%84_%EA%B2%80%EC%82%AC_%EA%B2%B0%EA%B3%BC_%ED%95%B4%EC%84%9D.html"><strong>21장 골밀도 검사 결과 해석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_%EC%9A%B4%EB%8F%99%ED%95%99_Kinematics.html"><strong>22장 운동학 (Kinematics)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_%EC%B6%95%EA%B5%AC_%EA%B2%BD%EA%B8%B0_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>23장 축구 경기 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_%ED%8F%AD%EA%B2%A9_%ED%8C%8C%EA%B4%B4%EB%A0%A5_%EB%B6%84%EC%84%9D.html"><strong>24장 폭격 파괴력 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_%EC%84%B8%EA%B3%84_%ED%99%94%EC%9E%A5%ED%92%88_%EA%B5%90%EC%97%AD_%ED%8A%B8%EB%A0%8C%EB%93%9C.html"><strong>25장 세계 화장품 교역 트렌드</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_Texas_Special_Education.html"><strong>26장 텍사스주 특수교육 현황</strong></a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4/issues/new?title=Issue%20on%20page%20%2Fnotebooks/08_서울_아파트_매물_변화_분석.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/08_서울_아파트_매물_변화_분석.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>8장 서울 아파트 매물 변화 분석</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span style="color: blue;"><strong>1. 데이터 입력</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gemini"><strong>Gemini 데이터세트 구축</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">데이터 구조 예시</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#i"><span style="color: blue;"><strong>2. 질문 I</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">주요 변화 분석 (2026.1.23 ~ 2026.2.13)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">시각적 분석</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ii"><span style="color: blue;"><strong>3. 질문 II</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">1. 연도별 비교 분석 (1.23 ~ 2.13 기간)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vs">2. 계절성 vs 정책 효과</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">3. 결론</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iii"><span style="color: blue;"><strong>4. 질문 III</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#difference-in-differences-did">1. 이중차분법 (Difference-in-Differences, DiD) 분석</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#granger-causality-test">2. 가격-매물량 상관관계 분석 (Granger Causality Test 변형)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interrupted-time-series-its">3. 단절적 시계열 분석 (Interrupted Time Series, ITS)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">4. 텍스트 마이닝을 통한 ‘급매’ 키워드 분석</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#control-variables">5. 거시 변수 통제 회귀분석 (Control Variables)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12"><strong>참고: 파이썬 코드</strong></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><strong>8장 서울 아파트 매물 변화 분석</strong><a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2><span style="color: blue;"><strong>1. 데이터 입력</strong></span><a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p><span style="color: blue;">일별 온라인집계 매물건수 : 매매+전세+월세</span></p>
+<p><span style="color: blue;">일자매매전세월세총매물수26/02/1363,745</span></p>
+<p><span style="color: blue;">20,422</span></p>
+<p><span style="color: blue;">18,891</span></p>
+<p><span style="color: blue;">103,058</span></p>
+<p><span style="color: blue;">26/02/1262,357</span></p>
+<p><span style="color: blue;">20,523</span></p>
+<p><span style="color: blue;">19,044</span></p>
+<p><span style="color: blue;">101,924</span></p>
+<div style="text-align: left; color: blue; padding-left: 10px;">&#8942;</div>
+<br>
+<p>출처: <a class="reference external" href="https://asil.kr/asil/index.jsp">아실</a>, 부동산 스터디, 매물 증감(서울 APT 일별, 2026.02.15일 기준)</p>
+</section>
+<section id="gemini">
+<h2><strong>Gemini 데이터세트 구축</strong><a class="headerlink" href="#gemini" title="Link to this heading">#</a></h2>
+<p>요청하신 <strong>서울 APT 일별 매물 추이 데이터셋</strong>을 생성하였습니다.</p>
+<p>데이터는 입력된 텍스트에서 ‘일자’, ‘매매’, ‘전세’, ‘월세’, ‘총매물수’를 추출하여 정형화하였으며, 총 1,065개의 관측이 포함되어 있습니다. 아래 생성된 CSV 파일을 다운로드하여 활용하실 수 있습니다.</p>
+<section id="id3">
+<h3>데이터 구조 예시<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>일자</p></th>
+<th class="head"><p>매매</p></th>
+<th class="head"><p>전세</p></th>
+<th class="head"><p>월세</p></th>
+<th class="head"><p>총매물수</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>2023-02-01</p></td>
+<td><p>52,236</p></td>
+<td><p>52,914</p></td>
+<td><p>29,627</p></td>
+<td><p>134,777</p></td>
+</tr>
+<tr class="row-odd"><td><p>2023-02-02</p></td>
+<td><p>52,006</p></td>
+<td><p>52,898</p></td>
+<td><p>29,661</p></td>
+<td><p>134,565</p></td>
+</tr>
+<tr class="row-even"><td><p>2023-02-03</p></td>
+<td><p>52,878</p></td>
+<td><p>53,420</p></td>
+<td><p>29,874</p></td>
+<td><p>136,172</p></td>
+</tr>
+<tr class="row-odd"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>참고:</strong> 입력된 데이터의 형식상 일자와 매매 건수가 붙어있는 부분(예: <code class="docutils literal notranslate"><span class="pre">26/02/1363,745</span></code>)을 자동으로 분리하여 <code class="docutils literal notranslate"><span class="pre">2026-02-13</span></code>과 <code class="docutils literal notranslate"><span class="pre">63,745</span></code>로 올바르게 처리하였습니다.</p>
+<p>파일은 아래에 저장되었습니다.
+<code class="docutils literal notranslate"><span class="pre">seoul_apt_listings.csv</span></code></p>
+</section>
+</section>
+<section id="i">
+<h2><span style="color: blue;"><strong>2. 질문 I</strong></span><a class="headerlink" href="#i" title="Link to this heading">#</a></h2>
+<p><span style="color: blue;"><strong>정부가 다주택자 양도세 유예 연장 불가 방침을 공식화한 2026.1.23일 이후 서울 지역 아파트 매물에 변화가 감지되는가?</strong></span></p>
+</section>
+<section id="id4">
+<h2><strong>Gemini 분석</strong><a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>네, 2026년 1월 23일 정부의 다주택자 양도세 중과 유예 연장 불가 방침 발표 이후, 서울 지역 아파트 매물에 <strong>뚜렷하고 즉각적인 변화</strong>가 감지됩니다.</p>
+<p>특히 <strong>매매(Sale) 물량은 급증</strong>하고, <strong>임대차(전세/월세) 물량은 감소</strong>하는 디커플링(Decoupling) 현상이 나타나고 있습니다. 이는 다주택자들이 양도세 중과를 피하기 위해 보유 중인 임대 물건을 매도 물건으로 전환하거나, 시장에 급하게 내놓고 있다는 강력한 방증으로 해석됩니다.</p>
+<section id="id5">
+<h3>주요 변화 분석 (2026.1.23 ~ 2026.2.13)<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p><strong>1. 매매 매물 급증 (Panic Selling 조짐)</strong></p>
+<ul class="simple">
+<li><p><strong>1월 23일:</strong> 56,219건</p></li>
+<li><p><strong>2월 13일:</strong> 63,745건</p></li>
+<li><p><strong>변화:</strong> 불과 3주 만에 <strong>+7,526건 (+13.4%)</strong> 증가했습니다.</p></li>
+<li><p><strong>특이점:</strong> 1월 초부터 1월 23일까지는 매매 매물이 56,000~57,000건 사이에서 횡보하거나 소폭 감소하는 추세였으나, 발표 직후 상승 기울기가 가파르게 변했습니다.</p></li>
+</ul>
+<p><strong>2. 전세 및 월세 매물 감소 (임대 -&gt; 매매 전환)</strong></p>
+<ul class="simple">
+<li><p><strong>전세:</strong> 22,156건 → 20,422건 (<strong>-7.8% 감소</strong>)</p></li>
+<li><p><strong>월세:</strong> 20,628건 → 18,891건 (<strong>-8.4% 감소</strong>)</p></li>
+<li><p><strong>해석:</strong> 전세나 월세로 돌리던 물건들이 매매 시장으로 흡수되면서 임대차 시장의 공급은 오히려 줄어들고 있습니다.</p></li>
+</ul>
+</section>
+<section id="id6">
+<h3>시각적 분석<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>아래 그래프는 2025년 12월부터 2026년 2월까지의 추이를 보여줍니다. 1월 23일(점선)을 기점으로 <strong>빨간색 실선(매매)</strong> 이 급격히 우상향하는 반면, <strong>파란색/초록색 점선(전/월세)</strong> 은 우하향하는 것을 확인할 수 있습니다.</p>
+<p><img alt="APT" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/8-1.png" /></p>
+<p><strong>결론적으로:</strong>
+정부의 발표는 시장에 즉각적인 영향을 미쳤으며, 다주택자들이 절세 매물을 쏟아내기 시작한 것으로 보입니다. 이러한 매물 출회(출현)가 실제 거래 가격 하락으로 이어질지는 지켜봐야 하겠으나, 단기적인 공급 충격은 이미 현실화되었습니다.</p>
+</section>
+</section>
+<section id="ii">
+<h2><span style="color: blue;"><strong>3. 질문 II</strong></span><a class="headerlink" href="#ii" title="Link to this heading">#</a></h2>
+<p><span style="color: blue;"><strong>계절적 요인은 없는지 분석해줘</strong></span></p>
+</section>
+<section id="id7">
+<h2><strong>Gemini 분석</strong><a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<p>계절적 요인을 제거하고 정책의 순수 효과를 파악하기 위해, 최근 3년(2024~2026년) 동안 동일 기간(1월 23일 ~ 2월 13일)의 서울 아파트 매매 매물 변화 추이를 비교 분석했습니다.</p>
+<p>분석 결과, <strong>계절적 요인으로는 설명할 수 없는 이례적인 급등세</strong>가 2026년에 나타나고 있음이 확인되었습니다.</p>
+<p><img alt="APT" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/8-2.png" /></p>
+<hr class="docutils" />
+<section id="id8">
+<h3>1. 연도별 비교 분석 (1.23 ~ 2.13 기간)<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>연도</p></th>
+<th class="head"><p>1월 23일 매물량</p></th>
+<th class="head"><p>2월 13일 매물량</p></th>
+<th class="head"><p><strong>증감량 (변동률)</strong></p></th>
+<th class="head"><p>비고</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>2024년</strong></p></td>
+<td><p>76,010건</p></td>
+<td><p>73,536건</p></td>
+<td><p><strong>-2,474건 (-3.3%)</strong></p></td>
+<td><p>통상적 계절성 (거래 증가로 매물 소진)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>2025년</strong></p></td>
+<td><p>89,020건</p></td>
+<td><p>90,238건</p></td>
+<td><p><strong>+1,218건 (+1.4%)</strong></p></td>
+<td><p>보합세 유지 (큰 변동 없음)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>2026년</strong></p></td>
+<td><p>56,219건</p></td>
+<td><p>63,745건</p></td>
+<td><p><strong>+7,526건 (+13.4%)</strong></p></td>
+<td><p><strong>이례적 폭등 (정책 발표 직후)</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="vs">
+<h3>2. 계절성 vs 정책 효과<a class="headerlink" href="#vs" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>통상적 패턴 (2024년):</strong> 1월~2월은 봄 이사철을 앞두고 거래가 활발해지면서 매물이 소진되어 <strong>감소(-3.3%)</strong> 하는 것이 일반적인 계절적 흐름입니다.</p></li>
+<li><p><strong>2026년의 특이성:</strong> 올해는 통상적인 흐름과 정반대로 매물이 <strong>폭발적으로 증가(+13.4%)</strong> 했습니다. 이는 단순히 계절이 바뀌어서 나타난 현상이 아니라, <strong>정부의 양도세 중과 유예 연장 불가 방침</strong>이라는 외부 충격이 시장에 직접적인 트리거로 작용했음을 강력하게 시사합니다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id9">
+<h3>3. 결론<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>2026년 1월 23일 이후의 매물 급증 현상은 <strong>계절적 요인이 아닌 정책적 요인에 의한 것</strong>으로 판단됩니다. 특히 2024년과 2025년의 동기간 데이터와 비교했을 때, 2026년의 기울기는 확연히 다른 양상을 보이고 있어, 다주택자들이 정부 발표를 심각한 매도 신호로 받아들이고 있음을 알 수 있습니다.</p>
+</section>
+</section>
+<section id="iii">
+<h2><span style="color: blue;"><strong>4. 질문 III</strong></span><a class="headerlink" href="#iii" title="Link to this heading">#</a></h2>
+<p><span style="color: blue;"><strong>매물 급증이 정책적 요인에 의한 것이라는 확신을 높이기 위해 추가적으로 살펴봐야할 실증 분석을 추천해줘</strong></span></p>
+</section>
+<section id="id10">
+<h2><strong>Gemini 분석</strong><a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
+<p>매물 급증이 단순한 우연이나 다른 거시경제적 요인(금리, 경기 침체 등)이 아니라, <strong>‘1.23 양도세 유예 연장 불가 방침’이라는 특정 정책</strong>에 기인했다는 인과관계를 더욱 견고하게 입증하기 위해 다음과 같은 실증 분석 방법론들을 제안합니다.</p>
+<hr class="docutils" />
+<section id="difference-in-differences-did">
+<h3>1. 이중차분법 (Difference-in-Differences, DiD) 분석<a class="headerlink" href="#difference-in-differences-did" title="Link to this heading">#</a></h3>
+<p>가장 강력한 인과추론 도구입니다. 서울 전체가 아니라, <strong>‘다주택자가 많이 보유했을 것으로 추정되는 집단(처치군)’</strong> 과 <strong>‘실거주 비율이 높은 집단(대조군)’</strong> 을 나누어 매물 증가폭을 비교해야 합니다.</p>
+<ul class="simple">
+<li><p><strong>가설:</strong> 다주택자 비중이 높은 지역/단지일수록 1.23 이후 매물 증가율이 더 가파를 것이다.</p></li>
+<li><p><strong>분석 방법:</strong></p>
+<ul>
+<li><p><strong>처치군 (Treatment Group):</strong> 갭투자 성지(노원, 도봉, 강북 등 ‘노도강’ 지역) 또는 전세가율이 높은 소형 평수 아파트.</p></li>
+<li><p><strong>대조군 (Control Group):</strong> 고가 1주택 실거주 위주 지역(강남, 서초 일부 대형 평수) 또는 토지거래허가구역(실거주 의무로 갭투자 불가).</p></li>
+<li><p><strong>확인 지표:</strong> 두 그룹의 매물 추세선이 1.23 이전에는 평행(Parallel trend)하다가, 1.23 이후 격차가 벌어지는지(Divergence) 확인.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="granger-causality-test">
+<h3>2. 가격-매물량 상관관계 분석 (Granger Causality Test 변형)<a class="headerlink" href="#granger-causality-test" title="Link to this heading">#</a></h3>
+<p>매물이 늘어난 성격을 규명하는 것입니다. 다주택자가 시간에 쫓겨 던지는 물량이라면 <strong>‘호가(Asking Price)’</strong> 의 하락이 동반되어야 합니다.</p>
+<ul class="simple">
+<li><p><strong>가설:</strong> 정책 충격으로 인한 패닉 셀링(Panic Selling)이라면, 매물량 증가는 시차를 두고 호가 하락을 선행(Granger cause)할 것이다.</p></li>
+<li><p><strong>분석 방법:</strong></p>
+<ul>
+<li><p>주간 단위 매물 건수와 주간 단위 호가 변동률의 시차 상관관계(Cross-correlation) 분석.</p></li>
+<li><p>만약 매물은 급증하는데 호가가 버티고 있다면 ‘간보기 매물’이고, 호가가 뚝뚝 떨어진다면 ‘절세 급매물’로 해석 가능.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="interrupted-time-series-its">
+<h3>3. 단절적 시계열 분석 (Interrupted Time Series, ITS)<a class="headerlink" href="#interrupted-time-series-its" title="Link to this heading">#</a></h3>
+<p>현재 눈으로 확인한 꺾은선 그래프를 통계적으로 검증하는 방식입니다.</p>
+<ul class="simple">
+<li><p><strong>가설:</strong> 2026.1.23 시점을 기준으로 시계열의 <strong>‘기울기(Slope)’</strong> 와 <strong>‘절편(Level)’</strong> 이 통계적으로 유의미하게 변화했다.</p></li>
+<li><p><strong>분석 방법:</strong></p>
+<ul>
+<li><p>회귀식: <span class="math notranslate nohighlight">\(Y_t = \beta_0 + \beta_1 T + \beta_2 D_t + \beta_3 (T \times D_t) + \epsilon_t\)</span></p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(Y_t\)</span>: 매물 건수</p></li>
+<li><p><span class="math notranslate nohighlight">\(T\)</span>: 시간 경과</p></li>
+<li><p><span class="math notranslate nohighlight">\(D_t\)</span>: 정책 발표일 이후 더미 변수 (0 or 1)</p></li>
+<li><p><span class="math notranslate nohighlight">\(T \times D_t\)</span>: 정책 발표 후 시간 경과 (기울기 변화 확인용)</p></li>
+</ul>
+</li>
+<li><p><span class="math notranslate nohighlight">\(\beta_3\)</span> (기울기 변화 계수)가 양(+)의 방향으로 통계적으로 유의한지 검정(t-test).</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id11">
+<h3>4. 텍스트 마이닝을 통한 ‘급매’ 키워드 분석<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<p>정량적 데이터(건수)의 한계를 보완하기 위해 비정형 데이터(매물 설명)를 분석합니다.</p>
+<ul class="simple">
+<li><p><strong>가설:</strong> 1.23 이후 등록된 매물의 설명(Description)에 ‘양도세’, ‘급매’, ‘절세’, ‘법인’, ‘주인직접’ 등의 키워드 빈도가 유의미하게 증가했을 것이다.</p></li>
+<li><p><strong>분석 방법:</strong></p>
+<ul>
+<li><p>네이버 부동산 등의 매물 상세 설명 텍스트 크롤링.</p></li>
+<li><p>기간별(발표 전 vs 후) TF-IDF 분석을 통해 1.23 이후 새롭게 부상한 특징 단어 추출.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="control-variables">
+<h3>5. 거시 변수 통제 회귀분석 (Control Variables)<a class="headerlink" href="#control-variables" title="Link to this heading">#</a></h3>
+<p>매물 증가가 금리 인상이나 대출 규제 등 다른 요인 때문일 수 있다는 반박을 차단하기 위함입니다.</p>
+<ul class="simple">
+<li><p><strong>분석 방법:</strong></p>
+<ul>
+<li><p>매물 건수를 종속변수로 두고, 다음을 독립변수로 포함하여 다중회귀분석 수행.</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(X_1\)</span>: 시장 금리 (국고채 3년물 등)</p></li>
+<li><p><span class="math notranslate nohighlight">\(X_2\)</span>: KOSPI 지수 (경기 심리 대리 변수)</p></li>
+<li><p><span class="math notranslate nohighlight">\(X_3\)</span>: 계절 더미</p></li>
+<li><p><span class="math notranslate nohighlight">\(X_4\)</span>: <strong>정책 더미 (1.23 이후)</strong></p></li>
+</ul>
+</li>
+<li><p>다른 변수(<span class="math notranslate nohighlight">\(X_1, X_2, X_3\)</span>)를 통제한 상태에서도 <span class="math notranslate nohighlight">\(X_4\)</span>의 계수가 유의미하게 크다면 정책 효과가 입증됨.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="id12">
+<h2><strong>참고: 파이썬 코드</strong><a class="headerlink" href="#id12" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.dates</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mdates</span>
+
+<span class="c1"># 데이터셋 불러오기</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../Data/seoul_apt_listings.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;일자&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;일자&#39;</span><span class="p">])</span>
+
+<span class="c1"># 분석 대상 기간 필터링 (2025년 12월 ~ 2026년 2월)</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;일자&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="s1">&#39;2025-12-01&#39;</span><span class="p">)</span>
+<span class="n">df_recent</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;일자&#39;</span><span class="p">)</span>
+
+<span class="c1"># 주요 날짜 설정</span>
+<span class="n">announcement_date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="s1">&#39;2026-01-23&#39;</span><span class="p">)</span>
+<span class="n">end_date</span> <span class="o">=</span> <span class="n">df_recent</span><span class="p">[</span><span class="s1">&#39;일자&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+<span class="c1"># 통계 산출</span>
+<span class="c1"># 1. 발표 이전 추세 (1월 1일 ~ 1월 23일)</span>
+<span class="n">pre_period</span> <span class="o">=</span> <span class="n">df_recent</span><span class="p">[(</span><span class="n">df_recent</span><span class="p">[</span><span class="s1">&#39;일자&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="s1">&#39;2026-01-01&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df_recent</span><span class="p">[</span><span class="s1">&#39;일자&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">announcement_date</span><span class="p">)]</span>
+<span class="n">post_period</span> <span class="o">=</span> <span class="n">df_recent</span><span class="p">[(</span><span class="n">df_recent</span><span class="p">[</span><span class="s1">&#39;일자&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">announcement_date</span><span class="p">)]</span>
+
+<span class="c1"># 특정 시점의 값 추출</span>
+<span class="n">val_jan23</span> <span class="o">=</span> <span class="n">df_recent</span><span class="p">[</span><span class="n">df_recent</span><span class="p">[</span><span class="s1">&#39;일자&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">announcement_date</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">val_latest</span> <span class="o">=</span> <span class="n">df_recent</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># 증가율 계산</span>
+<span class="n">sale_growth</span> <span class="o">=</span> <span class="p">(</span><span class="n">val_latest</span><span class="p">[</span><span class="s1">&#39;매매&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">val_jan23</span><span class="p">[</span><span class="s1">&#39;매매&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="n">val_jan23</span><span class="p">[</span><span class="s1">&#39;매매&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">jeonse_growth</span> <span class="o">=</span> <span class="p">(</span><span class="n">val_latest</span><span class="p">[</span><span class="s1">&#39;전세&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">val_jan23</span><span class="p">[</span><span class="s1">&#39;전세&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="n">val_jan23</span><span class="p">[</span><span class="s1">&#39;전세&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">monthly_growth</span> <span class="o">=</span> <span class="p">(</span><span class="n">val_latest</span><span class="p">[</span><span class="s1">&#39;월세&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">val_jan23</span><span class="p">[</span><span class="s1">&#39;월세&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="n">val_jan23</span><span class="p">[</span><span class="s1">&#39;월세&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Jan 23 Sale: </span><span class="si">{</span><span class="n">val_jan23</span><span class="p">[</span><span class="s1">&#39;매매&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, Latest Sale: </span><span class="si">{</span><span class="n">val_latest</span><span class="p">[</span><span class="s1">&#39;매매&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, Growth: </span><span class="si">{</span><span class="n">sale_growth</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Jan 23 Jeonse: </span><span class="si">{</span><span class="n">val_jan23</span><span class="p">[</span><span class="s1">&#39;전세&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, Latest Jeonse: </span><span class="si">{</span><span class="n">val_latest</span><span class="p">[</span><span class="s1">&#39;전세&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, Growth: </span><span class="si">{</span><span class="n">jeonse_growth</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+
+<span class="c1"># 시각화</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_recent</span><span class="p">[</span><span class="s1">&#39;일자&#39;</span><span class="p">],</span> <span class="n">df_recent</span><span class="p">[</span><span class="s1">&#39;매매&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Sale (Maemae)&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_recent</span><span class="p">[</span><span class="s1">&#39;일자&#39;</span><span class="p">],</span> <span class="n">df_recent</span><span class="p">[</span><span class="s1">&#39;전세&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Jeonse&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_recent</span><span class="p">[</span><span class="s1">&#39;일자&#39;</span><span class="p">],</span> <span class="n">df_recent</span><span class="p">[</span><span class="s1">&#39;월세&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Monthly Rent&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+
+<span class="c1"># 발표일 표시</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">announcement_date</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Announcement (Jan 23)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">announcement_date</span><span class="p">,</span> <span class="n">df_recent</span><span class="p">[</span><span class="s1">&#39;매매&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="s1">&#39; Policy Announcement&#39;</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Seoul Apt Listings Trend (Dec 2025 - Feb 2026)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Number of Listings&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">mdates</span><span class="o">.</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jan 23 Sale: 56219, Latest Sale: 63745, Growth: 13.39%
+Jan 23 Jeonse: 22156, Latest Jeonse: 20422, Growth: -7.83%
+</pre></div>
+</div>
+<img alt="../_images/937c92378a1e5518e1ffa6c44de7a6c2ce198a4a6e85731a76c0fc3d987ab748.png" src="../_images/937c92378a1e5518e1ffa6c44de7a6c2ce198a4a6e85731a76c0fc3d987ab748.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.dates</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mdates</span>
+
+<span class="c1"># 데이터셋 불러오기</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../Data/seoul_apt_listings.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;일자&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;일자&#39;</span><span class="p">])</span>
+
+<span class="c1"># 연도별 비교를 위한 분석 기간 설정 (1월 23일 ~ 2월 13일)</span>
+<span class="c1"># 2024년, 2025년, 2026년을 비교</span>
+<span class="n">target_years</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">2025</span><span class="p">,</span> <span class="mi">2026</span><span class="p">]</span>
+<span class="n">period_start_md</span> <span class="o">=</span> <span class="s1">&#39;01-23&#39;</span>
+<span class="n">period_end_md</span> <span class="o">=</span> <span class="s1">&#39;02-13&#39;</span>
+
+<span class="n">comparison_data</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2024</span><span class="p">:</span> <span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="mi">2025</span><span class="p">:</span> <span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="mi">2026</span><span class="p">:</span> <span class="s1">&#39;red&#39;</span><span class="p">}</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2024</span><span class="p">:</span> <span class="s1">&#39;2024 (Normal Year)&#39;</span><span class="p">,</span> <span class="mi">2025</span><span class="p">:</span> <span class="s1">&#39;2025 (Normal Year)&#39;</span><span class="p">,</span> <span class="mi">2026</span><span class="p">:</span> <span class="s1">&#39;2026 (Policy Effect)&#39;</span><span class="p">}</span>
+<span class="n">styles</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2024</span><span class="p">:</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="mi">2025</span><span class="p">:</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="mi">2026</span><span class="p">:</span> <span class="s1">&#39;-&#39;</span><span class="p">}</span>
+
+<span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">target_years</span><span class="p">:</span>
+    <span class="n">start_date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s1">-</span><span class="si">{</span><span class="n">period_start_md</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">end_date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s1">-</span><span class="si">{</span><span class="n">period_end_md</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># 해당 연도의 기간에 해당하는 데이터 필터링</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;일자&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">start_date</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;일자&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">end_date</span><span class="p">)</span>
+    <span class="n">period_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;일자&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">period_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="c1"># 해당 연도 1월 23일 기준 변동률(%) 계산</span>
+        <span class="n">base_value</span> <span class="o">=</span> <span class="n">period_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;매매&#39;</span><span class="p">]</span>
+        <span class="n">period_df</span><span class="p">[</span><span class="s1">&#39;change_rate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">period_df</span><span class="p">[</span><span class="s1">&#39;매매&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">base_value</span><span class="p">)</span> <span class="o">/</span> <span class="n">base_value</span> <span class="o">*</span> <span class="mi">100</span>
+        
+        <span class="c1"># 매물 증감 수치 계산</span>
+        <span class="n">start_listings</span> <span class="o">=</span> <span class="n">period_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;매매&#39;</span><span class="p">]</span>
+        <span class="n">end_listings</span> <span class="o">=</span> <span class="n">period_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;매매&#39;</span><span class="p">]</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">end_listings</span> <span class="o">-</span> <span class="n">start_listings</span>
+        <span class="n">pct_change</span> <span class="o">=</span> <span class="p">(</span><span class="n">delta</span> <span class="o">/</span> <span class="n">start_listings</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+        
+        <span class="n">comparison_data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s1">&#39;Year&#39;</span><span class="p">:</span> <span class="n">year</span><span class="p">,</span>
+            <span class="s1">&#39;Start_Listings&#39;</span><span class="p">:</span> <span class="n">start_listings</span><span class="p">,</span>
+            <span class="s1">&#39;End_Listings&#39;</span><span class="p">:</span> <span class="n">end_listings</span><span class="p">,</span>
+            <span class="s1">&#39;Change_Abs&#39;</span><span class="p">:</span> <span class="n">delta</span><span class="p">,</span>
+            <span class="s1">&#39;Change_Pct&#39;</span><span class="p">:</span> <span class="n">pct_change</span>
+        <span class="p">})</span>
+        
+        <span class="c1"># 그래프 그리기</span>
+        <span class="c1"># 공통 X축 생성 (1월 23일 경과 일수 기준)</span>
+        <span class="n">days_passed</span> <span class="o">=</span> <span class="p">(</span><span class="n">period_df</span><span class="p">[</span><span class="s1">&#39;일자&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">start_date</span><span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">days</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">days_passed</span><span class="p">,</span> <span class="n">period_df</span><span class="p">[</span><span class="s1">&#39;change_rate&#39;</span><span class="p">],</span> 
+                 <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">year</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">year</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="n">styles</span><span class="p">[</span><span class="n">year</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.5</span> <span class="k">if</span> <span class="n">year</span><span class="o">==</span><span class="mi">2026</span> <span class="k">else</span> <span class="mf">1.5</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Comparison of Listing Inventory Changes (Jan 23 - Feb 13)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Days after Jan 23&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Cumulative Change Rate (%)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># 종료 지점에 수치 레이블 추가</span>
+<span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">target_years</span><span class="p">:</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">comparison_data</span> <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;Year&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">year</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;Change_Pct&#39;</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;Change_Pct&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># 비교 표 출력</span>
+<span class="n">comp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">comparison_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">comp_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c1753982c75a7b22a43694960ae531a9d9a707727667830fb477bc3bd99bf742.png" src="../_images/c1753982c75a7b22a43694960ae531a9d9a707727667830fb477bc3bd99bf742.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   Year  Start_Listings  End_Listings  Change_Abs  Change_Pct
+0  2024           76010         73536       -2474   -3.254835
+1  2025           89020         90238        1218    1.368232
+2  2026           56219         63745        7526   13.386933
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="07_%EB%8C%93%EA%B8%80_%ED%86%B5%EA%B3%84_%EB%B6%84%EC%84%9D.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><strong>7장 댓글 통계 분석</strong></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="09_%EC%84%A4%EB%AC%B8%EC%A1%B0%EC%82%AC_%EB%B6%84%EC%84%9D.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><strong>9장 설문조사 분석</strong></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span style="color: blue;"><strong>1. 데이터 입력</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gemini"><strong>Gemini 데이터세트 구축</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">데이터 구조 예시</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#i"><span style="color: blue;"><strong>2. 질문 I</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">주요 변화 분석 (2026.1.23 ~ 2026.2.13)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">시각적 분석</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ii"><span style="color: blue;"><strong>3. 질문 II</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">1. 연도별 비교 분석 (1.23 ~ 2.13 기간)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vs">2. 계절성 vs 정책 효과</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">3. 결론</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iii"><span style="color: blue;"><strong>4. 질문 III</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#difference-in-differences-did">1. 이중차분법 (Difference-in-Differences, DiD) 분석</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#granger-causality-test">2. 가격-매물량 상관관계 분석 (Granger Causality Test 변형)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interrupted-time-series-its">3. 단절적 시계열 분석 (Interrupted Time Series, ITS)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">4. 텍스트 마이닝을 통한 ‘급매’ 키워드 분석</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#control-variables">5. 거시 변수 통제 회귀분석 (Control Variables)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12"><strong>참고: 파이썬 코드</strong></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By 김원경 최필선
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

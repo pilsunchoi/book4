@@ -1,0 +1,1549 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>17장 의사결정 트리 모형 &#8212; 데이터 분석 이제 AI에게 맡겨라</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/17_의사결정_트리_모형';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="18장 트리 기반 모형" href="18_%ED%8A%B8%EB%A6%AC_%EA%B8%B0%EB%B0%98_%EB%AA%A8%ED%98%95.html" />
+    <link rel="prev" title="16장 로지스틱 회귀" href="16_%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1_%ED%9A%8C%EA%B7%80.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00_%EC%84%9C%EB%AC%B8.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="00_%EC%84%9C%EB%AC%B8.html">
+                    서문
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_%EC%8B%9C%ED%97%98%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>1장 시험성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_%EB%8C%80%ED%86%B5%EB%A0%B9_%EC%A7%80%EC%A7%80%EC%9C%A8_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>2장 대통령 지지율 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_KBO_%EC%A0%95%EA%B7%9C%EC%8B%9C%EC%A6%8C_%ED%8C%80%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>3장 KBO 정규시즌 팀성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_PPP_%EA%B7%B8%EB%9E%98%ED%94%84_%EB%B6%84%EC%84%9D.html"><strong>4장 PPP 그래프 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_%EC%84%B8%EA%B3%84%EC%9D%80%ED%96%89_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EC%B6%94%EC%B6%9C.html"><strong>5장 세계은행 데이터 추출</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_%EC%A3%BC%EA%B0%80_%EC%98%88%EC%B8%A1_%EC%8B%9C%EC%8A%A4%ED%85%9C_%EA%B5%AC%EC%B6%95.html"><strong>6장 주가 예측 시스템 구축</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_%EB%8C%93%EA%B8%80_%ED%86%B5%EA%B3%84_%EB%B6%84%EC%84%9D.html"><strong>7장 댓글 통계 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_%EC%84%9C%EC%9A%B8_%EC%95%84%ED%8C%8C%ED%8A%B8_%EB%A7%A4%EB%AC%BC_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>8장 서울 아파트 매물 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_%EC%84%A4%EB%AC%B8%EC%A1%B0%EC%82%AC_%EB%B6%84%EC%84%9D.html"><strong>9장 설문조사 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_%ED%83%90%EC%83%89%EC%A0%81_%EC%9A%94%EC%9D%B8%EB%B6%84%EC%84%9D.html"><strong>10장 탐색적 요인분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_%EB%B3%B4%EC%8A%A4%ED%84%B4_%EC%A3%BC%ED%83%9D_%EA%B0%80%EA%B2%A9_%EB%B6%84%EC%84%9D.html"><strong>11장 보스턴 주택 가격 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_%EC%A2%85%EB%B6%80%EC%84%B8%EC%99%80_%EC%9B%94%EC%84%B8%EC%9D%98_%EA%B4%80%EA%B3%84.html"><strong>12장 종부세와 월세의 관계</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_%EB%8C%80%ED%98%95%EB%A7%88%ED%8A%B8_%EC%87%A0%EB%9D%BD_%EC%9B%90%EC%9D%B8_%EC%8B%A4%EC%A6%9D%EB%B6%84%EC%84%9D.html"><strong>13장 대형마트 쇠락 원인 실증분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_%EC%8B%A0%EC%83%9D%EC%95%84_%ED%8A%B9%EB%A1%80%EB%8C%80%EC%B6%9C%EA%B3%BC_%EC%B6%9C%EC%82%B0%EC%9C%A8.html"><strong>14장 신생아 특례대출과 출산율</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_Ridge_%EB%B0%8F_Lasso_%ED%9A%8C%EA%B7%80.html"><strong>15장 Ridge 및 Lasso 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1_%ED%9A%8C%EA%B7%80.html"><strong>16장 로지스틱 회귀</strong></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>17장 의사결정 트리 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_%ED%8A%B8%EB%A6%AC_%EA%B8%B0%EB%B0%98_%EB%AA%A8%ED%98%95.html"><strong>18장 트리 기반 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="19_%EB%94%A5%EB%9F%AC%EB%8B%9D_%EA%B3%B5%EB%B6%80%ED%95%98%EA%B8%B0.html"><strong>19장 딥러닝 공부하기</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_%ED%8C%A8%EB%84%90_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>20장 패널 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="21_%EA%B3%A8%EB%B0%80%EB%8F%84_%EA%B2%80%EC%82%AC_%EA%B2%B0%EA%B3%BC_%ED%95%B4%EC%84%9D.html"><strong>21장 골밀도 검사 결과 해석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_%EC%9A%B4%EB%8F%99%ED%95%99_Kinematics.html"><strong>22장 운동학 (Kinematics)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_%EC%B6%95%EA%B5%AC_%EA%B2%BD%EA%B8%B0_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>23장 축구 경기 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_%ED%8F%AD%EA%B2%A9_%ED%8C%8C%EA%B4%B4%EB%A0%A5_%EB%B6%84%EC%84%9D.html"><strong>24장 폭격 파괴력 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_%EC%84%B8%EA%B3%84_%ED%99%94%EC%9E%A5%ED%92%88_%EA%B5%90%EC%97%AD_%ED%8A%B8%EB%A0%8C%EB%93%9C.html"><strong>25장 세계 화장품 교역 트렌드</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_Texas_Special_Education.html"><strong>26장 텍사스주 특수교육 현황</strong></a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4/issues/new?title=Issue%20on%20page%20%2Fnotebooks/17_의사결정_트리_모형.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/17_의사결정_트리_모형.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>17장 의사결정 트리 모형</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span style="color: blue;"><strong>1. 데이터 입력</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gemini"><strong>Gemini 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">변수 설명</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">데이터셋 특징</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#describe">기초 통계량(<code class="docutils literal notranslate"><span class="pre">describe</span></code>)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><span style="color: blue;"><strong>2. 트리 모델에 의한 생존 분류</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">의사결정 나무 모델 소개</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">핵심 개념</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">타이타닉 생존 예측 모델링</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">1. 추정 결과 해석 (트리 그림 설명)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">1.1 루트 노드 (가장 중요한 질문)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">1.2 왼쪽 가지 (남성 그룹)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">1.3 오른쪽 가지 (여성 그룹)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">2. 주요 변수 중요도</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">3. 요약</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id16"><span style="color: blue;"><strong>3. 분류 성과</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id17"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#confusion-matrix">1. 혼동 행렬 (Confusion Matrix) 분석</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-metrics">2. 주요 성능 지표 (Performance Metrics)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#roc-auc-area-under-curve">3. ROC 곡선 및 AUC (Area Under Curve)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">종합 평가</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id19"><span style="color: blue;"><strong>4. 가지치기</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id20"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pruning">가지치기 (Pruning) 란?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">가지치기의 종류</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">타이타닉 데이터 예시 (사후 가지치기 적용)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#full-tree">1. 과적합된 모델 (Full Tree)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alpha">2. 가지치기 수행 과정 (Alpha 값 조정)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pruned-tree">3. 최적의 가지치기 모델 (Pruned Tree)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pruned-decision-tree">4. 시각화된 트리 (Pruned Decision Tree)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id23"><span style="color: blue;"><strong>5. 변수 중요도 분석</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#methodology">1. 방법론 (Methodology)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">2. 타이타닉 데이터 분석 결과</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">3. 해석</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id27"><strong>참고: 파이썬 코드</strong></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><strong>17장 의사결정 트리 모형</strong><a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2><span style="color: blue;"><strong>1. 데이터 입력</strong></span><a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p><img alt="Tree1" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/17-1.png" /></p>
+<p>출처: 데이터세트는 Kaggle에서 주최한 머신러닝 대회 “<a class="reference external" href="https://www.kaggle.com/competitions/titanic/overview">Titanic - Machine Learning from Disaster</a>”에서 제공한 것을 사용한다.</p>
+</section>
+<section id="gemini">
+<h2><strong>Gemini 설명</strong><a class="headerlink" href="#gemini" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">titanic_train.csv</span></code> 파일은 총 891명의 승객 정보와 12개의 컬럼으로 구성되어 있다.</p>
+<section id="id3">
+<h3>변수 설명<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>변수명</p></th>
+<th class="head"><p>설명</p></th>
+<th class="head"><p>데이터 타입</p></th>
+<th class="head"><p>비고</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PassengerId</span></code></p></td>
+<td><p>승객 고유 ID</p></td>
+<td><p>Integer</p></td>
+<td><p>단순 식별자</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Survived</span></code></p></td>
+<td><p>생존 여부</p></td>
+<td><p>Integer</p></td>
+<td><p>0 = 사망, 1 = 생존 (타겟 변수)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Pclass</span></code></p></td>
+<td><p>객실 등급</p></td>
+<td><p>Integer</p></td>
+<td><p>1 = 1등석, 2 = 2등석, 3 = 3등석</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Name</span></code></p></td>
+<td><p>승객 이름</p></td>
+<td><p>String</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Sex</span></code></p></td>
+<td><p>성별</p></td>
+<td><p>String</p></td>
+<td><p>male, female</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Age</span></code></p></td>
+<td><p>나이</p></td>
+<td><p>Float</p></td>
+<td><p>177개의 결측치 존재</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SibSp</span></code></p></td>
+<td><p>동승한 형제자매 및 배우자 수</p></td>
+<td><p>Integer</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Parch</span></code></p></td>
+<td><p>동승한 부모 및 자녀 수</p></td>
+<td><p>Integer</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Ticket</span></code></p></td>
+<td><p>티켓 번호</p></td>
+<td><p>String</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Fare</span></code></p></td>
+<td><p>요금</p></td>
+<td><p>Float</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Cabin</span></code></p></td>
+<td><p>객실 번호</p></td>
+<td><p>String</p></td>
+<td><p>687개의 결측치 존재 (데이터의 약 77%가 결측)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Embarked</span></code></p></td>
+<td><p>탑승 항구</p></td>
+<td><p>String</p></td>
+<td><p>C = 셰르부르, Q = 퀸스타운, S = 사우스햄튼 (2개의 결측치 존재)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id4">
+<h3>데이터셋 특징<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>결측치(Missing Values)</strong>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cabin</span></code> 변수는 687개의 결측치를 가지고 있어 대부분의 데이터가 비어 있다.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Age</span></code> 변수는 177개의 결측치가 있으며, 이를 처리하는 것이 분석에서 중요하다.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Embarked</span></code> 변수는 2개의 결측치가 있다.</p></li>
+</ul>
+</li>
+<li><p><strong>데이터 타입</strong>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Age</span></code>와 <code class="docutils literal notranslate"><span class="pre">Fare</span></code>는 실수형(Float)이다.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Name</span></code>, <code class="docutils literal notranslate"><span class="pre">Sex</span></code>, <code class="docutils literal notranslate"><span class="pre">Ticket</span></code>, <code class="docutils literal notranslate"><span class="pre">Cabin</span></code>, <code class="docutils literal notranslate"><span class="pre">Embarked</span></code>는 문자열(Object) 데이터이다.</p></li>
+<li><p>나머지는 정수형(Integer)이다.</p></li>
+</ul>
+</li>
+<li><p><strong>생존율</strong>:</p>
+<ul>
+<li><p>전체 891명 중 약 38.4%가 생존(<code class="docutils literal notranslate"><span class="pre">Survived</span></code>=1)하였다.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="describe">
+<h3>기초 통계량(<code class="docutils literal notranslate"><span class="pre">describe</span></code>)<a class="headerlink" href="#describe" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">PassengerId</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">Survived</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">Pclass</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">Age</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">SibSp</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">Parch</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">Fare</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>count</strong></p></td>
+<td><p>891.000000</p></td>
+<td><p>891.000000</p></td>
+<td><p>891.000000</p></td>
+<td><p>714.000000</p></td>
+<td><p>891.000000</p></td>
+<td><p>891.000000</p></td>
+<td><p>891.000000</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>mean</strong></p></td>
+<td><p>446.000000</p></td>
+<td><p>0.383838</p></td>
+<td><p>2.308642</p></td>
+<td><p>29.699118</p></td>
+<td><p>0.523008</p></td>
+<td><p>0.381594</p></td>
+<td><p>32.204208</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>std</strong></p></td>
+<td><p>257.353842</p></td>
+<td><p>0.486592</p></td>
+<td><p>0.836071</p></td>
+<td><p>14.526497</p></td>
+<td><p>1.102743</p></td>
+<td><p>0.806057</p></td>
+<td><p>49.693429</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>min</strong></p></td>
+<td><p>1.000000</p></td>
+<td><p>0.000000</p></td>
+<td><p>1.000000</p></td>
+<td><p>0.420000</p></td>
+<td><p>0.000000</p></td>
+<td><p>0.000000</p></td>
+<td><p>0.000000</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>25%</strong></p></td>
+<td><p>223.500000</p></td>
+<td><p>0.000000</p></td>
+<td><p>2.000000</p></td>
+<td><p>20.125000</p></td>
+<td><p>0.000000</p></td>
+<td><p>0.000000</p></td>
+<td><p>7.910400</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>50%</strong></p></td>
+<td><p>446.000000</p></td>
+<td><p>0.000000</p></td>
+<td><p>3.000000</p></td>
+<td><p>28.000000</p></td>
+<td><p>0.000000</p></td>
+<td><p>0.000000</p></td>
+<td><p>14.454200</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>75%</strong></p></td>
+<td><p>668.500000</p></td>
+<td><p>1.000000</p></td>
+<td><p>3.000000</p></td>
+<td><p>38.000000</p></td>
+<td><p>1.000000</p></td>
+<td><p>0.000000</p></td>
+<td><p>31.000000</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>max</strong></p></td>
+<td><p>891.000000</p></td>
+<td><p>1.000000</p></td>
+<td><p>3.000000</p></td>
+<td><p>80.000000</p></td>
+<td><p>8.000000</p></td>
+<td><p>6.000000</p></td>
+<td><p>512.329200</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="id5">
+<h2><span style="color: blue;"><strong>2. 트리 모델에 의한 생존 분류</strong></span><a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+</section>
+<section id="id6">
+<h2><strong>Gemini 분석</strong><a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<section id="id7">
+<h3>의사결정 나무 모델 소개<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p><img alt="Tree2" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/17-2.png" /></p>
+<p>의사결정 나무(Decision Tree)는 데이터가 가진 특징을 바탕으로 ‘스무고개’ 놀이를 하듯 예/아니오 질문을 이어가며 정답(타겟)을 찾아가는 모델이다. 직관적이고 해석하기 쉬워 널리 사용된다.</p>
+<section id="id8">
+<h4>핵심 개념<a class="headerlink" href="#id8" title="Link to this heading">#</a></h4>
+<p>이 모델은 데이터를 가장 잘 구분할 수 있는 질문을 찾아 나무 모양의 규칙을 만든다.</p>
+<ul class="simple">
+<li><p><strong>노드 (Node)</strong>: 질문이나 결과가 담긴 상자.</p>
+<ul>
+<li><p><strong>루트 노드 (Root Node)</strong>: 맨 꼭대기에 있는 첫 번째 질문. 가장 중요한 변수가 여기 배치된다.</p></li>
+<li><p><strong>내부 노드 (Internal Node)</strong>: 중간에 위치한 질문들.</p></li>
+<li><p><strong>리프 노드 (Leaf Node)</strong>: 더 이상 질문하지 않고 최종 결정을 내리는 끝 부분.</p></li>
+</ul>
+</li>
+<li><p><strong>엣지 (Edge)</strong>: 노드와 노드를 연결하는 선. 질문에 대한 대답(True/False)에 따라 갈라진다.</p></li>
+<li><p><strong>불순도 (Impurity)</strong>: 질문을 던졌을 때 정답과 오답이 얼마나 섞여 있는지를 나타내는 지표(주로 Gini 계수나 엔트로피 사용). 모델은 불순도가 낮아지는(순수해지는) 방향으로 질문을 만든다.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id9">
+<h3>타이타닉 생존 예측 모델링<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>타이타닉 데이터를 이용해 생존자(<code class="docutils literal notranslate"><span class="pre">Survived</span></code>)를 분류하는 의사결정 나무를 만든다. 해석을 위해 트리의 깊이(<code class="docutils literal notranslate"><span class="pre">max_depth</span></code>)는 3으로 제한한다.</p>
+<p><strong>전처리 내용:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Sex</span></code>: 문자열을 숫자로 변환 (male=0, female=1).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Age</span></code>: 결측치를 중앙값으로 채움.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Embarked</span></code>: 분석 단순화를 위해 제외 (또는 숫자로 변환 가능하나 여기선 주요 변수 집중).</p></li>
+<li><p>사용 변수: <code class="docutils literal notranslate"><span class="pre">Pclass</span></code>, <code class="docutils literal notranslate"><span class="pre">Sex</span></code>, <code class="docutils literal notranslate"><span class="pre">Age</span></code>, <code class="docutils literal notranslate"><span class="pre">SibSp</span></code>, <code class="docutils literal notranslate"><span class="pre">Parch</span></code>, <code class="docutils literal notranslate"><span class="pre">Fare</span></code>.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id10">
+<h3>1. 추정 결과 해석 (트리 그림 설명)<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<p><img alt="Tree3" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/17-3.png" /></p>
+<p>위의 의사결정 나무 그림은 타이타닉 승객의 생존 여부를 어떻게 예측하는지 시각적으로 보여준다. 각 박스(노드)는 다음과 같은 정보를 담고 있다.</p>
+<ul class="simple">
+<li><p><strong>상단의 조건식</strong>: 데이터를 나누는 기준 질문 (예: <code class="docutils literal notranslate"><span class="pre">Sex</span> <span class="pre">&lt;=</span> <span class="pre">0.5</span></code>).</p></li>
+<li><p><strong>gini</strong>: 불순도 (0이면 완벽하게 분류됨, 0.5에 가까우면 섞여 있음).</p></li>
+<li><p><strong>samples</strong>: 해당 노드에 도달한 승객 수.</p></li>
+<li><p><strong>value</strong>: [사망자 수, 생존자 수].</p></li>
+<li><p><strong>class</strong>: 예측 결과 (사망(Dead) 또는 생존(Survived)).</p></li>
+</ul>
+<hr class="docutils" />
+<section id="id11">
+<h4>1.1 루트 노드 (가장 중요한 질문)<a class="headerlink" href="#id11" title="Link to this heading">#</a></h4>
+<p>가장 꼭대기에 있는 질문은 <code class="docutils literal notranslate"><span class="pre">Sex</span> <span class="pre">&lt;=</span> <span class="pre">0.5</span></code>이다.</p>
+<ul class="simple">
+<li><p><strong>해석</strong>: <code class="docutils literal notranslate"><span class="pre">Sex</span></code> 변수는 0(male)과 1(female)로 인코딩되었다.</p>
+<ul>
+<li><p>0.5 이하는 남성, 0.5 초과는 여성이다.</p></li>
+<li><p>즉, 생존에 가장 큰 영향을 미치는 변수는 <strong>성별(<code class="docutils literal notranslate"><span class="pre">Sex</span></code>)</strong> 이다.</p></li>
+</ul>
+</li>
+<li><p><strong>결과</strong>: 남성은 왼쪽 가지(Edge)로, 여성은 오른쪽 가지(Edge)로 이동한다.</p></li>
+</ul>
+</section>
+<section id="id12">
+<h4>1.2 왼쪽 가지 (남성 그룹)<a class="headerlink" href="#id12" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>첫 번째 분기</strong>: 남성 중에서도 <code class="docutils literal notranslate"><span class="pre">Age</span> <span class="pre">&lt;=</span> <span class="pre">6.5</span></code> (6.5세 이하)인 어린아이인지 묻는다.</p>
+<ul>
+<li><p><strong>Yes (아이)</strong>: 생존 가능성이 높아진다 (오른쪽 가지).</p></li>
+<li><p><strong>No (어른)</strong>: <code class="docutils literal notranslate"><span class="pre">Pclass</span></code> (객실 등급)이나 <code class="docutils literal notranslate"><span class="pre">Fare</span></code> (요금) 등을 따지지만, 대체로 사망 확률이 높다.</p></li>
+</ul>
+</li>
+<li><p><strong>특이점</strong>: 남성이더라도 아주 어린 아이들은 “여성과 아이 먼저”라는 원칙에 따라 생존 확률이 높게 나타난다.</p></li>
+</ul>
+</section>
+<section id="id13">
+<h4>1.3 오른쪽 가지 (여성 그룹)<a class="headerlink" href="#id13" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>첫 번째 분기</strong>: 여성 중에서도 <code class="docutils literal notranslate"><span class="pre">Pclass</span> <span class="pre">&lt;=</span> <span class="pre">2.5</span></code> (1, 2등석인지 3등석인지)를 묻는다.</p>
+<ul>
+<li><p><strong>Yes (1, 2등석)</strong>: 생존 확률이 매우 높다. (대부분 생존).</p></li>
+<li><p><strong>No (3등석)</strong>: <code class="docutils literal notranslate"><span class="pre">Fare</span></code> (요금)이나 <code class="docutils literal notranslate"><span class="pre">Age</span></code> (나이)에 따라 생존율이 갈린다.</p></li>
+</ul>
+</li>
+<li><p><strong>특이점</strong>: 여성은 기본적으로 생존율이 높지만, 3등석 여성은 상대적으로 생존율이 낮아진다.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id14">
+<h3>2. 주요 변수 중요도<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p>트리 모델이 학습 과정에서 어떤 변수를 중요하게 생각했는지 수치로 확인할 수 있다.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>변수</p></th>
+<th class="head"><p>중요도 (Feature Importance)</p></th>
+<th class="head"><p>비고</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Sex</span></code></p></td>
+<td><p><strong>가장 높음</strong></p></td>
+<td><p>생존 여부를 가르는 결정적 요인</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Pclass</span></code></p></td>
+<td><p>높음</p></td>
+<td><p>사회적 지위가 생존에 영향</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Age</span></code></p></td>
+<td><p>중간</p></td>
+<td><p>특히 남성 중 어린아이를 구별하는 데 중요</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Fare</span></code></p></td>
+<td><p>중간</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Pclass</span></code>와 연관됨</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id15">
+<h3>3. 요약<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<p>이 모델은 타이타닉 데이터에서 <strong>“여성 우선, 아이 우선, 그리고 부자(높은 등급 객실) 우선”</strong> 이라는 규칙을 스스로 학습해냈다. 복잡한 수식 없이 “스무고개” 질문만으로도 데이터의 핵심 패턴을 파악할 수 있다는 것이 의사결정 나무의 가장 큰 장점이다. 하지만 너무 깊게 학습하면(과적합) 새로운 데이터에는 맞지 않을 수 있어 가지치기(Pruning)가 필요하다.</p>
+</section>
+</section>
+<section id="id16">
+<h2><span style="color: blue;"><strong>3. 분류 성과</strong></span><a class="headerlink" href="#id16" title="Link to this heading">#</a></h2>
+</section>
+<section id="id17">
+<h2><strong>Gemini 분석</strong><a class="headerlink" href="#id17" title="Link to this heading">#</a></h2>
+<p>타이타닉 생존자 예측 모델(최대 깊이 3)의 성능을 테스트 데이터(전체 데이터의 20%)를 사용하여 평가하였다.</p>
+<section id="confusion-matrix">
+<h3>1. 혼동 행렬 (Confusion Matrix) 분석<a class="headerlink" href="#confusion-matrix" title="Link to this heading">#</a></h3>
+<p>혼동 행렬은 모델이 실제값(Actual)과 예측값(Predicted)을 어떻게 분류했는지 보여준다.</p>
+<p><img alt="Tree4" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/17-4.png" /></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p><strong>예측: 사망 (0)</strong></p></th>
+<th class="head"><p><strong>예측: 생존 (1)</strong></p></th>
+<th class="head"><p><strong>합계</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>실제: 사망 (0)</strong></p></td>
+<td><p><strong>92 (True Negative)</strong></p></td>
+<td><p>13 (False Positive)</p></td>
+<td><p>105</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>실제: 생존 (1)</strong></p></td>
+<td><p>23 (False Negative)</p></td>
+<td><p><strong>51 (True Positive)</strong></p></td>
+<td><p>74</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>합계</strong></p></td>
+<td><p>115</p></td>
+<td><p>64</p></td>
+<td><p>179</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul class="simple">
+<li><p><strong>정확하게 예측한 경우</strong>:</p>
+<ul>
+<li><p>사망자를 사망자로 예측: 92명</p></li>
+<li><p>생존자를 생존자로 예측: 51명</p></li>
+</ul>
+</li>
+<li><p><strong>잘못 예측한 경우</strong>:</p>
+<ul>
+<li><p>사망자를 생존자로 잘못 예측 (1종 오류): 13명</p></li>
+<li><p>생존자를 사망자로 잘못 예측 (2종 오류): 23명</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="performance-metrics">
+<h3>2. 주요 성능 지표 (Performance Metrics)<a class="headerlink" href="#performance-metrics" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>지표 (Metric)</p></th>
+<th class="head"><p>값 (Value)</p></th>
+<th class="head"><p>설명</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>정확도 (Accuracy)</strong></p></td>
+<td><p><strong>0.80</strong></p></td>
+<td><p>전체 예측 중 맞춘 비율이다. 약 80%의 확률로 생존 여부를 정확히 맞추었다.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>정밀도 (Precision)</strong></p></td>
+<td><p><strong>0.80</strong> (생존자 기준)</p></td>
+<td><p>모델이 ‘생존’이라고 예측한 사람 중 실제 생존자의 비율이다. (51 / 64)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>재현율 (Recall)</strong></p></td>
+<td><p><strong>0.69</strong> (생존자 기준)</p></td>
+<td><p>실제 생존자 중에서 모델이 ‘생존’이라고 맞춘 비율이다. (51 / 74)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>F1 점수 (F1-score)</strong></p></td>
+<td><p><strong>0.74</strong></p></td>
+<td><p>정밀도와 재현율의 조화 평균이다. 데이터 불균형을 고려한 종합적인 성능 지표이다.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul class="simple">
+<li><p><strong>해석</strong>:</p>
+<ul>
+<li><p><strong>사망자 예측 능력(Recall 0.88)이 생존자 예측 능력(Recall 0.69)보다 뛰어나다.</strong> 즉, 모델은 사망할 사람을 더 잘 찾아낸다. 이는 사망자 데이터가 더 많거나(다수 클래스), 사망하는 패턴이 더 명확하기 때문일 수 있다.</p></li>
+<li><p>생존자를 놓치는 경우(False Negative, 23명)가 사망자로 오인하는 경우(False Positive, 13명)보다 많다.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="roc-auc-area-under-curve">
+<h3>3. ROC 곡선 및 AUC (Area Under Curve)<a class="headerlink" href="#roc-auc-area-under-curve" title="Link to this heading">#</a></h3>
+<p><img alt="Tree5" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/17-5.png" /></p>
+<ul class="simple">
+<li><p><strong>ROC 곡선</strong>: 주황색 선이 왼쪽 위 모서리에 가까울수록 좋은 모델이다. 점선(무작위 추측)보다 위에 있으므로 의미 있는 예측을 하고 있다.</p></li>
+<li><p><strong>AUC 값</strong>: <strong>0.82</strong> (그래프 참조).</p></li>
+<li><p>AUC는 0.5(무작위)에서 1.0(완벽함) 사이의 값을 가진다.</p></li>
+<li><p>0.8 이상이면 일반적으로 <strong>우수한 성능</strong>의 모델로 평가된다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id18">
+<h3>종합 평가<a class="headerlink" href="#id18" title="Link to this heading">#</a></h3>
+<p>이 모델은 간단한 규칙(깊이 3)만으로도 약 <strong>80%의 정확도</strong>와 <strong>0.82의 AUC</strong>를 달성하여 준수한 예측 성능을 보인다. 다만, 실제 생존자를 찾아내는 비율(재현율)이 약 69%로 다소 낮으므로, 생존자를 더 잘 찾기 위해서는 모델의 복잡도를 높이거나(깊이 증가), 다른 변수를 추가하는 등의 개선이 필요할 수 있다.</p>
+</section>
+</section>
+<section id="id19">
+<h2><span style="color: blue;"><strong>4. 가지치기</strong></span><a class="headerlink" href="#id19" title="Link to this heading">#</a></h2>
+</section>
+<section id="id20">
+<h2><strong>Gemini 분석</strong><a class="headerlink" href="#id20" title="Link to this heading">#</a></h2>
+<section id="pruning">
+<h3>가지치기 (Pruning) 란?<a class="headerlink" href="#pruning" title="Link to this heading">#</a></h3>
+<p><strong>가지치기(Pruning)</strong> 는 의사결정 나무(Decision Tree)가 과적합(Overfitting)되는 것을 방지하기 위해 불필요한 가지를 제거하는 기법이다. 트리가 너무 복잡해지면 학습 데이터에만 지나치게 맞춰져(Overfitting), 새로운 데이터에 대한 예측 성능이 떨어지는 문제가 발생한다. 이를 해결하기 위해 트리의 크기를 줄이거나 가지를 쳐내어 일반화(Generalization) 성능을 높이는 것이다.</p>
+<section id="id21">
+<h4>가지치기의 종류<a class="headerlink" href="#id21" title="Link to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p><strong>사전 가지치기 (Pre-pruning)</strong></p></li>
+</ol>
+<ul class="simple">
+<li><p>트리를 생성하는 과정에서 특정 조건(제약)을 만족하지 않으면 더 이상 분할하지 않고 멈추는 방법이다.</p></li>
+<li><p>주로 <code class="docutils literal notranslate"><span class="pre">max_depth</span></code>(최대 깊이), <code class="docutils literal notranslate"><span class="pre">min_samples_split</span></code>(분할을 위한 최소 샘플 수), <code class="docutils literal notranslate"><span class="pre">min_samples_leaf</span></code>(리프 노드가 되기 위한 최소 샘플 수) 등의 하이퍼파라미터를 설정하여 수행한다.</p></li>
+<li><p>장점: 학습 시간이 빠르고 구현이 쉽다.</p></li>
+<li><p>단점: 중요한 패턴을 놓칠 수 있다(Underfitting 가능성).</p></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p><strong>사후 가지치기 (Post-pruning)</strong></p></li>
+</ol>
+<ul class="simple">
+<li><p>일단 트리를 최대한 깊게 학습시킨(Overfitting 상태) 후, 성능에 기여하지 않는 가지를 제거하는 방법이다.</p></li>
+<li><p><strong>비용 복잡도 가지치기 (Cost Complexity Pruning)</strong> 가 대표적이며, <code class="docutils literal notranslate"><span class="pre">ccp_alpha</span></code>라는 파라미터를 사용하여 트리의 복잡도와 불순도 감소량 사이의 균형을 맞춘다.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id22">
+<h3>타이타닉 데이터 예시 (사후 가지치기 적용)<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
+<p><img alt="Tree6" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/17-6.png" /></p>
+<p>위 그래프는 타이타닉 데이터에 <strong>비용 복잡도 가지치기(Cost Complexity Pruning)</strong> 를 적용한 결과이다.</p>
+<hr class="docutils" />
+<section id="full-tree">
+<h4>1. 과적합된 모델 (Full Tree)<a class="headerlink" href="#full-tree" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>깊이 (Depth)</strong>: 23 (매우 복잡함)</p></li>
+<li><p><strong>학습 정확도 (Train Acc)</strong>: <strong>97.89%</strong> (거의 완벽하게 외움)</p></li>
+<li><p><strong>테스트 정확도 (Test Acc)</strong>: <strong>75.98%</strong> (새로운 데이터에는 약함)</p></li>
+<li><p><strong>해석</strong>: 트리가 너무 깊고 복잡하여 학습 데이터의 노이즈까지 학습했기 때문에, 실제 예측 성능은 떨어진다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="alpha">
+<h4>2. 가지치기 수행 과정 (Alpha 값 조정)<a class="headerlink" href="#alpha" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ccp_alpha</span></code> 값을 0부터 점차 증가시키면서(가지치기 강도를 높이면서) 트리의 정확도 변화를 관찰하였다.</p></li>
+</ul>
+<p><img alt="Tree7" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/17-7.png" /></p>
+<ul class="simple">
+<li><p><strong>그래프 해석 (Accuracy vs Alpha)</strong>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">ccp_alpha</span></code>가 0일 때(왼쪽 끝), 학습 정확도(파란 선)는 가장 높지만 테스트 정확도(주황 선)는 낮다.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ccp_alpha</span></code>가 증가함에 따라(오른쪽으로 이동), 학습 정확도는 감소하지만 <strong>테스트 정확도는 상승</strong>하는 구간이 나타난다.</p></li>
+<li><p>어느 시점 이후에는 너무 많이 잘라내어(Underfitting) 두 정확도 모두 급격히 떨어진다.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="pruned-tree">
+<h4>3. 최적의 가지치기 모델 (Pruned Tree)<a class="headerlink" href="#pruned-tree" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>최적 Alpha</strong>: 약 0.002</p></li>
+<li><p><strong>깊이 (Depth)</strong>: 9 (23에서 9로 대폭 줄어듦)</p></li>
+<li><p><strong>테스트 정확도 (Test Acc)</strong>: <strong>81.01%</strong> (75.98%에서 약 5%p 상승)</p></li>
+<li><p><strong>결과</strong>: 가지치기를 통해 트리를 단순화했음에도 불구하고, 예측 성능은 오히려 향상되었다. 불필요한 세부 규칙을 제거하고 데이터의 본질적인 패턴만 남겼기 때문이다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="pruned-decision-tree">
+<h4>4. 시각화된 트리 (Pruned Decision Tree)<a class="headerlink" href="#pruned-decision-tree" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>위의 두 번째 그림은 최적의 <code class="docutils literal notranslate"><span class="pre">ccp_alpha</span></code>로 가지치기된 트리이다.</p></li>
+<li><p>이전의 깊이 3 모델보다는 복잡하지만, 과적합된 모델보다는 훨씬 간결하며 해석 가능한 수준의 규칙을 보여준다.</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="id23">
+<h2><span style="color: blue;"><strong>5. 변수 중요도 분석</strong></span><a class="headerlink" href="#id23" title="Link to this heading">#</a></h2>
+</section>
+<section id="id24">
+<h2><strong>Gemini 분석</strong><a class="headerlink" href="#id24" title="Link to this heading">#</a></h2>
+<section id="methodology">
+<h3>1. 방법론 (Methodology)<a class="headerlink" href="#methodology" title="Link to this heading">#</a></h3>
+<p>의사결정 나무 모델은 학습 과정에서 <strong>불순도 감소(Mean Decrease Impurity)</strong> 를 기준으로 변수의 중요도를 평가한다.</p>
+<ul class="simple">
+<li><p><strong>원리</strong>: 트리의 각 노드(Node)에서 특정 변수(Feature)를 기준으로 데이터를 분할할 때마다 불순도(Impurity)가 감소한다. 여기서 말하는 불순도는 주로 <strong>지니 계수(Gini index)</strong> 나 <strong>엔트로피(Entropy)</strong> 를 의미한다. 불순도가 많이 감소할수록 해당 변수가 데이터를 잘 구분한다는 것을 뜻한다.</p></li>
+<li><p><strong>계산 과정</strong>:</p>
+<ol class="arabic simple">
+<li><p>특정 변수(예: <code class="docutils literal notranslate"><span class="pre">Sex</span></code>)가 사용된 모든 노드에서의 불순도 감소량을 합산한다.</p></li>
+<li><p>이때 각 노드의 감소량은 해당 노드에 포함된 샘플 수에 비례하여 가중치(Weight)가 적용된다. (많은 샘플을 잘 분류할수록 중요도가 높음).</p></li>
+<li><p>모든 변수에 대해 계산된 값을 전체 합이 1이 되도록 정규화(Normalize)한다.</p></li>
+</ol>
+</li>
+</ul>
+<p><strong>장점과 유의점</strong>:</p>
+<ul class="simple">
+<li><p>직관적이며 어떤 변수가 타겟(생존 여부)을 설명하는 데 가장 크게 기여했는지 명확히 보여준다.</p></li>
+<li><p>다만, 연속형 변수(예: <code class="docutils literal notranslate"><span class="pre">Age</span></code>, <code class="docutils literal notranslate"><span class="pre">Fare</span></code>)는 분기점이 많아질 수 있어, 실제 중요도보다 과대평가되는 경향(High Cardinality Bias)이 있을 수 있다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id25">
+<h3>2. 타이타닉 데이터 분석 결과<a class="headerlink" href="#id25" title="Link to this heading">#</a></h3>
+<p>타이타닉 생존 예측 모델(최대 깊이 5)에서 추출한 변수 중요도는 다음과 같다.</p>
+<p><img alt="Tree8" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/17-8.png" /></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature (변수)</p></th>
+<th class="head"><p>Importance (중요도)</p></th>
+<th class="head"><p>비고</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Sex</span></code></p></td>
+<td><p><strong>0.557764</strong></p></td>
+<td><p>가장 압도적인 변수로, 전체 중요도의 50% 이상을 차지한다.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Pclass</span></code></p></td>
+<td><p><strong>0.189379</strong></p></td>
+<td><p>객실 등급 역시 생존에 매우 중요한 영향을 미친다.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Fare</span></code></p></td>
+<td><p>0.101589</p></td>
+<td><p>요금은 <code class="docutils literal notranslate"><span class="pre">Pclass</span></code>와 상관관계가 높으며, 어느 정도 기여한다.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Age</span></code></p></td>
+<td><p>0.097832</p></td>
+<td><p>나이는 특정 연령대(아이, 노인 등)를 구분하는 데 사용된다.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SibSp</span></code></p></td>
+<td><p>0.039846</p></td>
+<td><p>형제자매/배우자 수는 상대적으로 영향력이 작다.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Parch</span></code></p></td>
+<td><p>0.013591</p></td>
+<td><p>부모/자녀 수는 가장 영향력이 작은 변수로 나타났다.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id26">
+<h3>3. 해석<a class="headerlink" href="#id26" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>성별(<code class="docutils literal notranslate"><span class="pre">Sex</span></code>)의 결정적 역할</strong>: 중요도가 약 0.56으로, 다른 모든 변수를 합친 것보다 더 큰 영향력을 가진다. 이는 앞서 트리 그림에서 루트 노드(최상단 분기)가 <code class="docutils literal notranslate"><span class="pre">Sex</span></code>였던 것과 일치한다. 즉, **”여성과 아이 먼저”**라는 구조 원칙이 데이터에 강력하게 반영되어 있다.</p></li>
+<li><p><strong>사회경제적 지위(<code class="docutils literal notranslate"><span class="pre">Pclass</span></code>, <code class="docutils literal notranslate"><span class="pre">Fare</span></code>)</strong>: <code class="docutils literal notranslate"><span class="pre">Pclass</span></code>와 <code class="docutils literal notranslate"><span class="pre">Fare</span></code>를 합치면 약 0.29의 중요도를 가진다. 이는 1등석 승객이 3등석 승객보다 생존 확률이 높았음을 시사한다.</p></li>
+<li><p><strong>가족 관계 변수(<code class="docutils literal notranslate"><span class="pre">SibSp</span></code>, <code class="docutils literal notranslate"><span class="pre">Parch</span></code>)</strong>: 가족 관련 변수들은 생존 여부를 가르는 직접적인 기준보다는 보조적인 역할을 하는 것으로 보인다.</p></li>
+</ol>
+<p>결론적으로, 타이타닉 생존 예측에 있어서는 <strong>성별</strong>과 <strong>객실 등급</strong>이 가장 핵심적인 설명 변수(Explanatory Variable)임을 알 수 있다.</p>
+</section>
+</section>
+<section id="id27">
+<h2><strong>참고: 파이썬 코드</strong><a class="headerlink" href="#id27" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. 데이터 로딩</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># CSV 파일을 데이터프레임으로 읽기</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;http://bit.ly/kaggletrain&#39;</span><span class="p">)</span>
+
+<span class="c1"># 데이터셋의 구조 및 정보 확인</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;데이터셋 구조 (Shape):&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">데이터셋 정보 (Info):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">())</span>
+
+<span class="c1"># 기초 통계량 확인</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">기초 통계량 (Describe):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+
+<span class="c1"># 결측치 확인</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">결측치 확인 (Null counts):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>데이터셋 구조 (Shape): (891, 12)
+
+데이터셋 정보 (Info):
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 891 entries, 0 to 890
+Data columns (total 12 columns):
+ #   Column       Non-Null Count  Dtype  
+---  ------       --------------  -----  
+ 0   PassengerId  891 non-null    int64  
+ 1   Survived     891 non-null    int64  
+ 2   Pclass       891 non-null    int64  
+ 3   Name         891 non-null    object 
+ 4   Sex          891 non-null    object 
+ 5   Age          714 non-null    float64
+ 6   SibSp        891 non-null    int64  
+ 7   Parch        891 non-null    int64  
+ 8   Ticket       891 non-null    object 
+ 9   Fare         891 non-null    float64
+ 10  Cabin        204 non-null    object 
+ 11  Embarked     889 non-null    object 
+dtypes: float64(2), int64(5), object(5)
+memory usage: 83.7+ KB
+None
+
+기초 통계량 (Describe):
+       PassengerId    Survived      Pclass         Age       SibSp  \
+count   891.000000  891.000000  891.000000  714.000000  891.000000   
+mean    446.000000    0.383838    2.308642   29.699118    0.523008   
+std     257.353842    0.486592    0.836071   14.526497    1.102743   
+min       1.000000    0.000000    1.000000    0.420000    0.000000   
+25%     223.500000    0.000000    2.000000   20.125000    0.000000   
+50%     446.000000    0.000000    3.000000   28.000000    0.000000   
+75%     668.500000    1.000000    3.000000   38.000000    1.000000   
+max     891.000000    1.000000    3.000000   80.000000    8.000000   
+
+            Parch        Fare  
+count  891.000000  891.000000  
+mean     0.381594   32.204208  
+std      0.806057   49.693429  
+min      0.000000    0.000000  
+25%      0.000000    7.910400  
+50%      0.000000   14.454200  
+75%      0.000000   31.000000  
+max      6.000000  512.329200  
+
+결측치 확인 (Null counts):
+PassengerId      0
+Survived         0
+Pclass           0
+Name             0
+Sex              0
+Age            177
+SibSp            0
+Parch            0
+Ticket           0
+Fare             0
+Cabin          687
+Embarked         2
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionTreeClassifier</span><span class="p">,</span> <span class="n">plot_tree</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># 전처리</span>
+<span class="c1"># 1. 성별(Sex)을 숫자로 변환 (male: 0, female: 1)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Sex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Sex&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">({</span><span class="s1">&#39;male&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;female&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+
+<span class="c1"># 2. 나이(Age)의 결측치를 중앙값으로 대체</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">())</span>
+
+<span class="c1"># 3. 분석에 사용할 특성 선택</span>
+<span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;Sex&#39;</span><span class="p">,</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;SibSp&#39;</span><span class="p">,</span> <span class="s1">&#39;Parch&#39;</span><span class="p">,</span> <span class="s1">&#39;Fare&#39;</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">features</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Survived&#39;</span><span class="p">]</span>
+
+<span class="c1"># 모델 학습 (해석을 위해 깊이를 3으로 제한)</span>
+<span class="n">tree_model</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">tree_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># 트리 시각화</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">plot_tree</span><span class="p">(</span><span class="n">tree_model</span><span class="p">,</span> 
+          <span class="n">feature_names</span><span class="o">=</span><span class="n">features</span><span class="p">,</span> 
+          <span class="n">class_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Dead&#39;</span><span class="p">,</span> <span class="s1">&#39;Survived&#39;</span><span class="p">],</span> 
+          <span class="n">filled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+          <span class="n">rounded</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+          <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Titanic Survival Decision Tree (Depth=3)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/95b690fea1defb184a75c1895ea7b9d66a7878b1556d58946e148397886052ec.png" src="../_images/95b690fea1defb184a75c1895ea7b9d66a7878b1556d58946e148397886052ec.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">classification_report</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">roc_curve</span><span class="p">,</span> <span class="n">auc</span>
+
+<span class="c1"># 데이터 분할 (학습:테스트 = 8:2)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># 모델 학습 (max_depth=3)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># 예측</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">y_prob</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># 성과 지표 계산</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="n">report</span> <span class="o">=</span> <span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">output_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+
+<span class="c1"># 결과 출력</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Confusion Matrix:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">cm</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Accuracy:&quot;</span><span class="p">,</span> <span class="n">acc</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Classification Report:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+
+<span class="c1"># Confusion Matrix Heatmap</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">annot_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Confusion Matrix&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Predicted Label&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Actual Label&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Dead (0)&#39;</span><span class="p">,</span> <span class="s1">&#39;Survived (1)&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;Dead (0)&#39;</span><span class="p">,</span> <span class="s1">&#39;Survived (1)&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># ROC Curve</span>
+<span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">thresholds</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_prob</span><span class="p">)</span>
+<span class="n">roc_auc</span> <span class="o">=</span> <span class="n">auc</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;darkorange&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;ROC curve (AUC = </span><span class="si">{</span><span class="n">roc_auc</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;navy&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;False Positive Rate (1 - Specificity)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;True Positive Rate (Sensitivity)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;ROC Curve&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower right&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Confusion Matrix:
+ [[92 13]
+ [23 51]]
+
+Accuracy: 0.7988826815642458
+
+Classification Report:
+               precision    recall  f1-score   support
+
+           0       0.80      0.88      0.84       105
+           1       0.80      0.69      0.74        74
+
+    accuracy                           0.80       179
+   macro avg       0.80      0.78      0.79       179
+weighted avg       0.80      0.80      0.80       179
+</pre></div>
+</div>
+<img alt="../_images/a1b023076a44d4a642e01dfb16a0c538092bfbd272a54fddd6bf543ba7dd241f.png" src="../_images/a1b023076a44d4a642e01dfb16a0c538092bfbd272a54fddd6bf543ba7dd241f.png" />
+<img alt="../_images/9a63ae4bbc32e9f88a23eb23878944505daa237d0e1b37cc9942b184ff3d3f78.png" src="../_images/9a63ae4bbc32e9f88a23eb23878944505daa237d0e1b37cc9942b184ff3d3f78.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionTreeClassifier</span><span class="p">,</span> <span class="n">plot_tree</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">accuracy_score</span>
+
+<span class="c1"># 2. 가지치기 없는 과적합 모델 (Full Tree)</span>
+<span class="n">clf_full</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">clf_full</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">train_acc_full</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">clf_full</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">))</span>
+<span class="n">test_acc_full</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">clf_full</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>
+<span class="n">depth_full</span> <span class="o">=</span> <span class="n">clf_full</span><span class="o">.</span><span class="n">get_depth</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Full Tree - Depth: </span><span class="si">{</span><span class="n">depth_full</span><span class="si">}</span><span class="s2">, Train Acc: </span><span class="si">{</span><span class="n">train_acc_full</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Test Acc: </span><span class="si">{</span><span class="n">test_acc_full</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 3. Post-pruning (ccp_alpha 사용)</span>
+<span class="c1"># 효과적인 alpha 값들의 경로 계산</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">clf_full</span><span class="o">.</span><span class="n">cost_complexity_pruning_path</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">ccp_alphas</span><span class="p">,</span> <span class="n">impurities</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">ccp_alphas</span><span class="p">,</span> <span class="n">path</span><span class="o">.</span><span class="n">impurities</span>
+
+<span class="c1"># 마지막 alpha는 트리가 루트 노드 하나만 남는 경우이므로 제외 (보통 너무 단순함)</span>
+<span class="n">ccp_alphas</span> <span class="o">=</span> <span class="n">ccp_alphas</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">clfs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">train_scores</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">test_scores</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># 각 alpha에 대해 모델 학습</span>
+<span class="k">for</span> <span class="n">ccp_alpha</span> <span class="ow">in</span> <span class="n">ccp_alphas</span><span class="p">:</span>
+    <span class="n">clf</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">ccp_alpha</span><span class="o">=</span><span class="n">ccp_alpha</span><span class="p">)</span>
+    <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">clfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">clf</span><span class="p">)</span>
+    <span class="n">train_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">)))</span>
+    <span class="n">test_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)))</span>
+
+<span class="c1"># 4. Alpha에 따른 정확도 변화 시각화</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ccp_alphas</span><span class="p">,</span> <span class="n">train_scores</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Train Accuracy&#39;</span><span class="p">,</span> <span class="n">drawstyle</span><span class="o">=</span><span class="s2">&quot;steps-post&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ccp_alphas</span><span class="p">,</span> <span class="n">test_scores</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Test Accuracy&#39;</span><span class="p">,</span> <span class="n">drawstyle</span><span class="o">=</span><span class="s2">&quot;steps-post&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;effective alpha (ccp_alpha)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Accuracy&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Accuracy vs Alpha for training and testing sets&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># 5. 최적의 Alpha 선택 (테스트 정확도가 가장 높은 모델 중 가장 단순한 것)</span>
+<span class="c1"># 간단하게 max test score를 가진 alpha 중 가장 큰 값(가장 가지치기를 많이 한 값)을 선택</span>
+<span class="n">best_idx</span> <span class="o">=</span> <span class="n">test_scores</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">test_scores</span><span class="p">))</span>
+<span class="n">best_alpha</span> <span class="o">=</span> <span class="n">ccp_alphas</span><span class="p">[</span><span class="n">best_idx</span><span class="p">]</span>
+<span class="n">best_clf</span> <span class="o">=</span> <span class="n">clfs</span><span class="p">[</span><span class="n">best_idx</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Best Pruned Tree - Alpha: </span><span class="si">{</span><span class="n">best_alpha</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">, Depth: </span><span class="si">{</span><span class="n">best_clf</span><span class="o">.</span><span class="n">get_depth</span><span class="p">()</span><span class="si">}</span><span class="s2">, Test Acc: </span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="n">test_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 6. 최적의 트리 시각화</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">plot_tree</span><span class="p">(</span><span class="n">best_clf</span><span class="p">,</span> 
+          <span class="n">feature_names</span><span class="o">=</span><span class="n">features</span><span class="p">,</span> 
+          <span class="n">class_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Dead&#39;</span><span class="p">,</span> <span class="s1">&#39;Survived&#39;</span><span class="p">],</span> 
+          <span class="n">filled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+          <span class="n">rounded</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+          <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Pruned Decision Tree (ccp_alpha=</span><span class="si">{</span><span class="n">best_alpha</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Full Tree - Depth: 23, Train Acc: 0.9789, Test Acc: 0.7598
+</pre></div>
+</div>
+<img alt="../_images/e1e012113f414aff04ec4eb850766915ca7481dfb309757cb5c25621f7b7eb86.png" src="../_images/e1e012113f414aff04ec4eb850766915ca7481dfb309757cb5c25621f7b7eb86.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Best Pruned Tree - Alpha: 0.00203, Depth: 9, Test Acc: 0.8101
+</pre></div>
+</div>
+<img alt="../_images/f79eb5bce9552e3adf80d8f2ab7b5f76ccaa56afb9c696b24e9716afefc18bb1.png" src="../_images/f79eb5bce9552e3adf80d8f2ab7b5f76ccaa56afb9c696b24e9716afefc18bb1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+
+<span class="c1"># 모델 학습</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># 변수 중요도 추출</span>
+<span class="n">importances</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">feature_importances_</span>
+<span class="n">feature_imp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Feature&#39;</span><span class="p">:</span> <span class="n">features</span><span class="p">,</span> <span class="s1">&#39;Importance&#39;</span><span class="p">:</span> <span class="n">importances</span><span class="p">})</span>
+<span class="n">feature_imp_df</span> <span class="o">=</span> <span class="n">feature_imp_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Importance&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># 시각화 (경고 해결 코드)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="c1"># 변경된 부분: hue=&#39;Feature&#39;, legend=False 추가</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Importance&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Feature&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;Feature&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">feature_imp_df</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Feature Importance (Decision Tree)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Importance (Mean Decrease Impurity)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Feature&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/734a007544280b55d233707ff39abfba45ff5de15fe805d3c0890f61a7bd707a.png" src="../_images/734a007544280b55d233707ff39abfba45ff5de15fe805d3c0890f61a7bd707a.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="16_%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1_%ED%9A%8C%EA%B7%80.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><strong>16장 로지스틱 회귀</strong></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="18_%ED%8A%B8%EB%A6%AC_%EA%B8%B0%EB%B0%98_%EB%AA%A8%ED%98%95.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><strong>18장 트리 기반 모형</strong></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span style="color: blue;"><strong>1. 데이터 입력</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gemini"><strong>Gemini 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">변수 설명</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">데이터셋 특징</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#describe">기초 통계량(<code class="docutils literal notranslate"><span class="pre">describe</span></code>)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><span style="color: blue;"><strong>2. 트리 모델에 의한 생존 분류</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">의사결정 나무 모델 소개</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">핵심 개념</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">타이타닉 생존 예측 모델링</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">1. 추정 결과 해석 (트리 그림 설명)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">1.1 루트 노드 (가장 중요한 질문)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">1.2 왼쪽 가지 (남성 그룹)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">1.3 오른쪽 가지 (여성 그룹)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">2. 주요 변수 중요도</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">3. 요약</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id16"><span style="color: blue;"><strong>3. 분류 성과</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id17"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#confusion-matrix">1. 혼동 행렬 (Confusion Matrix) 분석</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-metrics">2. 주요 성능 지표 (Performance Metrics)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#roc-auc-area-under-curve">3. ROC 곡선 및 AUC (Area Under Curve)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">종합 평가</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id19"><span style="color: blue;"><strong>4. 가지치기</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id20"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pruning">가지치기 (Pruning) 란?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">가지치기의 종류</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">타이타닉 데이터 예시 (사후 가지치기 적용)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#full-tree">1. 과적합된 모델 (Full Tree)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alpha">2. 가지치기 수행 과정 (Alpha 값 조정)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pruned-tree">3. 최적의 가지치기 모델 (Pruned Tree)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pruned-decision-tree">4. 시각화된 트리 (Pruned Decision Tree)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id23"><span style="color: blue;"><strong>5. 변수 중요도 분석</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id24"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#methodology">1. 방법론 (Methodology)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">2. 타이타닉 데이터 분석 결과</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">3. 해석</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id27"><strong>참고: 파이썬 코드</strong></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By 김원경 최필선
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

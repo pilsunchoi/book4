@@ -1,0 +1,1866 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>9장 설문조사 분석 &#8212; 데이터 분석 이제 AI에게 맡겨라</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/09_설문조사_분석';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="10장 탐색적 요인분석" href="10_%ED%83%90%EC%83%89%EC%A0%81_%EC%9A%94%EC%9D%B8%EB%B6%84%EC%84%9D.html" />
+    <link rel="prev" title="8장 서울 아파트 매물 변화 분석" href="08_%EC%84%9C%EC%9A%B8_%EC%95%84%ED%8C%8C%ED%8A%B8_%EB%A7%A4%EB%AC%BC_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00_%EC%84%9C%EB%AC%B8.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="00_%EC%84%9C%EB%AC%B8.html">
+                    서문
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_%EC%8B%9C%ED%97%98%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>1장 시험성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_%EB%8C%80%ED%86%B5%EB%A0%B9_%EC%A7%80%EC%A7%80%EC%9C%A8_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>2장 대통령 지지율 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_KBO_%EC%A0%95%EA%B7%9C%EC%8B%9C%EC%A6%8C_%ED%8C%80%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>3장 KBO 정규시즌 팀성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_PPP_%EA%B7%B8%EB%9E%98%ED%94%84_%EB%B6%84%EC%84%9D.html"><strong>4장 PPP 그래프 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_%EC%84%B8%EA%B3%84%EC%9D%80%ED%96%89_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EC%B6%94%EC%B6%9C.html"><strong>5장 세계은행 데이터 추출</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_%EC%A3%BC%EA%B0%80_%EC%98%88%EC%B8%A1_%EC%8B%9C%EC%8A%A4%ED%85%9C_%EA%B5%AC%EC%B6%95.html"><strong>6장 주가 예측 시스템 구축</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_%EB%8C%93%EA%B8%80_%ED%86%B5%EA%B3%84_%EB%B6%84%EC%84%9D.html"><strong>7장 댓글 통계 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_%EC%84%9C%EC%9A%B8_%EC%95%84%ED%8C%8C%ED%8A%B8_%EB%A7%A4%EB%AC%BC_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>8장 서울 아파트 매물 변화 분석</strong></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>9장 설문조사 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_%ED%83%90%EC%83%89%EC%A0%81_%EC%9A%94%EC%9D%B8%EB%B6%84%EC%84%9D.html"><strong>10장 탐색적 요인분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_%EB%B3%B4%EC%8A%A4%ED%84%B4_%EC%A3%BC%ED%83%9D_%EA%B0%80%EA%B2%A9_%EB%B6%84%EC%84%9D.html"><strong>11장 보스턴 주택 가격 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_%EC%A2%85%EB%B6%80%EC%84%B8%EC%99%80_%EC%9B%94%EC%84%B8%EC%9D%98_%EA%B4%80%EA%B3%84.html"><strong>12장 종부세와 월세의 관계</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_%EB%8C%80%ED%98%95%EB%A7%88%ED%8A%B8_%EC%87%A0%EB%9D%BD_%EC%9B%90%EC%9D%B8_%EC%8B%A4%EC%A6%9D%EB%B6%84%EC%84%9D.html"><strong>13장 대형마트 쇠락 원인 실증분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_%EC%8B%A0%EC%83%9D%EC%95%84_%ED%8A%B9%EB%A1%80%EB%8C%80%EC%B6%9C%EA%B3%BC_%EC%B6%9C%EC%82%B0%EC%9C%A8.html"><strong>14장 신생아 특례대출과 출산율</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_Ridge_%EB%B0%8F_Lasso_%ED%9A%8C%EA%B7%80.html"><strong>15장 Ridge 및 Lasso 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1_%ED%9A%8C%EA%B7%80.html"><strong>16장 로지스틱 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95_%ED%8A%B8%EB%A6%AC_%EB%AA%A8%ED%98%95.html"><strong>17장 의사결정 트리 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_%ED%8A%B8%EB%A6%AC_%EA%B8%B0%EB%B0%98_%EB%AA%A8%ED%98%95.html"><strong>18장 트리 기반 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="19_%EB%94%A5%EB%9F%AC%EB%8B%9D_%EA%B3%B5%EB%B6%80%ED%95%98%EA%B8%B0.html"><strong>19장 딥러닝 공부하기</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_%ED%8C%A8%EB%84%90_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>20장 패널 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="21_%EA%B3%A8%EB%B0%80%EB%8F%84_%EA%B2%80%EC%82%AC_%EA%B2%B0%EA%B3%BC_%ED%95%B4%EC%84%9D.html"><strong>21장 골밀도 검사 결과 해석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_%EC%9A%B4%EB%8F%99%ED%95%99_Kinematics.html"><strong>22장 운동학 (Kinematics)</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="23_%EC%B6%95%EA%B5%AC_%EA%B2%BD%EA%B8%B0_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>23장 축구 경기 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_%ED%8F%AD%EA%B2%A9_%ED%8C%8C%EA%B4%B4%EB%A0%A5_%EB%B6%84%EC%84%9D.html"><strong>24장 폭격 파괴력 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_%EC%84%B8%EA%B3%84_%ED%99%94%EC%9E%A5%ED%92%88_%EA%B5%90%EC%97%AD_%ED%8A%B8%EB%A0%8C%EB%93%9C.html"><strong>25장 세계 화장품 교역 트렌드</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_Texas_Special_Education.html"><strong>26장 텍사스주 특수교육 현황</strong></a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4/issues/new?title=Issue%20on%20page%20%2Fnotebooks/09_설문조사_분석.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/09_설문조사_분석.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>9장 설문조사 분석</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span style="color: blue;"><strong>1. 데이터 입력</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gemini"><strong>Gemini 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1. 데이터 구조</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2. 변수 설명</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#demographics">승객 인적 사항 (Demographics)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flight-information">비행 정보 (Flight Information)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#services">서비스 만족도 평가 (Services)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#delays">지연 정보 (Delays)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3. 데이터 특이사항</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><span style="color: blue;"><strong>2. 만족도 분석</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">1. 전반적인 만족도 현황</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2. 주요 영향 요인 분석</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#class">좌석 등급 (Class):</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#type-of-travel">여행 목적 (Type of Travel):</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#customer-type">고객 유형 (Customer Type):</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-analysis">3. 서비스 항목별 상관관계 (Correlation Analysis)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">4. 결론 및 제언</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11"><span style="color: blue;"><strong>3. 문항별 기술적 분석</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">1. 범주형 변수 분석 (인적 사항 및 비행 정보)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">2. 수치형 변수 분석 (나이, 거리, 지연 시간)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">3. 서비스 만족도 항목 분석 (0~5점 척도)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">평점 평균이 높은 항목 (3.5점 이상):</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">평점 평균이 낮은 항목 (3.0점 미만):</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">특이 사항 (0점 빈도):</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">요약하자면:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#i"><span style="color: blue;"><strong>4. 설문조사 심층 분석 I</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id20"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gap">1. 서비스 갭(Gap) 분석 (레이더 차트 활용)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">분석 결과:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">2. 운영 효율성과 고객 민감도 분석 (지연 시간 분석)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">분석 결과:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#segmentation">3. 고객 세분화(Segmentation) 및 타겟팅 전략</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">분석 결과 (만족도 비율):</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#predictive-modeling">4. 예측 모델링 (Predictive Modeling)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#persona">5. 페르소나(Persona) 분석</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ii"><span style="color: blue;"><strong>5. 설문조사 심층 분석 II</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id25"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ipa-importance-performance-analysis">1. 우선순위 행동 매트릭스 (IPA: Importance-Performance Analysis)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">시사점:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demographic-segmentation">2. 인구통계학적 세분화 (Demographic Segmentation)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">연령대별 분석:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">좌석 등급별 분석:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contextual-analysis">3. 컨텍스트 기반 서비스 분석 (Contextual Analysis)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flight-distance">비행 거리(Flight Distance)에 따른 민감도:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#delay">지연(Delay) 민감도:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loyalty-analysis">4. 고객 충성도 분석 (Loyalty Analysis)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">5. 머신러닝 기반 예측 모델링 (Predictive Modeling)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#text-mining">6. 텍스트 마이닝 (Text Mining) - <em>데이터에 텍스트 컬럼이 있다면</em></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id30"><strong>참고: 파이썬 코드</strong></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><strong>9장 설문조사 분석</strong><a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2><span style="color: blue;"><strong>1. 데이터 입력</strong></span><a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p><img alt="Survey1" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/9-1.png" /></p>
+<p>출처: <a class="reference external" href="https://www.kaggle.com/datasets/teejmahal20/airline-passenger-satisfaction">Kaggle: Airline Passenger Satisfaction</a></p>
+</section>
+<section id="gemini">
+<h2><strong>Gemini 설명</strong><a class="headerlink" href="#gemini" title="Link to this heading">#</a></h2>
+<p>이 데이터셋은 항공사 승객 만족도 조사 데이터이다. 각 승객의 인적 사항, 비행 정보, 그리고 다양한 서비스에 대한 만족도 평가가 포함되어 있으며, 최종적으로 승객이 만족했는지 여부를 예측하는 분류 문제에 사용될 수 있다.</p>
+<hr class="docutils" />
+<p>데이터의 주요 특징은 다음과 같다.</p>
+<section id="id3">
+<h3>1. 데이터 구조<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>총 데이터 수:</strong> 103,904개</p></li>
+<li><p><strong>변수(컬럼) 수:</strong> 25개</p></li>
+<li><p><strong>타겟 변수:</strong> <code class="docutils literal notranslate"><span class="pre">satisfaction</span></code> (‘neutral or dissatisfied’ 또는 ‘satisfied’의 이진 분류)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id4">
+<h3>2. 변수 설명<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<section id="demographics">
+<h4>승객 인적 사항 (Demographics)<a class="headerlink" href="#demographics" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Gender</span></code>: 성별 (Male, Female)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Customer</span> <span class="pre">Type</span></code>: 고객 유형 (Loyal Customer, disloyal Customer)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Age</span></code>: 승객 나이 (7세~85세 분포)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="flight-information">
+<h4>비행 정보 (Flight Information)<a class="headerlink" href="#flight-information" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Type</span> <span class="pre">of</span> <span class="pre">Travel</span></code>: 비행 목적 (Business travel, Personal Travel)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Class</span></code>: 좌석 등급 (Business, Eco, Eco Plus)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Flight</span> <span class="pre">Distance</span></code>: 비행 거리</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="services">
+<h4>서비스 만족도 평가 (Services)<a class="headerlink" href="#services" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>14개의 서비스 항목에 대해 0~5점 척도로 평가된 점수이다.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Inflight</span> <span class="pre">wifi</span> <span class="pre">service</span></code> (와이파이), <code class="docutils literal notranslate"><span class="pre">Food</span> <span class="pre">and</span> <span class="pre">drink</span></code> (식음료), <code class="docutils literal notranslate"><span class="pre">Seat</span> <span class="pre">comfort</span></code> (좌석 편안함), <code class="docutils literal notranslate"><span class="pre">Inflight</span> <span class="pre">entertainment</span></code> (기내 엔터테인먼트), <code class="docutils literal notranslate"><span class="pre">On-board</span> <span class="pre">service</span></code> (탑승 서비스), <code class="docutils literal notranslate"><span class="pre">Leg</span> <span class="pre">room</span> <span class="pre">service</span></code> (다리 공간), <code class="docutils literal notranslate"><span class="pre">Cleanliness</span></code> (청결도) 등이 포함된다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="delays">
+<h4>지연 정보 (Delays)<a class="headerlink" href="#delays" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Departure</span> <span class="pre">Delay</span> <span class="pre">in</span> <span class="pre">Minutes</span></code>: 출발 지연 시간(분)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Arrival</span> <span class="pre">Delay</span> <span class="pre">in</span> <span class="pre">Minutes</span></code>: 도착 지연 시간(분)</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id5">
+<h3>3. 데이터 특이사항<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Arrival</span> <span class="pre">Delay</span> <span class="pre">in</span> <span class="pre">Minutes</span></code> 변수에 310개의 결측치(NaN)가 존재한다. 분석 시 이를 제거하거나 평균/중앙값 등으로 대체하는 전처리가 필요할 수 있다.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code>와 <code class="docutils literal notranslate"><span class="pre">Unnamed:</span> <span class="pre">0</span></code>은 단순 식별자이므로 모델링 시 제외하는 것이 일반적이다.</p></li>
+<li><p>서비스 만족도 점수 중 0점은 ‘평가 없음’을 의미할 가능성이 있으므로 확인이 필요하다.</p></li>
+</ul>
+</section>
+</section>
+<section id="id6">
+<h2><span style="color: blue;"><strong>2. 만족도 분석</strong></span><a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+</section>
+<section id="id7">
+<h2><strong>Gemini 분석</strong><a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<p>만족도 분석 결과는 다음과 같다.</p>
+<section id="id8">
+<h3>1. 전반적인 만족도 현황<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>전체 데이터 중 만족한 승객과 불만족(또는 중립) 승객의 비율은 대체로 균형을 이루고 있으나, 불만족 비율이 약간 더 높게 나타나는 경향이 있다.</p>
+<p><img alt="Survey2" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/9-2.png" /></p>
+</section>
+<hr class="docutils" />
+<section id="id9">
+<h3>2. 주요 영향 요인 분석<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<section id="class">
+<h4>좌석 등급 (Class):<a class="headerlink" href="#class" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Business:</strong> 만족도가 매우 높으며, 만족한 승객의 비율이 불만족한 승객보다 월등히 높다.</p></li>
+<li><p><strong>Eco / Eco Plus:</strong> 불만족 비율이 압도적으로 높다. 이코노미 클래스 승객들의 경험 개선이 전체 만족도 향상의 핵심 과제이다.</p></li>
+</ul>
+<p><img alt="Survey3" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/9-3.png" /></p>
+</section>
+<section id="type-of-travel">
+<h4>여행 목적 (Type of Travel):<a class="headerlink" href="#type-of-travel" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Business travel:</strong> 업무 목적의 여행객은 만족도가 상대적으로 높다.</p></li>
+<li><p><strong>Personal Travel:</strong> 개인 여행객은 불만족 비율이 매우 높다. 이는 개인 여행객들이 가격 민감도가 높거나, 이코노미 클래스를 주로 이용하기 때문일 가능성이 크다.</p></li>
+</ul>
+<p><img alt="Survey4" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/9-4.png" /></p>
+</section>
+<section id="customer-type">
+<h4>고객 유형 (Customer Type):<a class="headerlink" href="#customer-type" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Loyal Customer:</strong> 충성 고객의 만족도 비율(약 47.7%)이 비충성 고객(약 23.7%)보다 2배 이상 높다. 충성 고객 관리 프로그램이 효과적으로 작동하고 있거나, 만족도가 높은 고객이 충성 고객으로 남는 선순환 구조일 수 있다.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="correlation-analysis">
+<h3>3. 서비스 항목별 상관관계 (Correlation Analysis)<a class="headerlink" href="#correlation-analysis" title="Link to this heading">#</a></h3>
+<p>만족도와 가장 강한 양의 상관관계를 보이는 서비스 항목들은 다음과 같다. (상관계수 기준)</p>
+<p><img alt="Survey5" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/9-5.png" /></p>
+<ol class="arabic simple">
+<li><p><strong>Online boarding (0.50):</strong> 온라인 탑승 수속의 편의성이 만족도에 가장 큰 영향을 미친다. 앱이나 웹사이트의 UI/UX 개선이 중요함을 시사한다.</p></li>
+<li><p><strong>Inflight entertainment (0.40):</strong> 기내 엔터테인먼트 시스템의 품질이 만족도와 직결된다.</p></li>
+<li><p><strong>Seat comfort (0.35):</strong> 좌석의 편안함은 장거리 비행 등에서 중요한 요소로 작용한다.</p></li>
+<li><p><strong>On-board service (0.32):</strong> 승무원의 서비스 태도 및 품질 또한 주요 요인이다.</p></li>
+<li><p><strong>Leg room service (0.31):</strong> 다리 공간의 여유도 만족도에 영향을 준다.</p></li>
+</ol>
+<p>반면, <code class="docutils literal notranslate"><span class="pre">Departure/Arrival</span> <span class="pre">time</span> <span class="pre">convenient</span></code> (출도착 시간 편의성)이나 <code class="docutils literal notranslate"><span class="pre">Gate</span> <span class="pre">location</span></code> (게이트 위치) 등은 상대적으로 만족도와의 상관관계가 낮게 나타났다. 이는 이러한 요소들이 항공사의 통제 범위를 벗어나거나 승객들이 어느 정도 감수하는 부분이기 때문일 수 있다.</p>
+</section>
+<hr class="docutils" />
+<section id="id10">
+<h3>4. 결론 및 제언<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>이코노미 클래스 서비스 개선:</strong> Eco 및 Eco Plus 등급 승객의 불만족 비율이 매우 높으므로, 이들에 대한 서비스(특히 좌석 편안함, 기내식 등) 개선이 시급하다.</p></li>
+<li><p><strong>디지털 경험 강화:</strong> <code class="docutils literal notranslate"><span class="pre">Online</span> <span class="pre">boarding</span></code>이 만족도와 가장 높은 상관관계를 보이므로, 모바일 앱이나 웹사이트의 체크인 프로세스를 더욱 간편하고 직관적으로 만드는 것이 저비용 고효율의 만족도 제고 전략이 될 수 있다.</p></li>
+<li><p><strong>충성 고객 유지 및 비충성 고객 전환:</strong> 비충성 고객의 낮은 만족도를 개선하기 위해 첫 이용 고객에 대한 혜택이나 서비스 차별화를 고려해야 한다.</p></li>
+</ul>
+</section>
+</section>
+<section id="id11">
+<h2><span style="color: blue;"><strong>3. 문항별 기술적 분석</strong></span><a class="headerlink" href="#id11" title="Link to this heading">#</a></h2>
+</section>
+<section id="id12">
+<h2><strong>Gemini 분석</strong><a class="headerlink" href="#id12" title="Link to this heading">#</a></h2>
+<p>다음은 모든 조사 항목에 대한 기술적 분석 결과이다.</p>
+<p><img alt="Survey6" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/9-6.png" /></p>
+<section id="id13">
+<h3>1. 범주형 변수 분석 (인적 사항 및 비행 정보)<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>항목</p></th>
+<th class="head"><p>최빈값 (Top)</p></th>
+<th class="head"><p>빈도 (Freq)</p></th>
+<th class="head"><p>설명</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Gender</strong></p></td>
+<td><p>Female</p></td>
+<td><p>52,727 (50.7%)</p></td>
+<td><p>남녀 성비는 거의 균등하다.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Customer Type</strong></p></td>
+<td><p>Loyal Customer</p></td>
+<td><p>84,923 (81.7%)</p></td>
+<td><p>충성 고객의 비중이 압도적으로 높다.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Type of Travel</strong></p></td>
+<td><p>Business travel</p></td>
+<td><p>71,655 (69.0%)</p></td>
+<td><p>업무 목적 여행객이 개인 여행객보다 많다.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Class</strong></p></td>
+<td><p>Business</p></td>
+<td><p>49,665 (47.8%)</p></td>
+<td><p>비즈니스석 이용객이 가장 많고, Eco(44.2%), Eco Plus(7.2%) 순이다.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Satisfaction</strong></p></td>
+<td><p>Neutral/Dissatisfied</p></td>
+<td><p>58,879 (56.7%)</p></td>
+<td><p>불만족(또는 중립) 승객이 만족한 승객보다 약간 더 많다.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id14">
+<h3>2. 수치형 변수 분석 (나이, 거리, 지연 시간)<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<p><img alt="Survey7" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/9-7.png" /></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>항목</p></th>
+<th class="head"><p>평균 (Mean)</p></th>
+<th class="head"><p>중앙값 (Median)</p></th>
+<th class="head"><p>최대값 (Max)</p></th>
+<th class="head"><p>비고</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Age</strong></p></td>
+<td><p>39.4세</p></td>
+<td><p>40.0세</p></td>
+<td><p>85.0세</p></td>
+<td><p>승객 연령대는 정규분포와 유사하게 고르게 분포되어 있다.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Flight Distance</strong></p></td>
+<td><p>1,189</p></td>
+<td><p>843</p></td>
+<td><p>4,983</p></td>
+<td><p>단거리 비행의 빈도가 높다 (오른쪽 꼬리가 긴 분포).</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Departure Delay</strong></p></td>
+<td><p>14.8분</p></td>
+<td><p>0.0분</p></td>
+<td><p>1,592분</p></td>
+<td><p>대부분 지연이 없으나(0분), 일부 극단적인 지연 사례가 존재한다.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Arrival Delay</strong></p></td>
+<td><p>15.2분</p></td>
+<td><p>0.0분</p></td>
+<td><p>1,584분</p></td>
+<td><p>출발 지연과 유사한 분포를 보인다.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="id15">
+<h3>3. 서비스 만족도 항목 분석 (0~5점 척도)<a class="headerlink" href="#id15" title="Link to this heading">#</a></h3>
+<p>각 서비스 항목에 대한 평점 분포는 다음과 같다. ‘0점’은 해당 서비스가 제공되지 않았거나 이용하지 않음을 의미할 가능성이 높다.</p>
+<p><img alt="Survey8" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/9-8.png" /></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>항목</p></th>
+<th class="head"><p>count</p></th>
+<th class="head"><p>mean</p></th>
+<th class="head"><p>std</p></th>
+<th class="head"><p>min</p></th>
+<th class="head"><p>25%</p></th>
+<th class="head"><p>50%</p></th>
+<th class="head"><p>75%</p></th>
+<th class="head"><p>max</p></th>
+<th class="head"><p>0점 개수</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Inflight wifi service</strong></p></td>
+<td><p>103,904</p></td>
+<td><p>2.73</p></td>
+<td><p>1.33</p></td>
+<td><p>0.0</p></td>
+<td><p>2.0</p></td>
+<td><p>3.0</p></td>
+<td><p>4.0</p></td>
+<td><p>5.0</p></td>
+<td><p>3,103</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Dept/Arrival time convenient</strong></p></td>
+<td><p>103,904</p></td>
+<td><p>3.06</p></td>
+<td><p>1.53</p></td>
+<td><p>0.0</p></td>
+<td><p>2.0</p></td>
+<td><p>3.0</p></td>
+<td><p>4.0</p></td>
+<td><p>5.0</p></td>
+<td><p>5,300</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Ease of Online booking</strong></p></td>
+<td><p>103,904</p></td>
+<td><p>2.76</p></td>
+<td><p>1.40</p></td>
+<td><p>0.0</p></td>
+<td><p>2.0</p></td>
+<td><p>3.0</p></td>
+<td><p>4.0</p></td>
+<td><p>5.0</p></td>
+<td><p>4,487</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Gate location</strong></p></td>
+<td><p>103,904</p></td>
+<td><p>2.98</p></td>
+<td><p>1.28</p></td>
+<td><p>0.0</p></td>
+<td><p>2.0</p></td>
+<td><p>3.0</p></td>
+<td><p>4.0</p></td>
+<td><p>5.0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Food and drink</strong></p></td>
+<td><p>103,904</p></td>
+<td><p>3.20</p></td>
+<td><p>1.33</p></td>
+<td><p>0.0</p></td>
+<td><p>2.0</p></td>
+<td><p>3.0</p></td>
+<td><p>4.0</p></td>
+<td><p>5.0</p></td>
+<td><p>107</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Online boarding</strong></p></td>
+<td><p>103,904</p></td>
+<td><p>3.25</p></td>
+<td><p>1.35</p></td>
+<td><p>0.0</p></td>
+<td><p>2.0</p></td>
+<td><p>3.0</p></td>
+<td><p>4.0</p></td>
+<td><p>5.0</p></td>
+<td><p>2,428</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Seat comfort</strong></p></td>
+<td><p>103,904</p></td>
+<td><p>3.44</p></td>
+<td><p>1.32</p></td>
+<td><p>0.0</p></td>
+<td><p>2.0</p></td>
+<td><p>4.0</p></td>
+<td><p>5.0</p></td>
+<td><p>5.0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Inflight entertainment</strong></p></td>
+<td><p>103,904</p></td>
+<td><p>3.36</p></td>
+<td><p>1.33</p></td>
+<td><p>0.0</p></td>
+<td><p>2.0</p></td>
+<td><p>4.0</p></td>
+<td><p>4.0</p></td>
+<td><p>5.0</p></td>
+<td><p>14</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>On-board service</strong></p></td>
+<td><p>103,904</p></td>
+<td><p>3.38</p></td>
+<td><p>1.29</p></td>
+<td><p>0.0</p></td>
+<td><p>2.0</p></td>
+<td><p>4.0</p></td>
+<td><p>4.0</p></td>
+<td><p>5.0</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Leg room service</strong></p></td>
+<td><p>103,904</p></td>
+<td><p>3.35</p></td>
+<td><p>1.32</p></td>
+<td><p>0.0</p></td>
+<td><p>2.0</p></td>
+<td><p>4.0</p></td>
+<td><p>4.0</p></td>
+<td><p>5.0</p></td>
+<td><p>472</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Baggage handling</strong></p></td>
+<td><p>103,904</p></td>
+<td><p>3.63</p></td>
+<td><p>1.18</p></td>
+<td><p>1.0</p></td>
+<td><p>3.0</p></td>
+<td><p>4.0</p></td>
+<td><p>5.0</p></td>
+<td><p>5.0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Checkin service</strong></p></td>
+<td><p>103,904</p></td>
+<td><p>3.30</p></td>
+<td><p>1.27</p></td>
+<td><p>0.0</p></td>
+<td><p>3.0</p></td>
+<td><p>3.0</p></td>
+<td><p>4.0</p></td>
+<td><p>5.0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Inflight service</strong></p></td>
+<td><p>103,904</p></td>
+<td><p>3.64</p></td>
+<td><p>1.18</p></td>
+<td><p>0.0</p></td>
+<td><p>3.0</p></td>
+<td><p>4.0</p></td>
+<td><p>5.0</p></td>
+<td><p>5.0</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Cleanliness</strong></p></td>
+<td><p>103,904</p></td>
+<td><p>3.29</p></td>
+<td><p>1.31</p></td>
+<td><p>0.0</p></td>
+<td><p>2.0</p></td>
+<td><p>3.0</p></td>
+<td><p>4.0</p></td>
+<td><p>5.0</p></td>
+<td><p>12</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="id16">
+<h4>평점 평균이 높은 항목 (3.5점 이상):<a class="headerlink" href="#id16" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Inflight</span> <span class="pre">service</span></code> (3.64): 기내 서비스 전반에 대한 만족도가 높다.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Baggage</span> <span class="pre">handling</span></code> (3.63): 수하물 처리에 대한 평가가 긍정적이다.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Seat</span> <span class="pre">comfort</span></code> (3.44): 좌석 편안함도 비교적 좋은 평가를 받았다.</p></li>
+</ul>
+</section>
+<section id="id17">
+<h4>평점 평균이 낮은 항목 (3.0점 미만):<a class="headerlink" href="#id17" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Inflight</span> <span class="pre">wifi</span> <span class="pre">service</span></code> (2.73): 와이파이 서비스에 대한 불만이 가장 크거나, 이용하지 못하는 경우가 많다(0점 3,103건).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Ease</span> <span class="pre">of</span> <span class="pre">Online</span> <span class="pre">booking</span></code> (2.76): 온라인 예매 편의성 개선이 필요해 보인다.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Gate</span> <span class="pre">location</span></code> (2.98): 게이트 위치에 대한 만족도가 평균 이하이다.</p></li>
+</ul>
+</section>
+<section id="id18">
+<h4>특이 사항 (0점 빈도):<a class="headerlink" href="#id18" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Departure/Arrival</span> <span class="pre">time</span> <span class="pre">convenient</span></code> (5,300건), <code class="docutils literal notranslate"><span class="pre">Ease</span> <span class="pre">of</span> <span class="pre">Online</span> <span class="pre">booking</span></code> (4,487건), <code class="docutils literal notranslate"><span class="pre">Inflight</span> <span class="pre">wifi</span> <span class="pre">service</span></code> (3,103건) 항목에서 0점 응답이 많았다. 이는 해당 서비스를 이용하지 않았거나 평가를 유보한 승객이 상당수임을 시사한다.</p></li>
+<li><p>반면 <code class="docutils literal notranslate"><span class="pre">Baggage</span> <span class="pre">handling</span></code>은 0점이 하나도 없어 모든 승객이 평가를 내렸다.</p></li>
+</ul>
+</section>
+<section id="id19">
+<h4>요약하자면:<a class="headerlink" href="#id19" title="Link to this heading">#</a></h4>
+<p>대체로 기내 승무원 서비스나 수하물 처리 등 인적 서비스에 대한 평가는 긍정적인 반면, <strong>와이파이, 예약 시스템 등 기술적/시스템적 편의성</strong>에 대한 평가는 상대적으로 낮다. 따라서 디지털 서비스 품질 개선이 전체적인 만족도 향상의 핵심 키가 될 수 있다.</p>
+</section>
+</section>
+</section>
+<section id="i">
+<h2><span style="color: blue;"><strong>4. 설문조사 심층 분석 I</strong></span><a class="headerlink" href="#i" title="Link to this heading">#</a></h2>
+</section>
+<section id="id20">
+<h2><strong>Gemini 분석</strong><a class="headerlink" href="#id20" title="Link to this heading">#</a></h2>
+<p>이 데이터세트는 고객 만족도에 영향을 미치는 다차원적인 요인(인구통계, 서비스 품질, 운영 성과 등)을 포함하고 있어, 단순 기술 통계를 넘어 <strong>전략적 의사결정을 위한 심층 분석</strong>이 가능하다.</p>
+<p>구체적으로 수행할 수 있는 분석과 인사이트 예시는 다음과 같다.</p>
+<section id="gap">
+<h3>1. 서비스 갭(Gap) 분석 (레이더 차트 활용)<a class="headerlink" href="#gap" title="Link to this heading">#</a></h3>
+<p>만족한 고객과 불만족 고객 간의 서비스 평가 차이를 비교함으로써, <strong>어떤 서비스가 결정적인 불만 요인(Pain Point)</strong> 인지 식별할 수 있다.</p>
+<p><img alt="Survey9" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/9-9.png" /></p>
+<section id="id21">
+<h4>분석 결과:<a class="headerlink" href="#id21" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Inflight wifi service(기내 와이파이)</strong>, <strong>Online boarding(온라인 탑승수속)</strong>, <strong>Inflight entertainment(기내 엔터테인먼트)</strong> 등 디지털 및 편의 서비스 항목에서 만족/불만족 그룹 간 점수 격차가 매우 크다.</p></li>
+<li><p>반면 <strong>Gate location(게이트 위치)</strong>, <strong>Departure/Arrival time convenient(출도착 시간 편의성)</strong> 항목은 그룹 간 차이가 상대적으로 작다.</p></li>
+<li><p><strong>결론:</strong> 물리적 운영(게이트, 시간)보다는 <strong>디지털 경험과 기내 편의성</strong>을 개선하는 것이 만족도 향상에 훨씬 효과적이다.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id22">
+<h3>2. 운영 효율성과 고객 민감도 분석 (지연 시간 분석)<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
+<p>항공기 지연 시간이 길어질수록 만족도가 어떻게 변화하는지 분석하여, <strong>‘허용 가능한 지연 시간’의 임계점</strong>을 파악할 수 있다.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Delay Group</p></th>
+<th class="head"><p>Satisfaction Rate</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>0 min</strong></p></td>
+<td><p>0.4725</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>1-15 min</strong></p></td>
+<td><p>0.4130</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>16-30 min</strong></p></td>
+<td><p>0.3527</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>31-60 min</strong></p></td>
+<td><p>0.3564</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>1-2 hr</strong></p></td>
+<td><p>0.3524</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>2-3 hr</strong></p></td>
+<td><p>0.3659</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>&gt;3 hr</strong></p></td>
+<td><p>0.3654</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="id23">
+<h4>분석 결과:<a class="headerlink" href="#id23" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>지연이 없을 때(0분) 만족도 비율은 약 47.2%이다.</p></li>
+<li><p><strong>1~15분 지연 시</strong> 만족도는 41.3%로 급격히 하락하며, <strong>16~30분 지연 시</strong> 35.3%까지 떨어진다.</p></li>
+<li><p>흥미롭게도 30분 이후부터는 지연 시간이 더 길어져도 만족도가 35~36% 수준에서 크게 더 떨어지지 않는다(바닥 효과).</p></li>
+<li><p><strong>결론:</strong> <strong>초기 15분 이내의 지연을 막는 것</strong>이 만족도 방어에 가장 중요하다. 이미 30분을 넘겼다면 추가적인 지연 보상보다는 다른 서비스로 만회하는 전략이 필요할 수 있다.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="segmentation">
+<h3>3. 고객 세분화(Segmentation) 및 타겟팅 전략<a class="headerlink" href="#segmentation" title="Link to this heading">#</a></h3>
+<p>고객의 유형(Customer Type), 여행 목적(Type of Travel), 좌석 등급(Class)을 조합하여 세분화된 그룹별 만족도를 분석한다.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Class</p></th>
+<th class="head"><p>Business Travel</p></th>
+<th class="head"><p>Personal Travel</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Business</strong></p></td>
+<td><p>0.7202</p></td>
+<td><p>0.1224</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Eco</strong></p></td>
+<td><p>0.2962</p></td>
+<td><p>0.1020</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Eco Plus</strong></p></td>
+<td><p>0.3933</p></td>
+<td><p>0.0871</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="id24">
+<h4>분석 결과 (만족도 비율):<a class="headerlink" href="#id24" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Business Class + Business Travel:</strong> 만족도 72.0% (핵심 만족 그룹)</p></li>
+<li><p><strong>Eco Class + Business Travel:</strong> 만족도 29.6% (잠재적 불만 그룹)</p></li>
+<li><p><strong>Eco Class + Personal Travel:</strong> 만족도 10.2% (취약 그룹)</p></li>
+<li><p><strong>결론:</strong> 비즈니스석 이용 출장객은 이미 만족도가 높으므로 유지 전략이 필요하지만, <strong>이코노미석을 이용하는 개인 여행객</strong>은 만족도가 극도로 낮으므로, 이들을 위한 저비용 고효율 서비스(예: 간편한 모바일 체크인, 기내 와이파이 개선) 도입이 시급하다.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="predictive-modeling">
+<h3>4. 예측 모델링 (Predictive Modeling)<a class="headerlink" href="#predictive-modeling" title="Link to this heading">#</a></h3>
+<p>이 데이터는 <code class="docutils literal notranslate"><span class="pre">satisfaction</span></code>이라는 타겟 변수가 있으므로, 머신러닝 모델을 통해 다음과 같은 예측이 가능하다.</p>
+<ul class="simple">
+<li><p><strong>이탈 예측:</strong> 특정 승객의 서비스 평가 패턴을 입력하면 만족/불만족 여부를 예측한다.</p></li>
+<li><p><strong>주요 인자(Feature Importance) 도출:</strong> 랜덤 포레스트나 XGBoost 모델을 사용하여 어떤 변수가 만족도 예측에 가장 큰 기여를 하는지 정량적으로 산출할 수 있다. (앞선 상관관계 분석보다 정교함)</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="persona">
+<h3>5. 페르소나(Persona) 분석<a class="headerlink" href="#persona" title="Link to this heading">#</a></h3>
+<p>데이터의 특성을 기반으로 가상의 고객 프로필을 만들어 맞춤형 전략을 수립할 수 있다.</p>
+<ul class="simple">
+<li><p><em>예시: “알뜰 실속 여행족” (Eco Class, Personal Travel, Price Sensitive)</em> -&gt; 이들은 기내식보다는 <strong>좌석 편안함</strong>과 <strong>엔터테인먼트</strong>에 더 민감할 수 있다.</p></li>
+</ul>
+<p>이와 같이 이 데이터셋은 단순한 현황 파악을 넘어, <strong>서비스 투자 우선순위 결정, 타겟 마케팅, 운영 KPI 설정</strong> 등 비즈니스 임팩트를 창출하는 분석 도구로 활용될 수 있다.</p>
+</section>
+</section>
+<section id="ii">
+<h2><span style="color: blue;"><strong>5. 설문조사 심층 분석 II</strong></span><a class="headerlink" href="#ii" title="Link to this heading">#</a></h2>
+</section>
+<section id="id25">
+<h2><strong>Gemini 분석</strong><a class="headerlink" href="#id25" title="Link to this heading">#</a></h2>
+<p><strong>Importance-Performance Analysis(중요도-성과 분석)</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>항목</p></th>
+<th class="head text-left"><p>Importance</p></th>
+<th class="head text-left"><p>Performance</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Online boarding</p></td>
+<td class="text-left"><p>0.503557</p></td>
+<td class="text-left"><p>3.250375</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Inflight entertainment</p></td>
+<td class="text-left"><p>0.398059</p></td>
+<td class="text-left"><p>3.358158</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Seat comfort</p></td>
+<td class="text-left"><p>0.349459</p></td>
+<td class="text-left"><p>3.439396</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>On-board service</p></td>
+<td class="text-left"><p>0.322383</p></td>
+<td class="text-left"><p>3.382363</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Leg room service</p></td>
+<td class="text-left"><p>0.313131</p></td>
+<td class="text-left"><p>3.351055</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>이 서베이 데이터는 단순 만족도 파악을 넘어, <strong>서비스 전략 수립, 고객 세분화, 그리고 미래 만족도 예측</strong> 등 다각적인 분석이 가능하다.</p>
+<p>주요 분석 가능한 항목들을 정리하면 다음과 같다.</p>
+<section id="ipa-importance-performance-analysis">
+<h3>1. 우선순위 행동 매트릭스 (IPA: Importance-Performance Analysis)<a class="headerlink" href="#ipa-importance-performance-analysis" title="Link to this heading">#</a></h3>
+<p>각 서비스 항목의 <strong>중요도(만족도와의 상관관계)</strong> 와 <strong>성과(평균 점수)</strong> 를 2차원 평면에 매핑하여 전략적 우선순위를 도출한다.</p>
+<ul class="simple">
+<li><p><strong>분석 방법:</strong> X축은 성과(Performance), Y축은 중요도(Importance)로 설정하여 4분면 분석을 수행한다.</p></li>
+</ul>
+<p><img alt="Survey10" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/9-10.png" /></p>
+<section id="id26">
+<h4>시사점:<a class="headerlink" href="#id26" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>집중 개선 영역 (High Importance, Low Performance):</strong> <code class="docutils literal notranslate"><span class="pre">Inflight</span> <span class="pre">wifi</span> <span class="pre">service</span></code>, <code class="docutils literal notranslate"><span class="pre">Ease</span> <span class="pre">of</span> <span class="pre">Online</span> <span class="pre">booking</span></code> 등이 여기에 해당할 가능성이 높다. 이들은 만족도에 큰 영향을 미치지만 현재 평가가 낮으므로 최우선 개선 대상이다.</p></li>
+<li><p><strong>현상 유지 영역 (High Importance, High Performance):</strong> <code class="docutils literal notranslate"><span class="pre">Seat</span> <span class="pre">comfort</span></code>, <code class="docutils literal notranslate"><span class="pre">Inflight</span> <span class="pre">entertainment</span></code> 등은 이미 잘하고 있으며 계속 유지해야 할 핵심 강점이다.</p></li>
+<li><p><strong>과잉 투자 영역 (Low Importance, High Performance):</strong> 중요도가 낮은데 점수가 높은 항목은 자원을 재배분하여 다른 취약점을 보완하는 데 사용할 수 있다.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="demographic-segmentation">
+<h3>2. 인구통계학적 세분화 (Demographic Segmentation)<a class="headerlink" href="#demographic-segmentation" title="Link to this heading">#</a></h3>
+<p>고객의 나이, 성별, 여행 목적 등에 따라 만족도가 어떻게 달라지는지 분석하여 타겟 마케팅 전략을 수립한다.</p>
+<p><img alt="Survey11" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/9-11.png" /></p>
+<section id="id27">
+<h4>연령대별 분석:<a class="headerlink" href="#id27" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Z세대/밀레니얼:</strong> 디지털 서비스(와이파이, 앱 편의성)에 민감할 수 있다.</p></li>
+<li><p><strong>중장년층:</strong> 좌석 편안함이나 인적 서비스(승무원 태도)를 더 중시할 수 있다.</p></li>
+</ul>
+</section>
+<section id="id28">
+<h4>좌석 등급별 분석:<a class="headerlink" href="#id28" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>비즈니스석:</strong> 높은 가격을 지불한 만큼 기대치가 높으며, 특히 프라이버시와 식음료 품질에 민감하다.</p></li>
+<li><p><strong>이코노미석:</strong> 가격 대비 가치(가성비)와 기본적인 편안함(다리 공간)이 중요하다.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="contextual-analysis">
+<h3>3. 컨텍스트 기반 서비스 분석 (Contextual Analysis)<a class="headerlink" href="#contextual-analysis" title="Link to this heading">#</a></h3>
+<p>비행 거리나 지연 상황과 같은 환경적 요인이 만족도에 미치는 영향을 분석한다.</p>
+<section id="flight-distance">
+<h4>비행 거리(Flight Distance)에 따른 민감도:<a class="headerlink" href="#flight-distance" title="Link to this heading">#</a></h4>
+<p><img alt="Survey12" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/9-12.png" /></p>
+<ul class="simple">
+<li><p>단거리 비행에서는 좌석 편안함이 덜 중요할 수 있지만, 장거리 비행에서는 <strong>좌석 편안함(Seat Comfort)</strong> 과 <strong>엔터테인먼트(Inflight Entertainment)</strong> 가 만족도의 결정적 요인이 된다.</p></li>
+</ul>
+</section>
+<section id="delay">
+<h4>지연(Delay) 민감도:<a class="headerlink" href="#delay" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>출발 지연이 15분, 30분, 1시간 늘어날 때마다 만족도가 얼마나 급격히 하락하는지 분석하여 <strong>‘골든 타임’</strong> 을 설정할 수 있다.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="loyalty-analysis">
+<h3>4. 고객 충성도 분석 (Loyalty Analysis)<a class="headerlink" href="#loyalty-analysis" title="Link to this heading">#</a></h3>
+<p>충성 고객(Loyal Customer)과 비충성 고객(Disloyal Customer)의 행동 패턴 차이를 분석한다.</p>
+<p><img alt="Survey13" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/9-13.png" /></p>
+<ul class="simple">
+<li><p><strong>이탈 위험 감지:</strong> 비충성 고객이 특히 불만족하는 포인트(Pain Point)를 찾아내어 충성 고객으로 전환시키기 위한 전략을 마련한다.</p></li>
+<li><p><strong>충성 고객 강화:</strong> 충성 고객이 지속적으로 만족하는 요인을 강화하여 브랜드 옹호자로 만든다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="id29">
+<h3>5. 머신러닝 기반 예측 모델링 (Predictive Modeling)<a class="headerlink" href="#id29" title="Link to this heading">#</a></h3>
+<p>데이터를 학습하여 미래의 만족도를 예측하거나 주요 인자를 식별한다.</p>
+<ul class="simple">
+<li><p><strong>만족도 예측:</strong> 승객의 특성과 비행 정보를 입력하면 만족할 확률을 예측한다. 이를 통해 탑승 전 ‘불만족 위험군’을 선별하여 선제적으로 케어(Upgrade, 쿠폰 제공 등)할 수 있다.</p></li>
+<li><p><strong>특성 중요도(Feature Importance) 산출:</strong> 랜덤 포레스트(Random Forest)나 XGBoost 등의 알고리즘을 사용하여 만족도에 영향을 미치는 변수의 순위를 매긴다. 이는 상관관계 분석보다 더 정교한 인사이트를 제공한다.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="text-mining">
+<h3>6. 텍스트 마이닝 (Text Mining) - <em>데이터에 텍스트 컬럼이 있다면</em><a class="headerlink" href="#text-mining" title="Link to this heading">#</a></h3>
+<p>만약 주관식 응답 데이터가 포함된다면, 자연어 처리(NLP)를 통해 감성 분석이나 토픽 모델링을 수행하여 수치 데이터로는 알 수 없는 구체적인 불만 사유(예: “승무원이 불친절했다”, “기내식이 너무 짰다”)를 파악할 수 있다. (현재 데이터에는 없지만 추가 수집 시 유용함)</p>
+</section>
+</section>
+<section id="id30">
+<h2><strong>참고: 파이썬 코드</strong><a class="headerlink" href="#id30" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. 데이터 로딩</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># 데이터프레임 불러오기</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../Data/train.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># 데이터 확인하기</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;데이터 정보:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>데이터 정보:
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 103904 entries, 0 to 103903
+Data columns (total 25 columns):
+ #   Column                             Non-Null Count   Dtype  
+---  ------                             --------------   -----  
+ 0   Unnamed: 0                         103904 non-null  int64  
+ 1   id                                 103904 non-null  int64  
+ 2   Gender                             103904 non-null  object 
+ 3   Customer Type                      103904 non-null  object 
+ 4   Age                                103904 non-null  int64  
+ 5   Type of Travel                     103904 non-null  object 
+ 6   Class                              103904 non-null  object 
+ 7   Flight Distance                    103904 non-null  int64  
+ 8   Inflight wifi service              103904 non-null  int64  
+ 9   Departure/Arrival time convenient  103904 non-null  int64  
+ 10  Ease of Online booking             103904 non-null  int64  
+ 11  Gate location                      103904 non-null  int64  
+ 12  Food and drink                     103904 non-null  int64  
+ 13  Online boarding                    103904 non-null  int64  
+ 14  Seat comfort                       103904 non-null  int64  
+ 15  Inflight entertainment             103904 non-null  int64  
+ 16  On-board service                   103904 non-null  int64  
+ 17  Leg room service                   103904 non-null  int64  
+ 18  Baggage handling                   103904 non-null  int64  
+ 19  Checkin service                    103904 non-null  int64  
+ 20  Inflight service                   103904 non-null  int64  
+ 21  Cleanliness                        103904 non-null  int64  
+ 22  Departure Delay in Minutes         103904 non-null  int64  
+ 23  Arrival Delay in Minutes           103594 non-null  float64
+ 24  satisfaction                       103904 non-null  object 
+dtypes: float64(1), int64(19), object(5)
+memory usage: 19.8+ MB
+None
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 2. 만족도 분석</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+
+<span class="c1"># 만족도(Target)를 수치형으로 변환</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;satisfaction_binary&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;satisfaction&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s1">&#39;satisfied&#39;</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># --- 1. 전체 만족도 비율 (Pie Chart) ---</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">satisfaction_counts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;satisfaction&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span><span class="n">satisfaction_counts</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">satisfaction_counts</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">autopct</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%1.1f%%</span><span class="s1">&#39;</span><span class="p">,</span> 
+        <span class="n">startangle</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;#ff9999&#39;</span><span class="p">,</span><span class="s1">&#39;#66b3ff&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Overall Satisfaction Distribution&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># --- 2. 좌석 등급(Class)별 만족도 (Countplot) ---</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Class&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;satisfaction&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;Set2&#39;</span><span class="p">,</span> 
+              <span class="n">order</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Eco&#39;</span><span class="p">,</span> <span class="s1">&#39;Eco Plus&#39;</span><span class="p">,</span> <span class="s1">&#39;Business&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Satisfaction by Class&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Class&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Count&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># --- 3. 여행 목적(Type of Travel)별 만족도 (Countplot) ---</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Type of Travel&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;satisfaction&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;Set2&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Satisfaction by Type of Travel&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Type of Travel&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Count&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># --- 4. 각 서비스 항목과 만족도 간의 상관관계 (Bar Chart) ---</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1"># 상관관계 계산</span>
+<span class="n">numeric_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;int64&#39;</span><span class="p">,</span> <span class="s1">&#39;float64&#39;</span><span class="p">])</span>
+<span class="n">correlations</span> <span class="o">=</span> <span class="n">numeric_df</span><span class="o">.</span><span class="n">corr</span><span class="p">()[</span><span class="s1">&#39;satisfaction_binary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;satisfaction_binary&#39;</span><span class="p">)</span>
+
+<span class="c1"># 서비스 관련 변수만 필터링</span>
+<span class="n">service_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Inflight wifi service&#39;</span><span class="p">,</span> <span class="s1">&#39;Departure/Arrival time convenient&#39;</span><span class="p">,</span> <span class="s1">&#39;Ease of Online booking&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;Gate location&#39;</span><span class="p">,</span> <span class="s1">&#39;Food and drink&#39;</span><span class="p">,</span> <span class="s1">&#39;Online boarding&#39;</span><span class="p">,</span> <span class="s1">&#39;Seat comfort&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;Inflight entertainment&#39;</span><span class="p">,</span> <span class="s1">&#39;On-board service&#39;</span><span class="p">,</span> <span class="s1">&#39;Leg room service&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;Baggage handling&#39;</span><span class="p">,</span> <span class="s1">&#39;Checkin service&#39;</span><span class="p">,</span> <span class="s1">&#39;Inflight service&#39;</span><span class="p">,</span> <span class="s1">&#39;Cleanliness&#39;</span><span class="p">]</span>
+
+<span class="n">service_corr</span> <span class="o">=</span> <span class="n">correlations</span><span class="p">[</span><span class="n">service_cols</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">service_corr</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">service_corr</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="n">service_corr</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Correlation between Services and Satisfaction&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Correlation Coefficient&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># --- 통계 수치 출력 ---</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Top 5 Correlated Features with Satisfaction:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">correlations</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Mean Satisfaction Rate by Customer Type:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Customer Type&#39;</span><span class="p">)[</span><span class="s1">&#39;satisfaction_binary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b1d7a4180358f5c5f76dbdc136b3f817af4e0acc761be7f6b5a0b3ceaf7d8630.png" src="../_images/b1d7a4180358f5c5f76dbdc136b3f817af4e0acc761be7f6b5a0b3ceaf7d8630.png" />
+<img alt="../_images/137ea5897a71ab4ce5b25eb189c7de0ce7f317cc6e22adc282b820e895aa9882.png" src="../_images/137ea5897a71ab4ce5b25eb189c7de0ce7f317cc6e22adc282b820e895aa9882.png" />
+<img alt="../_images/e98ae1c35267c9c7e6e4153461ee82af7ec37793af587204c7b8120eaf5328ad.png" src="../_images/e98ae1c35267c9c7e6e4153461ee82af7ec37793af587204c7b8120eaf5328ad.png" />
+<img alt="../_images/9557330dfc65979832382db1c88cfa2a6728730017b13033546124e811f36c09.png" src="../_images/9557330dfc65979832382db1c88cfa2a6728730017b13033546124e811f36c09.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Top 5 Correlated Features with Satisfaction:
+Online boarding           0.503557
+Inflight entertainment    0.398059
+Seat comfort              0.349459
+On-board service          0.322383
+Leg room service          0.313131
+Name: satisfaction_binary, dtype: float64
+
+Mean Satisfaction Rate by Customer Type:
+Customer Type
+Loyal Customer       0.477291
+disloyal Customer    0.236658
+Name: satisfaction_binary, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 3. 문항별 기술적 분석</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># 분석할 컬럼 그룹 정의 (범주형, 수치형, 설문 항목)</span>
+<span class="n">categorical_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">,</span> <span class="s1">&#39;Customer Type&#39;</span><span class="p">,</span> <span class="s1">&#39;Type of Travel&#39;</span><span class="p">,</span> <span class="s1">&#39;Class&#39;</span><span class="p">,</span> <span class="s1">&#39;satisfaction&#39;</span><span class="p">]</span>
+<span class="n">numerical_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;Flight Distance&#39;</span><span class="p">,</span> <span class="s1">&#39;Departure Delay in Minutes&#39;</span><span class="p">,</span> <span class="s1">&#39;Arrival Delay in Minutes&#39;</span><span class="p">]</span>
+<span class="n">survey_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Inflight wifi service&#39;</span><span class="p">,</span> <span class="s1">&#39;Departure/Arrival time convenient&#39;</span><span class="p">,</span> <span class="s1">&#39;Ease of Online booking&#39;</span><span class="p">,</span> 
+               <span class="s1">&#39;Gate location&#39;</span><span class="p">,</span> <span class="s1">&#39;Food and drink&#39;</span><span class="p">,</span> <span class="s1">&#39;Online boarding&#39;</span><span class="p">,</span> <span class="s1">&#39;Seat comfort&#39;</span><span class="p">,</span> 
+               <span class="s1">&#39;Inflight entertainment&#39;</span><span class="p">,</span> <span class="s1">&#39;On-board service&#39;</span><span class="p">,</span> <span class="s1">&#39;Leg room service&#39;</span><span class="p">,</span> 
+               <span class="s1">&#39;Baggage handling&#39;</span><span class="p">,</span> <span class="s1">&#39;Checkin service&#39;</span><span class="p">,</span> <span class="s1">&#39;Inflight service&#39;</span><span class="p">,</span> <span class="s1">&#39;Cleanliness&#39;</span><span class="p">]</span>
+
+<span class="c1"># 1. 범주형 데이터 시각화 (Categorical Data)</span>
+<span class="n">fig1</span><span class="p">,</span> <span class="n">axes1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">fig1</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Distribution of Categorical Variables&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">axes1</span> <span class="o">=</span> <span class="n">axes1</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">categorical_cols</span><span class="p">):</span>
+    <span class="c1"># 경고 방지를 위해 hue에 x축 변수 할당 및 legend=False 설정</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes1</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">hue</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;Set2&#39;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+    <span class="n">axes1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+    <span class="c1"># 막대 위에 빈도수(Count) 숫자 표시</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">axes1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">patches</span><span class="p">:</span>
+        <span class="n">axes1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">get_height</span><span class="p">()),</span> 
+                          <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span>
+
+<span class="c1"># 빈 서브플롯 제거 (총 6개 칸 중 5개만 사용하므로 마지막 하나 제거)</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">categorical_cols</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">:</span>
+    <span class="n">fig1</span><span class="o">.</span><span class="n">delaxes</span><span class="p">(</span><span class="n">axes1</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># 2. 수치형 데이터 시각화 (히스토그램)</span>
+<span class="n">fig2</span><span class="p">,</span> <span class="n">axes2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">fig2</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Distribution of Numerical Variables&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">axes2</span> <span class="o">=</span> <span class="n">axes2</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">numerical_cols</span><span class="p">):</span>
+    <span class="c1"># 결측치(NaN) 제거 후 히스토그램 및 밀도 곡선(KDE) 그리기</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">(),</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes2</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;skyblue&#39;</span><span class="p">)</span>
+    <span class="n">axes2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># 3. 설문 조사 항목 시각화 (0-5점 척도 막대 그래프)</span>
+<span class="n">fig3</span><span class="p">,</span> <span class="n">axes3</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+<span class="n">fig3</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Distribution of Survey Ratings (0-5)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">axes3</span> <span class="o">=</span> <span class="n">axes3</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">survey_cols</span><span class="p">):</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes3</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">hue</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+    <span class="n">axes3</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+    <span class="n">axes3</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="c1"># y축 라벨 제거 (공간 확보)</span>
+    <span class="n">axes3</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="c1"># x축 라벨 제거</span>
+
+<span class="c1"># 남은 빈 서브플롯들 제거 (총 16개 칸 중 사용하지 않는 칸 삭제)</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">survey_cols</span><span class="p">),</span> <span class="mi">16</span><span class="p">):</span>
+    <span class="n">fig3</span><span class="o">.</span><span class="n">delaxes</span><span class="p">(</span><span class="n">axes3</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># 요약 통계 테이블 생성 (Describe)</span>
+<span class="n">desc_cat</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">categorical_cols</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<span class="n">desc_num</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">numerical_cols</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<span class="n">desc_survey</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">survey_cols</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;범주형 데이터 요약 (Categorical Summary):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">desc_cat</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">수치형 데이터 요약 (Numerical Summary):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">desc_num</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">설문 항목 데이터 요약 (Survey Items Summary):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">desc_survey</span><span class="p">)</span>
+
+<span class="c1"># 설문 항목 중 0점 개수 확인 (0점은 &#39;해당 없음&#39;일 가능성이 높음)</span>
+<span class="n">zero_counts</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">survey_cols</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">각 서비스 항목별 0점(해당 없음?) 개수:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">zero_counts</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/5710aff3da1c343daf4c8ab85d06c31da2fa6f507968d0908c75daf29502b177.png" src="../_images/5710aff3da1c343daf4c8ab85d06c31da2fa6f507968d0908c75daf29502b177.png" />
+<img alt="../_images/1f7c5bd2b69e4352b50b13003812481495d47eb36bcc440187167ab8bbfdbe59.png" src="../_images/1f7c5bd2b69e4352b50b13003812481495d47eb36bcc440187167ab8bbfdbe59.png" />
+<img alt="../_images/699f27a2b95b963ca25507e05bc254d03325a9962b40c6ddc5b63601d10a563c.png" src="../_images/699f27a2b95b963ca25507e05bc254d03325a9962b40c6ddc5b63601d10a563c.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>범주형 데이터 요약 (Categorical Summary):
+                 count unique                      top   freq
+Gender          103904      2                   Female  52727
+Customer Type   103904      2           Loyal Customer  84923
+Type of Travel  103904      2          Business travel  71655
+Class           103904      3                 Business  49665
+satisfaction    103904      2  neutral or dissatisfied  58879
+
+수치형 데이터 요약 (Numerical Summary):
+                               count         mean         std   min    25%  \
+Age                         103904.0    39.379706   15.114964   7.0   27.0   
+Flight Distance             103904.0  1189.448375  997.147281  31.0  414.0   
+Departure Delay in Minutes  103904.0    14.815618   38.230901   0.0    0.0   
+Arrival Delay in Minutes    103594.0    15.178678   38.698682   0.0    0.0   
+
+                              50%     75%     max  
+Age                          40.0    51.0    85.0  
+Flight Distance             843.0  1743.0  4983.0  
+Departure Delay in Minutes    0.0    12.0  1592.0  
+Arrival Delay in Minutes      0.0    13.0  1584.0  
+
+설문 항목 데이터 요약 (Survey Items Summary):
+                                      count      mean       std  min  25%  \
+Inflight wifi service              103904.0  2.729683  1.327829  0.0  2.0   
+Departure/Arrival time convenient  103904.0  3.060296  1.525075  0.0  2.0   
+Ease of Online booking             103904.0  2.756901  1.398929  0.0  2.0   
+Gate location                      103904.0  2.976883  1.277621  0.0  2.0   
+Food and drink                     103904.0  3.202129  1.329533  0.0  2.0   
+Online boarding                    103904.0  3.250375  1.349509  0.0  2.0   
+Seat comfort                       103904.0  3.439396  1.319088  0.0  2.0   
+Inflight entertainment             103904.0  3.358158  1.332991  0.0  2.0   
+On-board service                   103904.0  3.382363  1.288354  0.0  2.0   
+Leg room service                   103904.0  3.351055  1.315605  0.0  2.0   
+Baggage handling                   103904.0  3.631833  1.180903  1.0  3.0   
+Checkin service                    103904.0  3.304290  1.265396  0.0  3.0   
+Inflight service                   103904.0  3.640428  1.175663  0.0  3.0   
+Cleanliness                        103904.0  3.286351  1.312273  0.0  2.0   
+
+                                   50%  75%  max  
+Inflight wifi service              3.0  4.0  5.0  
+Departure/Arrival time convenient  3.0  4.0  5.0  
+Ease of Online booking             3.0  4.0  5.0  
+Gate location                      3.0  4.0  5.0  
+Food and drink                     3.0  4.0  5.0  
+Online boarding                    3.0  4.0  5.0  
+Seat comfort                       4.0  5.0  5.0  
+Inflight entertainment             4.0  4.0  5.0  
+On-board service                   4.0  4.0  5.0  
+Leg room service                   4.0  4.0  5.0  
+Baggage handling                   4.0  5.0  5.0  
+Checkin service                    3.0  4.0  5.0  
+Inflight service                   4.0  5.0  5.0  
+Cleanliness                        3.0  4.0  5.0  
+
+각 서비스 항목별 0점(해당 없음?) 개수:
+Inflight wifi service                3103
+Departure/Arrival time convenient    5300
+Ease of Online booking               4487
+Gate location                           1
+Food and drink                        107
+Online boarding                      2428
+Seat comfort                            1
+Inflight entertainment                 14
+On-board service                        3
+Leg room service                      472
+Baggage handling                        0
+Checkin service                         1
+Inflight service                        3
+Cleanliness                            12
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 4. 심층 분석 I</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">pi</span>
+
+<span class="c1"># --- 전처리 (Preprocessing) ---</span>
+<span class="c1"># 만족도를 이진 변수로 변환 (만족한 경우 1, 그렇지 않으면 0)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;satisfaction_binary&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;satisfaction&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s1">&#39;satisfied&#39;</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># 도착 지연(Arrival Delay)의 결측값을 0으로 채움 (이 개요 분석에서는 영향이 미미함)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Arrival Delay in Minutes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Arrival Delay in Minutes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># --- 분석 1: 서비스 격차 분석 (레이더 차트) ---</span>
+<span class="c1"># 서비스 관련 컬럼 선택</span>
+<span class="n">service_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Inflight wifi service&#39;</span><span class="p">,</span> <span class="s1">&#39;Departure/Arrival time convenient&#39;</span><span class="p">,</span> <span class="s1">&#39;Ease of Online booking&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;Gate location&#39;</span><span class="p">,</span> <span class="s1">&#39;Food and drink&#39;</span><span class="p">,</span> <span class="s1">&#39;Online boarding&#39;</span><span class="p">,</span> <span class="s1">&#39;Seat comfort&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;Inflight entertainment&#39;</span><span class="p">,</span> <span class="s1">&#39;On-board service&#39;</span><span class="p">,</span> <span class="s1">&#39;Leg room service&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;Baggage handling&#39;</span><span class="p">,</span> <span class="s1">&#39;Checkin service&#39;</span><span class="p">,</span> <span class="s1">&#39;Inflight service&#39;</span><span class="p">,</span> <span class="s1">&#39;Cleanliness&#39;</span><span class="p">]</span>
+
+<span class="c1"># 만족 그룹과 불만족 그룹의 평균 점수 계산</span>
+<span class="n">means</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;satisfaction&#39;</span><span class="p">)[</span><span class="n">service_cols</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="c1"># 레이더 차트를 위한 데이터 준비</span>
+<span class="n">categories</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+<span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">categories</span><span class="p">)</span>
+
+<span class="c1"># 각 축의 각도 계산</span>
+<span class="n">angles</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+<span class="n">angles</span> <span class="o">+=</span> <span class="p">[</span><span class="n">angles</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="c1"># 차트를 닫기 위해 시작점 추가</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># 레이더 차트 생성</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">polar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_theta_offset</span><span class="p">(</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_theta_direction</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># X축 라벨 설정</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">angles</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">categories</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_rlabel_position</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span> <span class="s2">&quot;4&quot;</span><span class="p">,</span> <span class="s2">&quot;5&quot;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># &#39;중립 또는 불만족(Neutral or Dissatisfied)&#39; 데이터 플롯</span>
+<span class="n">values_dis</span> <span class="o">=</span> <span class="n">means</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">means</span><span class="p">[</span><span class="s1">&#39;satisfaction&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;neutral or dissatisfied&#39;</span><span class="p">,</span> <span class="n">categories</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">values_dis</span> <span class="o">+=</span> <span class="p">[</span><span class="n">values_dis</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">angles</span><span class="p">,</span> <span class="n">values_dis</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Neutral or Dissatisfied&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">angles</span><span class="p">,</span> <span class="n">values_dis</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="c1"># &#39;만족(Satisfied)&#39; 데이터 플롯</span>
+<span class="n">values_sat</span> <span class="o">=</span> <span class="n">means</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">means</span><span class="p">[</span><span class="s1">&#39;satisfaction&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;satisfied&#39;</span><span class="p">,</span> <span class="n">categories</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">values_sat</span> <span class="o">+=</span> <span class="p">[</span><span class="n">values_sat</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">angles</span><span class="p">,</span> <span class="n">values_sat</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Satisfied&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">angles</span><span class="p">,</span> <span class="n">values_sat</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Service Rating Gap: Satisfied vs. Dissatisfied&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.08</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># --- 분석 2: 지연이 만족도에 미치는 영향 ---</span>
+<span class="c1"># 지연 시간 구간화(Binning)</span>
+<span class="n">bins</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">10000</span><span class="p">]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;0 min&#39;</span><span class="p">,</span> <span class="s1">&#39;1-15 min&#39;</span><span class="p">,</span> <span class="s1">&#39;16-30 min&#39;</span><span class="p">,</span> <span class="s1">&#39;31-60 min&#39;</span><span class="p">,</span> <span class="s1">&#39;1-2 hr&#39;</span><span class="p">,</span> <span class="s1">&#39;2-3 hr&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;3 hr&#39;</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Delay_Group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Arrival Delay in Minutes&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+
+<span class="c1"># 지연 그룹별 만족률 계산</span>
+<span class="n">delay_satisfaction</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Delay_Group&#39;</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;satisfaction_binary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">지연 영향 데이터:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">delay_satisfaction</span><span class="p">)</span>
+
+<span class="c1"># --- 분석 3: 고객 세그먼테이션 히트맵 ---</span>
+<span class="c1"># 좌석 등급(Class) 및 여행 타입(Type of Travel)에 따른 만족률 피벗 테이블</span>
+<span class="n">segment_pivot</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s1">&#39;Class&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;Type of Travel&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s1">&#39;satisfaction_binary&#39;</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">세그먼트별 만족률 (좌석 등급 x 여행 타입):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">segment_pivot</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/ea56926aa661b576718149f3b47e773c956a7fcdde87ae18357c64b5c6b25fdd.png" src="../_images/ea56926aa661b576718149f3b47e773c956a7fcdde87ae18357c64b5c6b25fdd.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>지연 영향 데이터:
+Delay_Group
+0 min        0.472473
+1-15 min     0.413028
+16-30 min    0.352725
+31-60 min    0.356374
+1-2 hr       0.352442
+2-3 hr       0.365885
+&gt;3 hr        0.365402
+Name: satisfaction_binary, dtype: float64
+
+세그먼트별 만족률 (좌석 등급 x 여행 타입):
+Type of Travel  Business travel  Personal Travel
+Class                                           
+Business               0.720216         0.122392
+Eco                    0.296194         0.101971
+Eco Plus               0.393316         0.087125
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 5. 심층 분석 II</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># --- 전처리 (Preprocessing) ---</span>
+<span class="c1"># 만족도를 이진 변수로 변환 (만족: 1, 그 외: 0)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;satisfaction_binary&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;satisfaction&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s1">&#39;satisfied&#39;</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">service_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Inflight wifi service&#39;</span><span class="p">,</span> <span class="s1">&#39;Departure/Arrival time convenient&#39;</span><span class="p">,</span> <span class="s1">&#39;Ease of Online booking&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;Gate location&#39;</span><span class="p">,</span> <span class="s1">&#39;Food and drink&#39;</span><span class="p">,</span> <span class="s1">&#39;Online boarding&#39;</span><span class="p">,</span> <span class="s1">&#39;Seat comfort&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;Inflight entertainment&#39;</span><span class="p">,</span> <span class="s1">&#39;On-board service&#39;</span><span class="p">,</span> <span class="s1">&#39;Leg room service&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;Baggage handling&#39;</span><span class="p">,</span> <span class="s1">&#39;Checkin service&#39;</span><span class="p">,</span> <span class="s1">&#39;Inflight service&#39;</span><span class="p">,</span> <span class="s1">&#39;Cleanliness&#39;</span><span class="p">]</span>
+
+<span class="c1"># --- 분석 1: 중요도-성취도 분석 (IPA) 매트릭스 ---</span>
+<span class="c1"># 중요도(Importance): 만족도와의 상관계수 (Correlation)</span>
+<span class="c1"># 성취도(Performance): 평균 평점 (Average Rating)</span>
+<span class="n">correlations</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">service_cols</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;satisfaction_binary&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">corr</span><span class="p">()[</span><span class="s1">&#39;satisfaction_binary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;satisfaction_binary&#39;</span><span class="p">)</span>
+<span class="n">means</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">service_cols</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="n">ipa_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Importance&#39;</span><span class="p">:</span> <span class="n">correlations</span><span class="p">,</span> <span class="s1">&#39;Performance&#39;</span><span class="p">:</span> <span class="n">means</span><span class="p">})</span>
+
+<span class="c1"># 그래프 1 생성</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Performance&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Importance&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ipa_df</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+
+<span class="c1"># 라벨 추가</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ipa_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">ipa_df</span><span class="p">[</span><span class="s1">&#39;Performance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mf">0.02</span><span class="p">,</span> 
+             <span class="n">ipa_df</span><span class="p">[</span><span class="s1">&#39;Importance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> 
+             <span class="n">ipa_df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+
+<span class="c1"># 사분면 기준선 추가 (평균을 기준으로 설정)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">ipa_df</span><span class="p">[</span><span class="s1">&#39;Performance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">ipa_df</span><span class="p">[</span><span class="s1">&#39;Importance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Priority Action Matrix (Importance vs. Performance)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Performance (Avg Rating)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Importance (Correlation with Satisfaction)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># --- 분석 2: 인구통계 - 연령대 및 좌석 등급별 만족도 ---</span>
+<span class="c1"># 연령대 구간화 (Binning)</span>
+<span class="n">age_bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span>
+<span class="n">age_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Gen Z (&lt;18)&#39;</span><span class="p">,</span> <span class="s1">&#39;Young Adult (18-30)&#39;</span><span class="p">,</span> <span class="s1">&#39;Adult (30-45)&#39;</span><span class="p">,</span> <span class="s1">&#39;Middle Age (45-60)&#39;</span><span class="p">,</span> <span class="s1">&#39;Senior (&gt;60)&#39;</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Age_Group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">age_bins</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">age_labels</span><span class="p">)</span>
+
+<span class="n">pivot_age_class</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s1">&#39;Age_Group&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;Class&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s1">&#39;satisfaction_binary&#39;</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># 그래프 2 생성</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">pivot_age_class</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdYlGn&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.1%&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Satisfaction Rate by Age Group and Class&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># --- 분석 3: 맥락 분석 - 비행 거리에 따른 &quot;좌석 편안함&quot;의 중요도 ---</span>
+<span class="c1"># 장거리 비행일수록 좌석 편안함이 더 중요한가?</span>
+<span class="c1"># 거리 구간화 (Binning)</span>
+<span class="n">dist_bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1500</span><span class="p">,</span> <span class="mi">3000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">]</span>
+<span class="n">dist_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Short (&lt;500)&#39;</span><span class="p">,</span> <span class="s1">&#39;Medium (500-1500)&#39;</span><span class="p">,</span> <span class="s1">&#39;Long (1500-3000)&#39;</span><span class="p">,</span> <span class="s1">&#39;Ultra Long (&gt;3000)&#39;</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Dist_Group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Flight Distance&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">dist_bins</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">dist_labels</span><span class="p">)</span>
+
+<span class="c1"># 각 거리 그룹별 &#39;좌석 편안함&#39;과 &#39;만족도&#39; 간의 상관계수 계산</span>
+<span class="n">comfort_corrs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">dist_labels</span><span class="p">:</span>
+    <span class="n">sub_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Dist_Group&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">group</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sub_df</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">corr</span> <span class="o">=</span> <span class="n">sub_df</span><span class="p">[</span><span class="s1">&#39;Seat comfort&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">sub_df</span><span class="p">[</span><span class="s1">&#39;satisfaction_binary&#39;</span><span class="p">])</span>
+        <span class="n">comfort_corrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">corr</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">comfort_corrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># 그래프 3 생성</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">dist_labels</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">comfort_corrs</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="n">dist_labels</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;Blues_d&#39;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Importance of &quot;Seat Comfort&quot; by Flight Distance&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Correlation with Satisfaction&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># --- 분석 4: 고객 충성도 세분화 ---</span>
+<span class="c1"># 여행 목적(Travel Type)에 따른 충성/비충성 고객의 만족도 비교</span>
+<span class="c1"># 그래프 4 생성</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Customer Type&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;satisfaction_binary&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;Type of Travel&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;Set2&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Satisfaction: Loyalty vs. Travel Purpose&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Satisfaction Rate&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/bef60d6783763ac59def9d4bda4f574a1d509ae5a2cafeda487921806b1fba76.png" src="../_images/bef60d6783763ac59def9d4bda4f574a1d509ae5a2cafeda487921806b1fba76.png" />
+<img alt="../_images/c9e359d1222514ba28f0e511b2a95836ad3cd61a56e94f234228812837ea8e84.png" src="../_images/c9e359d1222514ba28f0e511b2a95836ad3cd61a56e94f234228812837ea8e84.png" />
+<img alt="../_images/f14e76bdd2bf8d57b5986b46207be9017b5afff0e0319c4ebd5871acd3f5abf2.png" src="../_images/f14e76bdd2bf8d57b5986b46207be9017b5afff0e0319c4ebd5871acd3f5abf2.png" />
+<img alt="../_images/637875eb34119d915a26fc98b416086f00c514184cb3c644bd02fb1119387290.png" src="../_images/637875eb34119d915a26fc98b416086f00c514184cb3c644bd02fb1119387290.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="08_%EC%84%9C%EC%9A%B8_%EC%95%84%ED%8C%8C%ED%8A%B8_%EB%A7%A4%EB%AC%BC_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><strong>8장 서울 아파트 매물 변화 분석</strong></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="10_%ED%83%90%EC%83%89%EC%A0%81_%EC%9A%94%EC%9D%B8%EB%B6%84%EC%84%9D.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><strong>10장 탐색적 요인분석</strong></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><span style="color: blue;"><strong>1. 데이터 입력</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gemini"><strong>Gemini 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1. 데이터 구조</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2. 변수 설명</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#demographics">승객 인적 사항 (Demographics)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flight-information">비행 정보 (Flight Information)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#services">서비스 만족도 평가 (Services)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#delays">지연 정보 (Delays)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3. 데이터 특이사항</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><span style="color: blue;"><strong>2. 만족도 분석</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">1. 전반적인 만족도 현황</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">2. 주요 영향 요인 분석</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#class">좌석 등급 (Class):</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#type-of-travel">여행 목적 (Type of Travel):</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#customer-type">고객 유형 (Customer Type):</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-analysis">3. 서비스 항목별 상관관계 (Correlation Analysis)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">4. 결론 및 제언</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11"><span style="color: blue;"><strong>3. 문항별 기술적 분석</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">1. 범주형 변수 분석 (인적 사항 및 비행 정보)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">2. 수치형 변수 분석 (나이, 거리, 지연 시간)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">3. 서비스 만족도 항목 분석 (0~5점 척도)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">평점 평균이 높은 항목 (3.5점 이상):</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">평점 평균이 낮은 항목 (3.0점 미만):</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">특이 사항 (0점 빈도):</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">요약하자면:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#i"><span style="color: blue;"><strong>4. 설문조사 심층 분석 I</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id20"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gap">1. 서비스 갭(Gap) 분석 (레이더 차트 활용)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">분석 결과:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">2. 운영 효율성과 고객 민감도 분석 (지연 시간 분석)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">분석 결과:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#segmentation">3. 고객 세분화(Segmentation) 및 타겟팅 전략</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">분석 결과 (만족도 비율):</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#predictive-modeling">4. 예측 모델링 (Predictive Modeling)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#persona">5. 페르소나(Persona) 분석</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ii"><span style="color: blue;"><strong>5. 설문조사 심층 분석 II</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id25"><strong>Gemini 분석</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ipa-importance-performance-analysis">1. 우선순위 행동 매트릭스 (IPA: Importance-Performance Analysis)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">시사점:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demographic-segmentation">2. 인구통계학적 세분화 (Demographic Segmentation)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">연령대별 분석:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">좌석 등급별 분석:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contextual-analysis">3. 컨텍스트 기반 서비스 분석 (Contextual Analysis)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flight-distance">비행 거리(Flight Distance)에 따른 민감도:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#delay">지연(Delay) 민감도:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loyalty-analysis">4. 고객 충성도 분석 (Loyalty Analysis)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id29">5. 머신러닝 기반 예측 모델링 (Predictive Modeling)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#text-mining">6. 텍스트 마이닝 (Text Mining) - <em>데이터에 텍스트 컬럼이 있다면</em></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id30"><strong>참고: 파이썬 코드</strong></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By 김원경 최필선
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

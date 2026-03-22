@@ -1,0 +1,996 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>23장 축구 경기 데이터 분석 &#8212; 데이터 분석 이제 AI에게 맡겨라</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/23_축구_경기_데이터_분석';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="24장 폭격 파괴력 분석" href="24_%ED%8F%AD%EA%B2%A9_%ED%8C%8C%EA%B4%B4%EB%A0%A5_%EB%B6%84%EC%84%9D.html" />
+    <link rel="prev" title="22장 운동학 (Kinematics)" href="22_%EC%9A%B4%EB%8F%99%ED%95%99_Kinematics.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="00_%EC%84%9C%EB%AC%B8.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="데이터 분석 이제 AI에게 맡겨라 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="00_%EC%84%9C%EB%AC%B8.html">
+                    서문
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_%EC%8B%9C%ED%97%98%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>1장 시험성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_%EB%8C%80%ED%86%B5%EB%A0%B9_%EC%A7%80%EC%A7%80%EC%9C%A8_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>2장 대통령 지지율 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_KBO_%EC%A0%95%EA%B7%9C%EC%8B%9C%EC%A6%8C_%ED%8C%80%EC%84%B1%EC%A0%81_%EB%B6%84%EC%84%9D.html"><strong>3장 KBO 정규시즌 팀성적 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_PPP_%EA%B7%B8%EB%9E%98%ED%94%84_%EB%B6%84%EC%84%9D.html"><strong>4장 PPP 그래프 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_%EC%84%B8%EA%B3%84%EC%9D%80%ED%96%89_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EC%B6%94%EC%B6%9C.html"><strong>5장 세계은행 데이터 추출</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_%EC%A3%BC%EA%B0%80_%EC%98%88%EC%B8%A1_%EC%8B%9C%EC%8A%A4%ED%85%9C_%EA%B5%AC%EC%B6%95.html"><strong>6장 주가 예측 시스템 구축</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_%EB%8C%93%EA%B8%80_%ED%86%B5%EA%B3%84_%EB%B6%84%EC%84%9D.html"><strong>7장 댓글 통계 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_%EC%84%9C%EC%9A%B8_%EC%95%84%ED%8C%8C%ED%8A%B8_%EB%A7%A4%EB%AC%BC_%EB%B3%80%ED%99%94_%EB%B6%84%EC%84%9D.html"><strong>8장 서울 아파트 매물 변화 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_%EC%84%A4%EB%AC%B8%EC%A1%B0%EC%82%AC_%EB%B6%84%EC%84%9D.html"><strong>9장 설문조사 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_%ED%83%90%EC%83%89%EC%A0%81_%EC%9A%94%EC%9D%B8%EB%B6%84%EC%84%9D.html"><strong>10장 탐색적 요인분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_%EB%B3%B4%EC%8A%A4%ED%84%B4_%EC%A3%BC%ED%83%9D_%EA%B0%80%EA%B2%A9_%EB%B6%84%EC%84%9D.html"><strong>11장 보스턴 주택 가격 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_%EC%A2%85%EB%B6%80%EC%84%B8%EC%99%80_%EC%9B%94%EC%84%B8%EC%9D%98_%EA%B4%80%EA%B3%84.html"><strong>12장 종부세와 월세의 관계</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_%EB%8C%80%ED%98%95%EB%A7%88%ED%8A%B8_%EC%87%A0%EB%9D%BD_%EC%9B%90%EC%9D%B8_%EC%8B%A4%EC%A6%9D%EB%B6%84%EC%84%9D.html"><strong>13장 대형마트 쇠락 원인 실증분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="14_%EC%8B%A0%EC%83%9D%EC%95%84_%ED%8A%B9%EB%A1%80%EB%8C%80%EC%B6%9C%EA%B3%BC_%EC%B6%9C%EC%82%B0%EC%9C%A8.html"><strong>14장 신생아 특례대출과 출산율</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_Ridge_%EB%B0%8F_Lasso_%ED%9A%8C%EA%B7%80.html"><strong>15장 Ridge 및 Lasso 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_%EB%A1%9C%EC%A7%80%EC%8A%A4%ED%8B%B1_%ED%9A%8C%EA%B7%80.html"><strong>16장 로지스틱 회귀</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_%EC%9D%98%EC%82%AC%EA%B2%B0%EC%A0%95_%ED%8A%B8%EB%A6%AC_%EB%AA%A8%ED%98%95.html"><strong>17장 의사결정 트리 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_%ED%8A%B8%EB%A6%AC_%EA%B8%B0%EB%B0%98_%EB%AA%A8%ED%98%95.html"><strong>18장 트리 기반 모형</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="19_%EB%94%A5%EB%9F%AC%EB%8B%9D_%EA%B3%B5%EB%B6%80%ED%95%98%EA%B8%B0.html"><strong>19장 딥러닝 공부하기</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="20_%ED%8C%A8%EB%84%90_%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%B6%84%EC%84%9D.html"><strong>20장 패널 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="21_%EA%B3%A8%EB%B0%80%EB%8F%84_%EA%B2%80%EC%82%AC_%EA%B2%B0%EA%B3%BC_%ED%95%B4%EC%84%9D.html"><strong>21장 골밀도 검사 결과 해석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="22_%EC%9A%B4%EB%8F%99%ED%95%99_Kinematics.html"><strong>22장 운동학 (Kinematics)</strong></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>23장 축구 경기 데이터 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="24_%ED%8F%AD%EA%B2%A9_%ED%8C%8C%EA%B4%B4%EB%A0%A5_%EB%B6%84%EC%84%9D.html"><strong>24장 폭격 파괴력 분석</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="25_%EC%84%B8%EA%B3%84_%ED%99%94%EC%9E%A5%ED%92%88_%EA%B5%90%EC%97%AD_%ED%8A%B8%EB%A0%8C%EB%93%9C.html"><strong>25장 세계 화장품 교역 트렌드</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="26_Texas_Special_Education.html"><strong>26장 텍사스주 특수교육 현황</strong></a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/pilsunchoi/book4/issues/new?title=Issue%20on%20page%20%2Fnotebooks/23_축구_경기_데이터_분석.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/23_축구_경기_데이터_분석.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>23장 축구 경기 데이터 분석</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fifa"><span style="color: blue;"><strong>1. 2018 FIFA 월드컵 결승전 데이터세트</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#claude"><strong>Claude 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">1. 개요 (Overview)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#event-data">2. 이벤트 파일 (Event Data)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#common-fields">2-1. 공통 필드 (Common Fields)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#event-type-distribution">2-2. 이벤트 유형별 분포 (Event Type Distribution)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#type-specific-fields">2-3. 주요 이벤트별 전용 필드 (Type-Specific Fields)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#play-pattern">2-4. 플레이 패턴 (Play Pattern)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#coordinate-system">2-5. 좌표계 (Coordinate System)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lineup-data">3. 라인업 파일 (Lineup Data)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3-1. 필드 구조</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#positions">3-2. 포지션 변경 이력 (positions)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#potential-use-cases">4. 활용 방안 (Potential Use Cases)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">5. 참고 사항 (Notes)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><span style="color: blue;"><strong>2. 경기 흐름 분석</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><strong>Claude 분석</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><span style="color: blue;"><strong>3. 선수 평가</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><strong>Claude 분석</strong></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><strong>23장 축구 경기 데이터 분석</strong><a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="fifa">
+<h2><span style="color: blue;"><strong>1. 2018 FIFA 월드컵 결승전 데이터세트</strong></span><a class="headerlink" href="#fifa" title="Link to this heading">#</a></h2>
+<p><img alt="Worldcup" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/23-1.png" /></p>
+<p>자료: 2018 FIFA 월드컵 결승전 두 개의 JSON 파일(<a class="reference external" href="https://raw.githubusercontent.com/statsbomb/open-data/master/data/events/8658.json">events</a>, <a class="reference external" href="https://raw.githubusercontent.com/statsbomb/open-data/master/data/lineups/8658.json">lineups</a>)</p>
+</section>
+<section id="claude">
+<h2><strong>Claude 설명</strong><a class="headerlink" href="#claude" title="Link to this heading">#</a></h2>
+<p><strong>2018 FIFA World Cup Final — France vs Croatia (Match ID: 8658)</strong></p>
+<hr class="docutils" />
+<section id="overview">
+<h3>1. 개요 (Overview)<a class="headerlink" href="#overview" title="Link to this heading">#</a></h3>
+<p>본 문서는 <strong>StatsBomb Open Data</strong> 형식으로 제공되는 2018 FIFA 월드컵 결승전(프랑스 vs 크로아티아) 경기 데이터의 구조와 필드를 설명합니다. 데이터는 두 개의 JSON 파일로 구성되어 있습니다.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>파일명</p></th>
+<th class="head"><p>규모</p></th>
+<th class="head"><p>설명</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">16-event_8658.json</span></code></p></td>
+<td><p>2,978 이벤트</p></td>
+<td><p>경기 중 발생한 모든 이벤트(패스, 슈팅, 타클, 파울 등)의 상세 기록</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">16-lineup8658.json</span></code></p></td>
+<td><p>45명 선수</p></td>
+<td><p>양팀 엔트리(23명 + 22명)의 선수 정보, 포지션, 카드 기록</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>경기 결과:</strong> 프랑스 4 – 2 크로아티아 | <strong>포메이션:</strong> 프랑스 4-4-2, 크로아티아 4-3-3 | <strong>좌표계:</strong> 120×80 yards</p>
+</section>
+<hr class="docutils" />
+<section id="event-data">
+<h3>2. 이벤트 파일 (Event Data)<a class="headerlink" href="#event-data" title="Link to this heading">#</a></h3>
+<p>이벤트 파일은 경기 중 발생한 모든 액션을 시간순으로 기록한 JSON 배열입니다. 각 이벤트는 공통 필드와 이벤트 유형별 전용 필드로 구성됩니다.</p>
+<section id="common-fields">
+<h4>2-1. 공통 필드 (Common Fields)<a class="headerlink" href="#common-fields" title="Link to this heading">#</a></h4>
+<p>모든 이벤트에 포함되는 기본 필드입니다:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>필드명</p></th>
+<th class="head"><p>타입</p></th>
+<th class="head"><p>설명</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">id</span></code></p></td>
+<td><p>UUID</p></td>
+<td><p>각 이벤트의 고유 식별자</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">index</span></code></p></td>
+<td><p>Integer</p></td>
+<td><p>이벤트 순서 번호 (1부터 시작)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">period</span></code></p></td>
+<td><p>Integer</p></td>
+<td><p>경기 반 (1: 전반, 2: 후반)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">timestamp</span></code></p></td>
+<td><p>String</p></td>
+<td><p>해당 반 내 시간 (HH:MM:SS.sss)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">minute</span></code> / <code class="docutils literal notranslate"><span class="pre">second</span></code></p></td>
+<td><p>Integer</p></td>
+<td><p>경기 전체 기준 분/초</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">type</span></code></p></td>
+<td><p>Object</p></td>
+<td><p>이벤트 유형 (<code class="docutils literal notranslate"><span class="pre">id</span></code>, <code class="docutils literal notranslate"><span class="pre">name</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">possession</span></code></p></td>
+<td><p>Integer</p></td>
+<td><p>점유 시퀀스 번호</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">possession_team</span></code></p></td>
+<td><p>Object</p></td>
+<td><p>해당 점유의 팀 정보</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">play_pattern</span></code></p></td>
+<td><p>Object</p></td>
+<td><p>플레이 패턴 (오픈플레이, 세트피스 등)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">team</span></code></p></td>
+<td><p>Object</p></td>
+<td><p>이벤트 수행 팀</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">player</span></code></p></td>
+<td><p>Object</p></td>
+<td><p>이벤트 수행 선수 (<code class="docutils literal notranslate"><span class="pre">id</span></code>, <code class="docutils literal notranslate"><span class="pre">name</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">position</span></code></p></td>
+<td><p>Object</p></td>
+<td><p>해당 시점 선수 포지션</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">location</span></code></p></td>
+<td><p>Array [x, y]</p></td>
+<td><p>피치 좌표 (120×80 기준)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">duration</span></code></p></td>
+<td><p>Float</p></td>
+<td><p>이벤트 지속 시간(초)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">related_events</span></code></p></td>
+<td><p>Array</p></td>
+<td><p>연관 이벤트 UUID 목록</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="event-type-distribution">
+<h4>2-2. 이벤트 유형별 분포 (Event Type Distribution)<a class="headerlink" href="#event-type-distribution" title="Link to this heading">#</a></h4>
+<p>총 32개 이벤트 유형 중 주요 유형의 분포:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>이벤트 유형</p></th>
+<th class="head"><p>건수</p></th>
+<th class="head"><p>설명</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Pass</p></td>
+<td><p>846</p></td>
+<td><p>패스 이벤트 (수신자, 길이, 각도, 높이, 결과 등)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ball Receipt*</p></td>
+<td><p>747</p></td>
+<td><p>패스 수신 이벤트</p></td>
+</tr>
+<tr class="row-even"><td><p>Carry</p></td>
+<td><p>617</p></td>
+<td><p>볼 운반 (시작/종료 좌표)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pressure</p></td>
+<td><p>254</p></td>
+<td><p>상대에 대한 압박 이벤트</p></td>
+</tr>
+<tr class="row-even"><td><p>Ball Recovery</p></td>
+<td><p>88</p></td>
+<td><p>볼 회수</p></td>
+</tr>
+<tr class="row-odd"><td><p>Duel</p></td>
+<td><p>53</p></td>
+<td><p>1:1 경합 (공중전/태클 등)</p></td>
+</tr>
+<tr class="row-even"><td><p>Clearance</p></td>
+<td><p>37</p></td>
+<td><p>클리어링</p></td>
+</tr>
+<tr class="row-odd"><td><p>Shot</p></td>
+<td><p>23</p></td>
+<td><p>슈팅 (xG, 결과, 프리즈프레임 포함)</p></td>
+</tr>
+<tr class="row-even"><td><p>Goal Keeper</p></td>
+<td><p>32</p></td>
+<td><p>골키퍼 액션 (세이브, 펀칭 등)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Foul Committed</p></td>
+<td><p>28</p></td>
+<td><p>파울</p></td>
+</tr>
+<tr class="row-even"><td><p>Dribble</p></td>
+<td><p>28</p></td>
+<td><p>드리블 시도</p></td>
+</tr>
+<tr class="row-odd"><td><p>Interception</p></td>
+<td><p>17</p></td>
+<td><p>인터셉트</p></td>
+</tr>
+<tr class="row-even"><td><p>기타</p></td>
+<td><p>208</p></td>
+<td><p>교체, 부상 중단, 카메라, 전술 변경 등</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="type-specific-fields">
+<h4>2-3. 주요 이벤트별 전용 필드 (Type-Specific Fields)<a class="headerlink" href="#type-specific-fields" title="Link to this heading">#</a></h4>
+<p>▶ Pass</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>필드</p></th>
+<th class="head"><p>설명</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pass.recipient</span></code> (Object)</p></td>
+<td><p>수신 선수</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pass.length</span></code> (Float)</p></td>
+<td><p>패스 거리</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pass.angle</span></code> (Float)</p></td>
+<td><p>패스 각도 (radian)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pass.height</span></code> (Object)</p></td>
+<td><p>높이 (Ground / Low / High)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pass.outcome</span></code> (Object)</p></td>
+<td><p>결과 (없으면 성공)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pass.type</span></code> (Object)</p></td>
+<td><p>유형 (Corner, Free Kick, Goal Kick 등)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>▶ Shot</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>필드</p></th>
+<th class="head"><p>설명</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">shot.statsbomb_xg</span></code> (Float)</p></td>
+<td><p>기대골(xG) 값</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">shot.end_location</span></code> (Array [x,y,z])</p></td>
+<td><p>슈팅 도착 좌표 (3D)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">shot.outcome</span></code> (Object)</p></td>
+<td><p>결과 (Goal, Saved, Off T, Blocked, Wayward)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">shot.technique</span></code> (Object)</p></td>
+<td><p>기술 (Normal, Volley, Half Volley 등)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">shot.body_part</span></code> (Object)</p></td>
+<td><p>신체 부위</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">shot.freeze_frame</span></code> (Array)</p></td>
+<td><p>슈팅 순간 모든 선수의 좌표와 포지션</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>▶ Carry</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>필드</p></th>
+<th class="head"><p>설명</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">carry.end_location</span></code> (Array [x, y])</p></td>
+<td><p>볼 운반 종료 좌표</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>▶ Duel</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>필드</p></th>
+<th class="head"><p>설명</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">duel.type</span></code> (Object)</p></td>
+<td><p>경합 유형 (Aerial Lost/Won, Tackle)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">duel.outcome</span></code> (Object)</p></td>
+<td><p>결과</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>▶ Goal Keeper</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>필드</p></th>
+<th class="head"><p>설명</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">goalkeeper.type</span></code> (Object)</p></td>
+<td><p>액션 유형 (Shot Faced, Save, Punch 등)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">goalkeeper.position</span></code> (Object)</p></td>
+<td><p>자세 (Set, Moving)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">goalkeeper.end_location</span></code> (Array)</p></td>
+<td><p>종료 좌표</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>▶ Substitution</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>필드</p></th>
+<th class="head"><p>설명</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">substitution.outcome</span></code> (Object)</p></td>
+<td><p>사유 (Tactical, Injury)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">substitution.replacement</span></code> (Object)</p></td>
+<td><p>교체 투입 선수</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="play-pattern">
+<h4>2-4. 플레이 패턴 (Play Pattern)<a class="headerlink" href="#play-pattern" title="Link to this heading">#</a></h4>
+<p>각 이벤트에는 해당 플레이의 시작 유형이 기록됩니다:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Regular</span> <span class="pre">Play</span></code> · <code class="docutils literal notranslate"><span class="pre">From</span> <span class="pre">Corner</span></code> · <code class="docutils literal notranslate"><span class="pre">From</span> <span class="pre">Counter</span></code> · <code class="docutils literal notranslate"><span class="pre">From</span> <span class="pre">Free</span> <span class="pre">Kick</span></code> · <code class="docutils literal notranslate"><span class="pre">From</span> <span class="pre">Goal</span> <span class="pre">Kick</span></code> · <code class="docutils literal notranslate"><span class="pre">From</span> <span class="pre">Keeper</span></code> · <code class="docutils literal notranslate"><span class="pre">From</span> <span class="pre">Kick</span> <span class="pre">Off</span></code> · <code class="docutils literal notranslate"><span class="pre">From</span> <span class="pre">Throw</span> <span class="pre">In</span></code> · <code class="docutils literal notranslate"><span class="pre">Other</span></code></p>
+</section>
+<section id="coordinate-system">
+<h4>2-5. 좌표계 (Coordinate System)<a class="headerlink" href="#coordinate-system" title="Link to this heading">#</a></h4>
+<p>StatsBomb는 <strong>120 × 80 yards</strong> 기준 좌표계를 사용합니다. 공격 방향은 항상 왼쪽에서 오른쪽(x: 0→120)이며, y축은 0(top)에서 80(bottom)입니다. 슈팅의 <code class="docutils literal notranslate"><span class="pre">end_location</span></code>은 3차원(x, y, z)으로 z는 높이를 나타냅니다.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="lineup-data">
+<h3>3. 라인업 파일 (Lineup Data)<a class="headerlink" href="#lineup-data" title="Link to this heading">#</a></h3>
+<p>라인업 파일은 양팀의 전체 엔트리 정보를 담고 있습니다. 프랑스 23명, 크로아티아 22명으로 총 45명의 선수 데이터가 포함되어 있습니다.</p>
+<section id="id2">
+<h4>3-1. 필드 구조<a class="headerlink" href="#id2" title="Link to this heading">#</a></h4>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>필드명</p></th>
+<th class="head"><p>설명</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">team_id</span></code> / <code class="docutils literal notranslate"><span class="pre">team_name</span></code></p></td>
+<td><p>팀 식별 정보</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">player_id</span></code> / <code class="docutils literal notranslate"><span class="pre">player_name</span></code></p></td>
+<td><p>선수 식별 정보</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">player_nickname</span></code></p></td>
+<td><p>선수 별명 (예: Kylian Mbappé)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">jersey_number</span></code></p></td>
+<td><p>등번호</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">country</span></code></p></td>
+<td><p>선수 국적 정보</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cards</span></code></p></td>
+<td><p>경고/퇴장 카드 목록</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">positions</span></code></p></td>
+<td><p>포지션 변경 이력 (시간, 사유 포함)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="positions">
+<h3>3-2. 포지션 변경 이력 (positions)<a class="headerlink" href="#positions" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">positions</span></code> 배열은 경기 중 선수의 포지션 변경을 시간순으로 기록합니다. 각 항목에는 <code class="docutils literal notranslate"><span class="pre">position</span></code>(포지션명), <code class="docutils literal notranslate"><span class="pre">from</span></code>/<code class="docutils literal notranslate"><span class="pre">to</span></code>(시간), <code class="docutils literal notranslate"><span class="pre">from_period</span></code>/<code class="docutils literal notranslate"><span class="pre">to_period</span></code>(반), <code class="docutils literal notranslate"><span class="pre">start_reason</span></code>/<code class="docutils literal notranslate"><span class="pre">end_reason</span></code>(변경 사유: Starting XI, Substitution, Tactical Shift, Final Whistle 등)이 포함됩니다.</p>
+<p><strong>예시:</strong> Kylian Mbappé는 Right Midfield로 선발 출전한 후, 81분에 Tactical Shift로 Right Center Forward로 변경되어 경기 종료까지 해당 포지션을 유지했습니다.</p>
+</section>
+<hr class="docutils" />
+<section id="potential-use-cases">
+<h3>4. 활용 방안 (Potential Use Cases)<a class="headerlink" href="#potential-use-cases" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>경기 흐름 분석:</strong> <code class="docutils literal notranslate"><span class="pre">timestamp</span></code>와 <code class="docutils literal notranslate"><span class="pre">possession</span></code> 시퀀스를 활용하여 경기 흐름을 시각화</p></li>
+<li><p><strong>패스 네트워크:</strong> Pass 이벤트의 passer→recipient 관계로 패스 네트워크 구성</p></li>
+<li><p><strong>xG 모델 검증:</strong> Shot 이벤트의 <code class="docutils literal notranslate"><span class="pre">statsbomb_xg</span></code>와 <code class="docutils literal notranslate"><span class="pre">freeze_frame</span></code>을 활용한 기대골 분석</p></li>
+<li><p><strong>수비 분석:</strong> Pressure, Duel, Interception, Ball Recovery 데이터로 수비 강도 측정</p></li>
+<li><p><strong>히트맵 / 시각화:</strong> <code class="docutils literal notranslate"><span class="pre">location</span></code> 좌표를 활용한 슛, 패스, 압박 등의 공간 분석</p></li>
+<li><p><strong>선수 평가:</strong> Lineup의 positions 변경 이력 + 이벤트 데이터를 결합한 개인 퍼포먼스 분석</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="notes">
+<h3>5. 참고 사항 (Notes)<a class="headerlink" href="#notes" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>데이터 출처:</strong> StatsBomb Open Data (<a class="github reference external" href="https://github.com/statsbomb/open-data">statsbomb/open-data</a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Ball</span> <span class="pre">Receipt*</span></code>의 <code class="docutils literal notranslate"><span class="pre">*</span></code>는 해당 이벤트가 불완전한 수신(miscontrol)일 수 있음을 나타냅니다.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">under_pressure</span></code> (Boolean)는 상대 압박 하에 수행된 이벤트에 추가로 표시됩니다.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">related_events</span></code>를 통해 이벤트 간 연결 관계를 파악할 수 있습니다 (예: 패스 ↔ 수신, 슈팅 ↔ 세이브).</p></li>
+<li><p><strong>xG(기대골):</strong> 프랑스 1.10, 크로아티아 1.48 — 크로아티아가 xG에서 앞섰으나 실제 결과는 역전.</p></li>
+</ul>
+</section>
+</section>
+<section id="id3">
+<h2><span style="color: blue;"><strong>2. 경기 흐름 분석</strong></span><a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+</section>
+<section id="id4">
+<h2><strong>Claude 분석</strong><a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>경기 흐름 시각화 대시보드를 만들었습니다. 구성 요소는 다음과 같습니다:</p>
+<blockquote>
+<div><p>🔗 <strong>2018 FIFA 월드컵 결승전 경기흐름 대시보드</strong> (<a class="reference external" href="https://claude.ai/public/artifacts/e804fc63-135d-41c8-95bb-37013f47b65e">https://claude.ai/public/artifacts/e804fc63-135d-41c8-95bb-37013f47b65e</a>)</p>
+</div></blockquote>
+<p><img alt="Worldcup" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/23-2.png" /></p>
+<p><strong>득점 타임라인</strong> — 6골 모두를 시간축 위에 배치하여 득점 흐름을 한눈에 파악할 수 있습니다.</p>
+<p><strong>점유 흐름 스트립</strong> — 182개 점유 시퀀스를 전·후반별로 시각화했습니다. 각 블록의 너비는 이벤트 수에 비례하며, 마우스를 올리면 해당 점유의 상세 정보(시간, 패스 수, 슈팅, xG, 플레이 패턴)를 확인할 수 있습니다. 골은 금색, 슈팅은 흰색 점으로 표시됩니다.</p>
+<p><strong>모멘텀 차트</strong> — 5분 이동 평균 기반으로 양팀의 경기 지배력 변화를 보여줍니다. 전반 30분 이후~후반 초반까지 크로아티아가 압도적으로 경기를 지배했으나, 프랑스는 58분-65분 사이 짧은 우세 구간에서 2골을 넣은 것이 잘 드러납니다.</p>
+</section>
+<section id="id5">
+<h2><span style="color: blue;"><strong>3. 선수 평가</strong></span><a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+</section>
+<section id="id6">
+<h2><strong>Claude 분석</strong><a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<p>출전한 27명 전원의 개인 퍼포먼스 분석 대시보드를 만들었습니다. 각 선수 카드를 클릭하면 상세 분석이 펼쳐집니다.</p>
+<blockquote>
+<div><p>🔗 <strong>2018 FIFA 월드컵 결승전 선수평가 대시보드</strong> (<a class="reference external" href="https://claude.ai/public/artifacts/b878065b-1feb-4837-8014-bd686662baec">https://claude.ai/public/artifacts/b878065b-1feb-4837-8014-bd686662baec</a>)</p>
+</div></blockquote>
+<p><img alt="Worldcup" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/23-3.png" /></p>
+<p><strong>레이더 차트</strong> — 공격, 패스, 운반, 압박, 수비, 볼륨 6개 축으로 Per 90분 기준 선발 선수 대비 백분위를 시각화합니다. Pogba는 공격+수비 양면에서, Brozović는 패스+볼륨에서 극단적인 수치를 보여줍니다.</p>
+<p><strong>포지션 변경 이력</strong> — Lineup 데이터의 <code class="docutils literal notranslate"><span class="pre">positions</span></code> 배열을 타임라인으로 표시합니다. 예를 들어 Mbappé는 81분에 Right Midfield → Right Center Forward로, Griezmann도 같은 시점에 포지션이 변경된 것이 보여 디디에 데샹의 후반 전술 교체를 추적할 수 있습니다.</p>
+<p><strong>주요 발견:</strong></p>
+<ul class="simple">
+<li><p><strong>Brozović</strong> — 271터치, 99패스(87성공)로 경기 최다. 크로아티아 빌드업의 절대적 허브</p></li>
+<li><p><strong>Mbappé</strong> — 6회 전진 드리블, 245yd 운반 거리로 프랑스 역습의 핵심. xG 0.06에서 1골(결정력 초과 달성)</p></li>
+<li><p><strong>Griezmann</strong> — 31회 압박으로 프랑스 최다. 공격수임에도 전방 수비 기여가 압도적</p></li>
+<li><p><strong>Kanté</strong> — 54분 출전에 19회 압박, 옐로카드 1장. 교체 이유가 체력+경고 관리였음을 시사</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="22_%EC%9A%B4%EB%8F%99%ED%95%99_Kinematics.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><strong>22장 운동학 (Kinematics)</strong></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="24_%ED%8F%AD%EA%B2%A9_%ED%8C%8C%EA%B4%B4%EB%A0%A5_%EB%B6%84%EC%84%9D.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><strong>24장 폭격 파괴력 분석</strong></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fifa"><span style="color: blue;"><strong>1. 2018 FIFA 월드컵 결승전 데이터세트</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#claude"><strong>Claude 설명</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">1. 개요 (Overview)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#event-data">2. 이벤트 파일 (Event Data)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#common-fields">2-1. 공통 필드 (Common Fields)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#event-type-distribution">2-2. 이벤트 유형별 분포 (Event Type Distribution)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#type-specific-fields">2-3. 주요 이벤트별 전용 필드 (Type-Specific Fields)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#play-pattern">2-4. 플레이 패턴 (Play Pattern)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#coordinate-system">2-5. 좌표계 (Coordinate System)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lineup-data">3. 라인업 파일 (Lineup Data)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3-1. 필드 구조</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#positions">3-2. 포지션 변경 이력 (positions)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#potential-use-cases">4. 활용 방안 (Potential Use Cases)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">5. 참고 사항 (Notes)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><span style="color: blue;"><strong>2. 경기 흐름 분석</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><strong>Claude 분석</strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><span style="color: blue;"><strong>3. 선수 평가</strong></span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><strong>Claude 분석</strong></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By 김원경 최필선
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
