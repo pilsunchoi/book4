@@ -508,7 +508,7 @@
 <h1><strong>17장 의사결정 트리 모형</strong><a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
 <section id="id2">
 <h2><span style="color: blue;"><strong>1. 데이터 입력</strong></span><a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
-<p><img alt="Tree1" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/17-1.png" /></p>
+<p><img alt="Tree1" src="../_images/17-1.png" /></p>
 <p>출처: 데이터세트는 Kaggle에서 주최한 머신러닝 대회 “<a class="reference external" href="https://www.kaggle.com/competitions/titanic/overview">Titanic - Machine Learning from Disaster</a>”에서 제공한 것을 사용한다.</p>
 </section>
 <section id="gemini">
@@ -714,7 +714,7 @@
 <h2><strong>Gemini 분석</strong><a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
 <section id="id7">
 <h3>의사결정 나무 모델 소개<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
-<p><img alt="Tree2" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/17-2.png" /></p>
+<p><img alt="Tree2" src="../_images/17-2.png" /></p>
 <p>의사결정 나무(Decision Tree)는 데이터가 가진 특징을 바탕으로 ‘스무고개’ 놀이를 하듯 예/아니오 질문을 이어가며 정답(타겟)을 찾아가는 모델이다. 직관적이고 해석하기 쉬워 널리 사용된다.</p>
 <section id="id8">
 <h4>핵심 개념<a class="headerlink" href="#id8" title="Link to this heading">#</a></h4>
@@ -747,7 +747,7 @@
 <hr class="docutils" />
 <section id="id10">
 <h3>1. 추정 결과 해석 (트리 그림 설명)<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
-<p><img alt="Tree3" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/17-3.png" /></p>
+<p><img alt="Tree3" src="../_images/17-3.png" /></p>
 <p>위의 의사결정 나무 그림은 타이타닉 승객의 생존 여부를 어떻게 예측하는지 시각적으로 보여준다. 각 박스(노드)는 다음과 같은 정보를 담고 있다.</p>
 <ul class="simple">
 <li><p><strong>상단의 조건식</strong>: 데이터를 나누는 기준 질문 (예: <code class="docutils literal notranslate"><span class="pre">Sex</span> <span class="pre">&lt;=</span> <span class="pre">0.5</span></code>).</p></li>
@@ -842,7 +842,7 @@
 <section id="confusion-matrix">
 <h3>1. 혼동 행렬 (Confusion Matrix) 분석<a class="headerlink" href="#confusion-matrix" title="Link to this heading">#</a></h3>
 <p>혼동 행렬은 모델이 실제값(Actual)과 예측값(Predicted)을 어떻게 분류했는지 보여준다.</p>
-<p><img alt="Tree4" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/17-4.png" /></p>
+<p><img alt="Tree4" src="../_images/17-4.png" /></p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p></p></th>
@@ -927,7 +927,7 @@
 <hr class="docutils" />
 <section id="roc-auc-area-under-curve">
 <h3>3. ROC 곡선 및 AUC (Area Under Curve)<a class="headerlink" href="#roc-auc-area-under-curve" title="Link to this heading">#</a></h3>
-<p><img alt="Tree5" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/17-5.png" /></p>
+<p><img alt="Tree5" src="../_images/17-5.png" /></p>
 <ul class="simple">
 <li><p><strong>ROC 곡선</strong>: 주황색 선이 왼쪽 위 모서리에 가까울수록 좋은 모델이다. 점선(무작위 추측)보다 위에 있으므로 의미 있는 예측을 하고 있다.</p></li>
 <li><p><strong>AUC 값</strong>: <strong>0.82</strong> (그래프 참조).</p></li>
@@ -972,7 +972,7 @@
 <hr class="docutils" />
 <section id="id22">
 <h3>타이타닉 데이터 예시 (사후 가지치기 적용)<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
-<p><img alt="Tree6" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/17-6.png" /></p>
+<p><img alt="Tree6" src="../_images/17-6.png" /></p>
 <p>위 그래프는 타이타닉 데이터에 <strong>비용 복잡도 가지치기(Cost Complexity Pruning)</strong> 를 적용한 결과이다.</p>
 <hr class="docutils" />
 <section id="full-tree">
@@ -990,7 +990,7 @@
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">ccp_alpha</span></code> 값을 0부터 점차 증가시키면서(가지치기 강도를 높이면서) 트리의 정확도 변화를 관찰하였다.</p></li>
 </ul>
-<p><img alt="Tree7" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/17-7.png" /></p>
+<p><img alt="Tree7" src="../_images/17-7.png" /></p>
 <ul class="simple">
 <li><p><strong>그래프 해석 (Accuracy vs Alpha)</strong>:</p>
 <ul>
@@ -1049,7 +1049,7 @@
 <section id="id25">
 <h3>2. 타이타닉 데이터 분석 결과<a class="headerlink" href="#id25" title="Link to this heading">#</a></h3>
 <p>타이타닉 생존 예측 모델(최대 깊이 5)에서 추출한 변수 중요도는 다음과 같다.</p>
-<p><img alt="Tree8" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/17-8.png" /></p>
+<p><img alt="Tree8" src="../_images/17-8.png" /></p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Feature (변수)</p></th>

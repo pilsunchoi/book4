@@ -543,7 +543,7 @@
 <h1><strong>11장 보스턴 주택 가격 분석</strong><a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
 <section id="id2">
 <h2><span style="color: blue;"><strong>1. 데이터 업로드</strong></span><a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
-<p><img alt="Regression1" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/11-1.png" /></p>
+<p><img alt="Regression1" src="../_images/11-1.png" /></p>
 </section>
 <section id="chatgpt">
 <h2><strong>ChatGPT 설명</strong><a class="headerlink" href="#chatgpt" title="Link to this heading">#</a></h2>
@@ -926,7 +926,7 @@ Y = X\beta + \epsilon
 <hr class="docutils" />
 <section id="id14">
 <h4>상관행렬<a class="headerlink" href="#id14" title="Link to this heading">#</a></h4>
-<p><img alt="Regression2" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/11-2.png" /></p>
+<p><img alt="Regression2" src="../_images/11-2.png" /></p>
 </section>
 </section>
 <hr class="docutils" />
@@ -938,7 +938,7 @@ Y = X\beta + \epsilon
 <li><p>(비대각선) 변수 쌍의 관계(선형/비선형, 군집, 이상치, 분산의 이질성)
 를 한 번에 보여준다.</p></li>
 </ul>
-<p><img alt="Regression3" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/11-3.png" /></p>
+<p><img alt="Regression3" src="../_images/11-3.png" /></p>
 <hr class="docutils" />
 <section id="id16">
 <h4>읽는 포인트(이 그림에서 특히 확인할 것)<a class="headerlink" href="#id16" title="Link to this heading">#</a></h4>
@@ -1048,7 +1048,7 @@ Y_i = \beta_0 + \beta_1 X_i + \epsilon_i
 <hr class="docutils" />
 <section id="id21">
 <h3>3. 산점도와 회귀직선<a class="headerlink" href="#id21" title="Link to this heading">#</a></h3>
-<p><img alt="Regression4" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/11-4.png" /></p>
+<p><img alt="Regression4" src="../_images/11-4.png" /></p>
 <ul class="simple">
 <li><p>전체적으로 뚜렷한 음의 관계가 보인다.</p></li>
 <li><p>오른쪽(큰 LSTAT) 구간에서 선형 직선이 자료의 곡률을 충분히 따라가지 못하는 느낌이 있다. 이는 비선형성 가능성을 시사한다.</p></li>
@@ -1059,7 +1059,7 @@ Y_i = \beta_0 + \beta_1 X_i + \epsilon_i
 <h3>4. 잔차 진단<a class="headerlink" href="#id22" title="Link to this heading">#</a></h3>
 <section id="residuals-vs-fitted">
 <h4>(1) Residuals vs Fitted<a class="headerlink" href="#residuals-vs-fitted" title="Link to this heading">#</a></h4>
-<p><img alt="Regression5" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/11-5.png" /></p>
+<p><img alt="Regression5" src="../_images/11-5.png" /></p>
 <ul class="simple">
 <li><p>“Residuals vs Fitted (MEDV ~ LSTAT)” 그림에서, 잔차가 0을 중심으로 무작위로 흩어지면 선형성/등분산성 가정이 비교적 괜찮다.</p></li>
 <li><p>실제로는 적합값이 큰 구간에서 잔차 분산이 커지는 부채꼴 패턴이 보인다. 이는 이분산(heteroskedasticity) 가능성을 강하게 시사한다.</p></li>
@@ -1069,7 +1069,7 @@ Y_i = \beta_0 + \beta_1 X_i + \epsilon_i
 <hr class="docutils" />
 <section id="normal-q-q">
 <h4>(2) Normal Q-Q<a class="headerlink" href="#normal-q-q" title="Link to this heading">#</a></h4>
-<p><img alt="Regression6" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/11-6.png" /></p>
+<p><img alt="Regression6" src="../_images/11-6.png" /></p>
 <ul class="simple">
 <li><p>“Normal Q-Q (Residuals)” 그림에서, 직선에서 벗어나는 꼬리 부분(특히 상단)이 눈에 띈다.</p></li>
 <li><p>잔차 정규성이 완벽하지 않을 가능성이 있다. 표본이 506으로 커서 추정량의 근사정규성 자체는 기대할 수 있지만, 구간추정/가설검정에서 강건 표준오차 등 대안이 실무적으로 유용해진다.</p></li>
@@ -1078,7 +1078,7 @@ Y_i = \beta_0 + \beta_1 X_i + \epsilon_i
 <hr class="docutils" />
 <section id="scale-location">
 <h4>(3) Scale-Location<a class="headerlink" href="#scale-location" title="Link to this heading">#</a></h4>
-<p><img alt="Regression7" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/11-7.png" /></p>
+<p><img alt="Regression7" src="../_images/11-7.png" /></p>
 <ul class="simple">
 <li><p>“Scale-Location” 그림에서, 적합값이 커질수록 <span class="math notranslate nohighlight">\(\sqrt{|\text{표준화 잔차}|}\)</span>가 커지는 경향은 등분산 가정 위반(이분산)을 다시 확인해준다.</p></li>
 </ul>
@@ -1086,7 +1086,7 @@ Y_i = \beta_0 + \beta_1 X_i + \epsilon_i
 <hr class="docutils" />
 <section id="leverage-vs-standardized-residuals">
 <h4>(4) Leverage vs Standardized Residuals, 영향점<a class="headerlink" href="#leverage-vs-standardized-residuals" title="Link to this heading">#</a></h4>
-<p><img alt="Regression8" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/11-8.png" /></p>
+<p><img alt="Regression8" src="../_images/11-8.png" /></p>
 <ul class="simple">
 <li><p>“Leverage vs Standardized Residuals” 그림에서, 레버리지(leverage)가 큰 점이나 표준화 잔차가 큰 점이 영향점 후보가 된다.</p></li>
 <li><p>아래 표는 Cook’s distance 상위 10개다(값이 클수록 회귀계수에 영향).</p></li>
@@ -1415,7 +1415,7 @@ Y_i = \beta_0 + \beta_1 X_i + \epsilon_i
 <hr class="docutils" />
 <section id="vs">
 <h3>4. 잔차 vs 적합값 그림의 의미<a class="headerlink" href="#vs" title="Link to this heading">#</a></h3>
-<p><img alt="Regression9" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/11-9.png" /></p>
+<p><img alt="Regression9" src="../_images/11-9.png" /></p>
 <ul class="simple">
 <li><p>단순회귀보다 <strong>잔차의 구조적 패턴이 줄어들었다</strong>.
 → 중요한 설명변수들이 추가되면서 모형이 개선되었다는 신호다.</p></li>
@@ -1474,7 +1474,7 @@ Y_i = \beta_0 + \beta_1 X_i + \epsilon_i
 </section>
 <section id="vif">
 <h3>VIF 진단 결과(내림차순)<a class="headerlink" href="#vif" title="Link to this heading">#</a></h3>
-<p><img alt="Regression10" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/11-10.png" /></p>
+<p><img alt="Regression10" src="../_images/11-10.png" /></p>
 </section>
 <section id="id33">
 <h3>직관적 해석(이 데이터에서 무슨 일이 벌어지나)<a class="headerlink" href="#id33" title="Link to this heading">#</a></h3>

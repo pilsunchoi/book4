@@ -477,7 +477,7 @@
 <h1><strong>18장 트리 기반 모형</strong><a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
 <section id="id2">
 <h2><span style="color: blue;"><strong>1. 데이터 입력</strong></span><a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
-<p><img alt="Tree_Based1" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/18-1.png" /></p>
+<p><img alt="Tree_Based1" src="../_images/18-1.png" /></p>
 <p>출처: 데이터세트는 Kaggle에서 주최한 머신러닝 대회 “<a class="reference external" href="https://www.kaggle.com/competitions/titanic/overview">Titanic - Machine Learning from Disaster</a>”에서 제공한 것을 사용한다.</p>
 </section>
 <section id="gemini">
@@ -775,7 +775,7 @@
 <hr class="docutils" />
 <section id="roc">
 <h4>3. ROC 곡선 해석<a class="headerlink" href="#roc" title="Link to this heading">#</a></h4>
-<p><img alt="Tree_Based2" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/18-2.png" /></p>
+<p><img alt="Tree_Based2" src="../_images/18-2.png" /></p>
 <ul class="simple">
 <li><p>세 모델 모두 ROC 곡선이 왼쪽 위 모서리에 가깝게 위치하여 우수한 성능을 보인다.</p></li>
 <li><p>특히 파란색 선(Random Forest)이 초기 구간(False Positive Rate가 낮을 때)에서 가파르게 상승하는데, 이는 확실한 생존자를 잘 찾아낸다는 것을 의미한다.</p></li>
@@ -785,7 +785,7 @@
 <section id="id9">
 <h4>4. 변수 중요도 해석<a class="headerlink" href="#id9" title="Link to this heading">#</a></h4>
 <p>랜덤 포레스트와 그래디언트 부스팅이 중요하게 생각한 변수를 비교하였다.</p>
-<p><img alt="Tree_Based3" src="https://raw.githubusercontent.com/pilsunchoi/images4/main/18-3.png" /></p>
+<p><img alt="Tree_Based3" src="../_images/18-3.png" /></p>
 <ul class="simple">
 <li><p><strong>공통점</strong>: 두 모델 모두 **<code class="docutils literal notranslate"><span class="pre">Sex</span></code> (성별)**와 <strong><code class="docutils literal notranslate"><span class="pre">Fare</span></code> (요금)</strong>, **<code class="docutils literal notranslate"><span class="pre">Age</span></code> (나이)**를 최상위 중요 변수로 꼽았다. 이는 “여성, 부유층(높은 요금), 아이/노인”이 생존에 결정적이었음을 재확인시켜 준다.</p></li>
 <li><p><strong>차이점</strong>:</p>
